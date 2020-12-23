@@ -172,7 +172,11 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
 
             print(f"New metadata length: {len(metadata)}")
 
-    # Read the mapping file we need
+
+    # Build the big strain name-zip dictionary
+    strain_zip = build_strain_to_zip()
+
+    # Read the mapping fils we need
     mmap = read_muni_map()
     zmap = get_zip_province_map()
     my_manual_fixes = read_manual_fix_map()
@@ -225,6 +229,12 @@ def fix_country_from_strain_name(s):
     c = s.split("/")[1]
 
     return c
+
+def build_strain_to_zip():
+
+    def strain_name_fix_for_zip(s):
+        if s.startswith("hCoV-19"):
+            s = s[7:]
 
 def read_muni_map():
     print("Making a municipality: province map.")
