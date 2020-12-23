@@ -5,7 +5,12 @@ logs/
 results/
 build/
 auspice/
-data/*
+data/*fasta*
+data/*metadata*
+data/*METADATA*
+data/*gisaid*
+data/epi
+data/archives
 defaults/colors.tsv
 defaults/colors_*.tsv
 stats.json
