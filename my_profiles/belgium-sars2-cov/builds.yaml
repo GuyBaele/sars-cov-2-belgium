@@ -26,7 +26,7 @@ subsampling:
     # Contextual samples from country's region
     region:
       group_by: "country year month"
-      seq_per_group: 10
+      seq_per_group: 8
       exclude: "--exclude-where 'country={country}' 'region!={region}'"
       priorities:
         type: "proximity"
@@ -35,7 +35,7 @@ subsampling:
     # excluding the current region to avoid resampling.
     global:
       group_by: "country year month"
-      seq_per_group: 5
+      seq_per_group: 4
       exclude: "--exclude-where 'region={region}'"
       priorities:
         type: "proximity"
