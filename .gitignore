@@ -10,6 +10,7 @@ data/*metadata*
 data/*METADATA*
 data/*gisaid*
 data/epi
+data/zip_codes
 data/archives
 defaults/colors.tsv
 defaults/colors_*.tsv
