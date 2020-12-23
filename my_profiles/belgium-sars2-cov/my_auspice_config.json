@@ -1,8 +1,8 @@
 {
-  "title": "My title here",
-  "build_url": "https://github.com/myusername/myrepository/",
+  "title": "SARS-CoV-2 in Belgium",
+  "build_url": "https://github.com/GuyBaele/sars-cov-2-belgium",
   "maintainers": [
-    {"name": "My name", "url": "www.myurl.com"}
+    {"name": "Barney Isaksen Potter", "url": "https://rega.kuleuven.be/cev/ecv/staff-members/00140913"}
   ],
   "colorings": [
     {
@@ -93,7 +93,7 @@
   "display_defaults": {
     "color_by": "division",
     "distance_measure": "num_date",
-    "geo_resolution": "division",
+    "geo_resolution": "location",
     "map_triplicate": true,
     "branch_label": "none"
   },

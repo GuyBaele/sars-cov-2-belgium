@@ -9,7 +9,7 @@ builds:
     country: Belgium
     # If we want to have specific files for colors or the auspice_config file *just*
     # for this build, we can specify this here.
-    # colors: "my_profiles/example_advanced_customization/switzerland_build_colors.tsv"
+    colors: "my_profiles/belgium-sars2-cov/colors.tsv"
     # auspice_config: "my_profiles/example_advanced_customization/auspice_config_switzerland_build.json"
     # We can also set a title for *just* this build.
     title: "SARS-CoV-2 Sequences in Belgium"
@@ -26,7 +26,7 @@ subsampling:
     # Contextual samples from country's region
     region:
       group_by: "country year month"
-      seq_per_group: 20
+      seq_per_group: 10
       exclude: "--exclude-where 'country={country}' 'region!={region}'"
       priorities:
         type: "proximity"
@@ -35,7 +35,7 @@ subsampling:
     # excluding the current region to avoid resampling.
     global:
       group_by: "country year month"
-      seq_per_group: 10
+      seq_per_group: 5
       exclude: "--exclude-where 'region={region}'"
       priorities:
         type: "proximity"
