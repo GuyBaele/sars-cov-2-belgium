@@ -169,35 +169,62 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
                 new_meta[item] = "?"
 
             metadata = pd.concat([metadata, new_meta])
+            metadata = metadata.reset_index(drop=True)
 
             print(f"New metadata length: {len(metadata)}")
 
 
     # Build the big strain name-zip dictionary
     strain_zip = build_strain_to_zip()
+    epi_isl_zip = build_isl_to_zip()
 
     # Read the mapping fils we need
     mmap = read_muni_map()
-    zmap = get_zip_province_map()
+    zpro,zmun = get_zip_location_map()
     my_manual_fixes = read_manual_fix_map()
+    loc_fixes = fix_location_map()
     lonelyboys = set()
 
+
+    print(sorted(mmap.keys()))
+    print(sorted(my_manual_fixes.keys()))
+
     for (index, row) in metadata.iterrows():
-        if row["country"] == "Belgium":
+        if metadata.at[index,"country"] == "Belgium":
+            if metadata.at[index,"country_exposure"] == "?":
+                metadata.at[index,"country_exposure"] = "Belgium"
             # This identifies any sequences without a "location"
             if isinstance(row["location"],float):
                 if row["division"] != "Belgium":
                     # Trickle down
                     metadata.at[index,"location"] = metadata.at[index,"division"]
                     metadata.at[index,"division"] = "?"
-            zip = str(row["ZIP"])
-            loc = str(metadata.at[index,"location"])
-            if zip in row.keys():
-                metadata.at[index,"division"] = zmap[zip]
+
+            # Set ZIP:
+            if metadata.at[index,"gisaid_epi_isl"] in epi_isl_zip.keys():
+                metadata.at[index,"ZIP"] = epi_isl_zip[metadata.at[index,"gisaid_epi_isl"]]
+            zip = str(metadata.at[index,"ZIP"])
+            loc = metadata.at[index,"location"]
+            # Fix location names
+            if loc in loc_fixes.keys():
+                loc = loc_fixes[loc]
+                metadata.at[index,"location"] = loc
+
+            metadata.at[index,"location_exposure"] = loc
+            metadata.at[index,"region_exposure"] = "Europe"
+
+            if zip in zpro.keys():
+                print("Z!")
+                metadata.at[index,"division"] = zpro[zip]
+                metadata.at[index,"division_exposure"] = zpro[zip]
+                metadata.at[index,"location"] = zmun[zip]
+                metadata.at[index,"location_exposure"] = zmun[zip]
             elif loc in mmap.keys():
                 metadata.at[index,"division"] = mmap[loc]
+                metadata.at[index,"division_exposure"] = mmap[loc]
             elif loc in my_manual_fixes.keys():
                 metadata.at[index,"division"] = my_manual_fixes[loc]
+                metadata.at[index,"division_exposure"] = my_manual_fixes[loc]
             else:
                 lonelyboys.add(loc)
 
@@ -219,8 +246,19 @@ def fix_strain_name(s):
     # Remove trailing dates from strain names
     if s.endswith("/2020") or s.endswith("/2019"):
         s = "/".join(s.split("/")[:-1])
-
+    # Remove leading ""
     return s
+
+def fix_location_map():
+    m = {}
+    fixfname = "data/source_files/municipalities_name_fixes.csv"
+    with open(fixfname,'r') as f:
+        for line in f.readlines():
+            l = line.strip('\n').split(',')
+            k = l[0]
+            v = l[1]
+            m[k] = v
+    return m
 
 def fix_country_from_strain_name(s):
     """
@@ -235,6 +273,19 @@ def build_strain_to_zip():
     def strain_name_fix_for_zip(s):
         if s.startswith("hCoV-19"):
             s = s[7:]
+
+def build_isl_to_zip():
+    r = {}
+    # Add other files here
+    gfile = "data/zip_codes/PostCodes_2020-12-29.xlsx"
+    df = pd.concat([pd.read_excel(gfile,sheet_name=0),pd.read_excel(gfile,sheet_name=1)])
+    for i,row in df.iterrows():
+        s = str(df.at[i,"GISAID_ID"])
+        if s.startswith("EPI"):
+            # print(s)
+            # print(df.at[i])
+            r[s] = str(df.at[i,"Postcode"])
+    return r
 
 def read_muni_map():
     print("Making a municipality: province map.")
@@ -261,8 +312,6 @@ def read_muni_map():
                 map[line[0]] = line[1]
             except:
                 pass
-    print(sorted(map.keys()))
-
     return map
 
 def read_manual_fix_map():
@@ -279,15 +328,27 @@ def read_manual_fix_map():
                 pass
     return m
 
-def get_zip_province_map():
+def get_zip_location_map():
+    """make dictionaries taking zip code to province and municipality
+    """
     bmap = pd.read_csv("../Belgium-Geographic-Data/dist/metadata/be-dictionary.csv",error_bad_lines=False)
     bmap["PostCode"] = bmap["PostCode"].astype(int,errors='ignore')
-    m = {}
+    pro = {}
+    mun = {}
+
+    fn = { "Vlaams-Brabant": "VlaamsBrabant",
+                    "Brabant Wallon": "BrabantWallon",
+                    "West-Vlaanderen": "WestVlaanderen",
+                    "Oost-Vlaanderen": "OostVlaanderen",
+                    "Liège": "Liege"}
+    myfix = lambda n: fn[n] if n in fn.keys() else n
+
     for index,row in bmap.iterrows():
         zip = str(bmap.at[index,"PostCode"])
-        if zip not in m.keys():
-            m[zip] = bmap.at[index,"Province"]
-    return m
+        if zip not in pro.keys():
+            pro[zip] = myfix(bmap.at[index,"Province"])
+            mun[zip] = bmap.at[index,"Municipality"]
+    return pro,mun
 
 if __name__ == '__main__':
     main()
