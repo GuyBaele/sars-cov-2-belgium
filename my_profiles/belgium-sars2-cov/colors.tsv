@@ -30,15 +30,19 @@ country	Sweden	#E1522A
 country	Portugal	#DE3D27
 country	Greece	#DB2823
 
-division	Antwerpen	#840012
-division	OostVlaanderen	#037489
-division	VlaamsBrabant	#A70079
-division	Brussels	#DF6B00
-division	Hainaut	#027889
-division	Liège	#9ED400
-division	Luxembourg	#DF9200
-division	Namur	#D56DE00
-division	BrabantWallon	#6A0694
+division	Antwerpen	#9E0142
+division	OostVlaanderen	#7FBC41
+division	WestVlaanderen	#313695
+division	Limburg	#3288BD
+division	VlaamsBrabant	#1B7837
+division	Brussels	#FDAE61
+division	Belgium	#000000
+division	Hainaut	#F46D43
+division	Liège	#D53E4F
+division	Liege	#D53E4F
+division	Luxembourg	#E6F598
+division	Namur	#66C2A5
+division	BrabantWallon	#5E4FA2
 
 recency	Older	#416DCE
 recency	One month ago	#59A3AA
