@@ -4,7 +4,7 @@ benchmarks/
 logs/
 results/
 build/
-auspice/
+auspice/archive/
 data/*fasta*
 data/*metadata*
 data/*METADATA*
