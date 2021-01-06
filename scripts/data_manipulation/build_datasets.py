@@ -185,10 +185,7 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     loc_fixes = fix_location_map()
     lonelyboys = set()
 
-
-    print(sorted(mmap.keys()))
-    print(sorted(my_manual_fixes.keys()))
-
+    c = 0
     for (index, row) in metadata.iterrows():
         if metadata.at[index,"country"] == "Belgium":
             if metadata.at[index,"country_exposure"] == "?":
@@ -203,6 +200,8 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
             # Set ZIP:
             if metadata.at[index,"gisaid_epi_isl"] in epi_isl_zip.keys():
                 metadata.at[index,"ZIP"] = epi_isl_zip[metadata.at[index,"gisaid_epi_isl"]]
+            elif metadata.at[index,"strain"] in strain_zip.keys():
+                metadata.at[index,"ZIP"] = strain_zip[metadata.at[index,"strain"]]
             zip = str(metadata.at[index,"ZIP"])
             loc = metadata.at[index,"location"]
             # Fix location names
@@ -213,12 +212,13 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
             metadata.at[index,"location_exposure"] = loc
             metadata.at[index,"region_exposure"] = "Europe"
 
+
             if zip in zpro.keys():
-                print("Z!")
                 metadata.at[index,"division"] = zpro[zip]
                 metadata.at[index,"division_exposure"] = zpro[zip]
                 metadata.at[index,"location"] = zmun[zip]
                 metadata.at[index,"location_exposure"] = zmun[zip]
+                c += 1
             elif loc in mmap.keys():
                 metadata.at[index,"division"] = mmap[loc]
                 metadata.at[index,"division_exposure"] = mmap[loc]
@@ -227,6 +227,10 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
                 metadata.at[index,"division_exposure"] = my_manual_fixes[loc]
             else:
                 lonelyboys.add(loc)
+
+            fix_liege(metadata,index)
+
+    print(f"Set {c} locations based on ZIP")
 
     print("Los Lonely Boys:")
     for thing in lonelyboys:
@@ -269,10 +273,29 @@ def fix_country_from_strain_name(s):
     return c
 
 def build_strain_to_zip():
+    m = {}
+    liege_file = "data/zip_codes/SARS-CoV-2_ULiegeSeq_211220.xlsx"
+    liege_file2 = "data/zip_codes/SARS-CoV-2_ULiegeSeq_011220.csv"
+    df = pd.read_excel(liege_file).rename(columns={"virus name": "strain","Postal code": "ZIP"})
+    df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"})
 
-    def strain_name_fix_for_zip(s):
+    df = pd.concat([df,df2])
+
+    def sf(s):
         if s.startswith("hCoV-19"):
-            s = s[7:]
+            s = s[8:]
+        return s
+
+    for i,r in df.iterrows():
+        k = df.at[i,"strain"]
+        v = df.at[i,"ZIP"]
+        k = sf(str(k)).strip()
+        try:
+            int(str(v.strip()))
+            m[k] = str(v)
+        except:
+            pass
+    return m
 
 def build_isl_to_zip():
     r = {}
@@ -284,7 +307,7 @@ def build_isl_to_zip():
         if s.startswith("EPI"):
             # print(s)
             # print(df.at[i])
-            r[s] = str(df.at[i,"Postcode"])
+            r[s] = str(df.at[i,"Postcode"]).strip()
     return r
 
 def read_muni_map():
@@ -328,6 +351,16 @@ def read_manual_fix_map():
                 pass
     return m
 
+def fix_liege(df,i):
+    if df.at[i,"location"] == "Liege":
+        df.at[i,"location"] = "Liège"
+    if df.at[i,"location_exposure"] == "Liege":
+        df.at[i,"location_exposure"] = "Liège"
+    if df.at[i,"division"] == "Liege":
+        df.at[i,"division"] = "Liège"
+    if df.at[i,"division_exposure"] == "Liege":
+        df.at[i,"division_exposure"] = "Liège"
+
 def get_zip_location_map():
     """make dictionaries taking zip code to province and municipality
     """
@@ -340,7 +373,7 @@ def get_zip_location_map():
                     "Brabant Wallon": "BrabantWallon",
                     "West-Vlaanderen": "WestVlaanderen",
                     "Oost-Vlaanderen": "OostVlaanderen",
-                    "Liège": "Liege"}
+                    "Liège": "Liège"}
     myfix = lambda n: fn[n] if n in fn.keys() else n
 
     for index,row in bmap.iterrows():
@@ -351,4 +384,6 @@ def get_zip_location_map():
     return pro,mun
 
 if __name__ == '__main__':
+    # print(build_strain_to_zip())
+    # sys.exit()
     main()
