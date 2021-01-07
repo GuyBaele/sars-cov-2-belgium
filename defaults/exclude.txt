@@ -1226,5 +1226,12 @@ SARS2-CoV/France/Human/rega-0510548
 SARS2-CoV/France/Human/rega-0417684
 SARS2-CoV/France/Human/rega-0417506
 SARS2-CoV/France/Human/rega-0508543
+SARS2-CoV/France/Human/rega-0423601
+SARS2-CoV/Netherlands/Human/rega-0426602
+Belgium/AGR-0324174/2020
 Belgium/rega-0505486/2020
-Belgium/rega-0328206/2020
+Belgium/Rega-0328206/2020
+SARS2-CoV/Poland/Human/rega-0429664
+
+# "Limburg" shouldn't be the name of a city that isn't in Limburg
+Belgium/NIM-0324161/2020
