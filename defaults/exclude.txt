@@ -1235,3 +1235,7 @@ SARS2-CoV/Poland/Human/rega-0429664
 
 # "Limburg" shouldn't be the name of a city that isn't in Limburg
 Belgium/NIM-0324161/2020
+Belgium/SJ-030583/2020
+
+# This one is weird
+Belgium/Rega-0329218/2020
