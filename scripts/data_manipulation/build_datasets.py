@@ -10,10 +10,11 @@ def main():
     """The main process to follow for incorporating metadata files
     """
     # There should be two files that come from GISAID:
-    #   1) A dated sequences fasta
-    #   2) A (same) dated metadata tsv
-    gisaid_fasta = "data/sequences_2020-12-21_07-49.fasta"
-    gisaid_metadata = "data/metadata_2020-12-21_17-38.tsv"
+    #   1) A dated metadata tsv
+    #   2) A dated sequences fasta
+    gisaid_metadata = "data/metadata_2021-01-08_18-19.tsv"
+    gisaid_fasta = "data/sequences_2021-01-08_08-46.fasta"
+
 
     # We expect to have a directory full of data (both sequence and metadata)
     # which is not on GISAID

@@ -138,6 +138,7 @@ location	Auckland	-36.8314	174.7606
 location	Auderghem	50.808473	4.439214
 location	Aurangabad	19.877263	75.3390241
 location	Autol	42.2130714	-2.0057815
+location	Autre-Église	50.669401	4.903937
 location	Avelgem	50.781406	3.450563
 location	Avoyelles Parish	31.0471604	-92.0019698
 location	Awa Reserve	0.450000	-77.450000
@@ -826,6 +827,7 @@ location	Guayaquil	-2.1899066	-79.887726
 location	Guebwiller	47.9094629	7.2113271
 location	Guediawaye	14.7828	-17.3760
 location	Guevejar	37.2574	-3.5977
+location	Guignies	50.547195	3.366881
 location	Gulshan	23.7925	90.4078
 location	Gurugram	28.4646148	77.0299194
 location	Guyancourt	48.7629	2.0753
@@ -869,6 +871,7 @@ location	Hellin	38.5069	-1.6979
 location	Helmond	51.4793	5.6570
 location	Hemiksem	51.143514	4.339896
 location	Henri-Chapelle	50.666254	5.938463
+location	Hennuyères	50.638490	4.169379
 location	Hensies	50.435594	3.711566
 location	Heppen	51.108225	5.228402
 location	Herce	42.2142703	-2.1654832
@@ -882,6 +885,7 @@ location	Herstal	50.680399	5.606845
 location	Herve	50.647665	5.794572
 location	Hessequa	-34.1176026	21.17880986383399
 location	Heusden-Zolder	51.016671	5.290726
+location	Hever	50.9947431	4.551272
 location	Heverlee	50.861704	4.695889
 location	Hidalgo County	26.3530256	-98.216445
 location	Hillpoint	43.423267	-90.113371
@@ -1099,6 +1103,7 @@ location	Krhanice	49.8560083	14.557357
 location	Krusevac	43.5825653	21.326599
 location	Kufstein	47.582996	12.1692134
 location	Kumanovo	42.1359459	21.7177635
+location	Kumtich	50.822620	4.887485
 location	Kunming	25.013024	102.866742
 location	Kurnool	15.8309251	78.0425373
 location	Kutná Hora	49.9486561	15.2681123
@@ -1191,6 +1196,7 @@ location	Limkheda	22.8321862	73.9880696
 location	Limoges	45.8354243	1.2644847
 location	Lincoln County	45.3265631	-89.7326216
 location	Lincoln Parish	32.598162	-92.6792848
+location	Linden	50.894059	4.772721
 location	Linter	50.818098	5.042221
 location	Linz	48.3059078	14.286198
 location	Lippelo	51.041285	4.258686
@@ -1365,6 +1371,7 @@ location	Mohammadpur	23.7660	90.3586
 location	Moia	41.8130391	2.0978412
 location	Mol	51.217746	5.187479
 location	Molenbeek-Saint-Jean	50.853857	4.323479
+location	Molenbeek-Wersbeek	50.918181	4.941519
 location	Molenstede	50.999889	5.012097
 location	Mollet del Valles	41.5393484	2.2130934
 location	Moncada y Reixach	41.4823115	2.1869985
@@ -1480,6 +1487,7 @@ location	Nieuwendijk	51.7774	4.8743
 location	Nieuwerkerken	50.882291	5.20403
 location	Nilphamari	25.9339275	88.8534588
 location	Nîmes	43.8374249	4.3600687
+location	Nimy	50.476401	3.955058
 location	Nir-Tzvi	31.9525352	34.8625062
 location	Nirmal	19.091520950000003	78.39660898429065
 location	Niteroi	-22.912156	-43.060953
@@ -1927,6 +1935,7 @@ location	Schenectady County	42.822882	-74.053939
 location	Scherpenheuvel-Zichem	50.997795	4.967443
 location	Schiphol	52.3080392	4.7621975
 location	Schoten	51.2498	4.4977
+location	Schriek	51.027139	4.693535
 location	Sdema	31.8317054	34.73857176018446
 location	Seattle	47.748301	-121.850150
 location	Sedelnikovo	56.945618	75.306061
@@ -1973,6 +1982,7 @@ location	Simat de la Valldigna	39.0427	-0.3107
 location	Singapore	1.344189	103.867546
 location	Sint-Genesius-Rode	50.743667	4.371971
 location	Sint-Gillis-Waas	51.226622	4.118297
+location	Sint-Joris-Weert	50.802853	4.652635
 location	Sint-Truiden	50.810338	5.192644
 location	Siquirres	10.1513812	-83.48051634442399
 location	Sistrans	47.231579	11.466706
@@ -2020,6 +2030,7 @@ location	St. Anton	47.121254	10.265750
 location	St. Louis MO	38.6270	-90.1994
 location	Starnberg	48.0000	11.3390
 location	Staten Island	40.592429	-74.149614
+location	Stambruges	50.508125	3.717760
 location	Stavropol	45.0433245	41.9690934
 location	Stearns County	45.535326	-94.6139422
 location	Steenokkerzeel	50.922396	4.499669
@@ -2104,6 +2115,7 @@ location	Thann	47.8101008	7.1020957
 location	Thaur	47.308893	11.462294
 location	Theux	50.518906	5.814748
 location	Thiensville	43.236206	-87.979679
+location	Thines	50.597108	4.368292
 location	Thise	47.284553	6.079822
 location	Thulin	50.428445	3.739358
 location	Thurston County	46.935508	-122.867349
@@ -2449,6 +2461,7 @@ location	Liedekerke	50.867527	4.090131
 location	Londerzeel	51.005557	4.270774
 location	Meise	50.960525	4.315848
 location	Merchtem	50.951693	4.234461
+location	Ophain-Bois-Seigneur-Isaac	50.666230	4.349236
 location	Opwijk	50.957310	4.182601
 location	Pepingen	50.749750	4.154501
 location	Sint-Pieters-Leeuw	50.790268	4.246290
@@ -2904,6 +2917,7 @@ location	Bouaké	7.6906058	-5.0298408
 location	Boufarik	36.57709	2.914137
 location	Bourgogne	47.0525	4.3837
 location	Bourgogne-France-Comté	47.2805	4.9994
+location	Bovesse	50.466744	4.768613
 location	Boyaca	5.454426	-73.362218
 location	Brabant Wallon	50.652853	4.555627
 location	Braine-l'Alleud	50.6854	4.3779
@@ -2923,6 +2937,7 @@ location	Bryansk Oblast	52.8873315	33.415853
 location	Bucharest	44.4268	26.1025
 location	Budapest	47.482728	19.084269
 location	Buenos Aires	-34.6037	-58.3816
+location	Bunsbeek	50.842044	4.942543
 location	Buraimi	24.268575	55.826808
 location	Burgenland	47.517438	16.468160
 location	Burkina Faso	12.789980	-1.683734
@@ -3540,6 +3555,7 @@ location	Ogun State	7.006146	3.401761
 location	Ohio	40.199215	-82.825637
 location	Oklahoma	35.370608	-97.186200
 location	Olomouc Region	49.859105799999995	16.956126746749305
+location	Olmen	51.141938	5.151305
 location	Omsk	55.0555	73.3167
 location	Ondo State	6.970395	5.101463
 location	Ontario	44.429	-79.377

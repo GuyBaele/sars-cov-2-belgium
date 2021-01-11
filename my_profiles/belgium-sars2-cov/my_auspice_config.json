@@ -91,11 +91,11 @@
     "region"
   ],
   "display_defaults": {
-    "color_by": "division",
+    "color_by": "clade",
     "distance_measure": "num_date",
     "geo_resolution": "location",
     "map_triplicate": true,
-    "branch_label": "none"
+    "branch_label": "clade"
   },
   "filters": [
     "recency",
