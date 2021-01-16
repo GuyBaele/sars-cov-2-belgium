@@ -1,18 +1,20 @@
+custom_rules:
+  - workflow/snakemake_rules/preprocess_be.smk
 # Define locations for which builds should be created.
 # For each build we specify a subsampling scheme via an explicit key.
 builds:
   # first we'll define a country-level build, focused on Switzerland.
   # we'll define the sampling schemes below
-  belgium:
-    subsampling_scheme: belgium # <- use the 'switzerland' sampling scheme
-    region: Europe
-    country: Belgium
-    # If we want to have specific files for colors or the auspice_config file *just*
-    # for this build, we can specify this here.
-    colors: "my_profiles/belgium-sars2-cov/colors.tsv"
-    # auspice_config: "my_profiles/example_advanced_customization/auspice_config_switzerland_build.json"
-    # We can also set a title for *just* this build.
-    title: "SARS-CoV-2 Sequences in Belgium"
+  # belgium:
+  #   subsampling_scheme: belgium # <- use the 'switzerland' sampling scheme
+  #   region: Europe
+  #   country: Belgium
+  #   # If we want to have specific files for colors or the auspice_config file *just*
+  #   # for this build, we can specify this here.
+  #   colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+  #   # auspice_config: "my_profiles/example_advanced_customization/auspice_config_switzerland_build.json"
+  #   # We can also set a title for *just* this build.
+  #   title: "SARS-CoV-2 Sequences in Belgium"
 
   belgium_custom_sampling:
     subsampling_scheme: belgium_custom
@@ -25,30 +27,32 @@ builds:
 
 subsampling:
   # Here we use the default subsampling logic for countries
-  belgium:
-    # Focal samples for country
-    country:
-      group_by: "division year month"
-      max_sequences: 1500
-      exclude: "--exclude-where 'country!={country}'"
-    # Contextual samples from country's region
-    region:
-      group_by: "country year month"
-      seq_per_group: 8
-      exclude: "--exclude-where 'country={country}' 'region!={region}'"
-      priorities:
-        type: "proximity"
-        focus: "country"
-    # Contextual samples from the rest of the world,
-    # excluding the current region to avoid resampling.
-    global:
-      group_by: "country year month"
-      seq_per_group: 4
-      exclude: "--exclude-where 'region={region}'"
-      priorities:
-        type: "proximity"
-        focus: "country"
+  # belgium:
+  #   # Focal samples for country
+  #   country:
+  #     group_by: "division year month"
+  #     max_sequences: 150 #0
+  #     exclude: "--exclude-where 'country!={country}'"
+  #   # Contextual samples from country's region
+  #   region:
+  #     group_by: "country year month"
+  #     seq_per_group: 2 #8
+  #     exclude: "--exclude-where 'country={country}' 'region!={region}'"
+  #     priorities:
+  #       type: "proximity"
+  #       focus: "country"
+  #   # Contextual samples from the rest of the world,
+  #   # excluding the current region to avoid resampling.
+  #   global:
+  #     group_by: "country year month"
+  #     seq_per_group: 2 #4
+  #     exclude: "--exclude-where 'region={region}'"
+  #     priorities:
+  #       type: "proximity"
+  #       focus: "country"
 
+
+  # BELGIUM CUSTOM SUBSAMPLING
   belgium_custom:
     country:
       group_by: "division year month"

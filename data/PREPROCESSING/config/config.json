@@ -1,0 +1,5 @@
+{
+"pangolin_threads":"4",
+"mafft_threads":"4",
+"reference":"config/reference_seq.gb"
+}
