@@ -363,6 +363,7 @@ rule subsample:
          - include: {params.include_argument}
          - query: {params.query_argument}
          - priority: {params.priority_argument}
+         - sampling_scheme: {params.sampling_scheme}
         """
     input:
         sequences = rules.mask.output.alignment,
@@ -382,7 +383,8 @@ rule subsample:
         query_argument = _get_specific_subsampling_setting("query", optional=True),
         min_date = _get_specific_subsampling_setting("min_date", optional=True),
         max_date = _get_specific_subsampling_setting("max_date", optional=True),
-        priority_argument = get_priority_argument
+        priority_argument = get_priority_argument,
+        sampling_scheme = _get_specific_subsampling_setting("sampling_scheme", optional=True),
     conda: config["conda_environment"]
     shell:
         """
@@ -399,6 +401,7 @@ rule subsample:
             --group-by {params.group_by} \
             {params.sequences_per_group} \
             {params.subsample_max_sequences} \
+            {params.sampling_scheme} \
             --output {output.sequences} 2>&1 | tee {log}
         """
 
