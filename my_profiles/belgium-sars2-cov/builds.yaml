@@ -14,6 +14,14 @@ builds:
     # We can also set a title for *just* this build.
     title: "SARS-CoV-2 Sequences in Belgium"
 
+  belgium_custom_sampling:
+    subsampling_scheme: belgium_custom
+    region: Europe
+    country:  Belgium
+    colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+    title: "SARS-CoV-2 Sequences in Belgium"
+
+
 
 subsampling:
   # Here we use the default subsampling logic for countries
@@ -36,6 +44,79 @@ subsampling:
     global:
       group_by: "country year month"
       seq_per_group: 4
+      exclude: "--exclude-where 'region={region}'"
+      priorities:
+        type: "proximity"
+        focus: "country"
+
+  belgium_custom:
+    country:
+      group_by: "division year month"
+      max_sequences: 200
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q1'"
+      #query: --query "(country == '{country}')" # & (time_window == '2020Q4')"
+      # priorities:
+      #   type: "proximity"
+      #   focus: "country"
+    countryQ4:
+      group_by: "division year month"
+      max_sequences: 1000
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q4'"
+
+    countryQ3:
+      group_by: "division year month"
+      max_sequences: 500
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q3'"
+
+    countryQ2:
+      group_by: "division year month"
+      max_sequences: 500
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q2'"
+
+    country21:
+      group_by: "division year month"
+      max_sequences: 100
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2021'"
+
+    # Contextual samples from country's region T1 (countries that make the top 50% of cases)
+    regiont1:
+      group_by: "country year month"
+      max_sequences: 550
+      exclude: "--exclude-where 'country={country}' 'region!={region}' 'case_tier!=T1' 'be_lineage!=yes'"
+      sampling_scheme: "--probabilistic-sampling"
+      priorities:
+        type: "proximity"
+        focus: "country"
+    # Contextual samples from country's region T2 (countries that make the second 50-90% of cases)
+    regiont2:
+      group_by: "country year month"
+      max_sequences: 450
+      exclude: "--exclude-where 'country={country}' 'region!={region}' 'case_tier!=T2' 'be_lineage!=yes'"
+      sampling_scheme: "--probabilistic-sampling"
+      priorities:
+        type: "proximity"
+        focus: "country"
+    # Contextual samples from country's region T3 (countries that make the bottom 10% of cases)
+    regiont3:
+      group_by: "year month"
+      max_sequences: 100
+      exclude: "--exclude-where 'country={country}' 'region!={region}' 'case_tier!=T3' 'be_lineage!=yes'"
+      sampling_scheme: "--probabilistic-sampling"
+      priorities:
+        type: "proximity"
+        focus: "country"
+
+    # Contextual samples from the rest of the world,
+    # excluding the current region to avoid resampling.
+    global:
+      group_by: "country year month"
+      max_sequences: 400
+      sampling_scheme: "--probabilistic-sampling"
       exclude: "--exclude-where 'region={region}'"
       priorities:
         type: "proximity"
