@@ -12,8 +12,8 @@ def main():
     # There should be two files that come from GISAID:
     #   1) A dated metadata tsv
     #   2) A dated sequences fasta
-    gisaid_metadata = "data/metadata_2021-01-08_18-19.tsv"
-    gisaid_fasta = "data/sequences_2021-01-08_08-46.fasta"
+    gisaid_metadata = "data/metadata.tsv"
+    gisaid_fasta = "data/sequences.fasta"
 
 
     # We expect to have a directory full of data (both sequence and metadata)
