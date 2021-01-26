@@ -275,12 +275,18 @@ def fix_country_from_strain_name(s):
 
 def build_strain_to_zip():
     m = {}
-    liege_file = "data/zip_codes/SARS-CoV-2_ULiegeSeq_211220.xlsx"
-    liege_file2 = "data/zip_codes/SARS-CoV-2_ULiegeSeq_011220.csv"
-    df = pd.read_excel(liege_file).rename(columns={"virus name": "strain","Postal code": "ZIP"})
-    df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"})
+    zd = "data/zip_codes"
+    liege_file = f"{zd}/SARS-CoV-2_ULiegeSeq_211220.xlsx"
+    liege_file2 = f"{zd}/SARS-CoV-2_ULiegeSeq_011220.csv"
+    ghent_file = f"{zd}/Postcodes-2021-01-22_GB.xlsx"
+    ghent_file2 = f"{zd}/Postcodes_Gent_1004-1092.xlsx"
+    df = pd.read_excel(liege_file).rename(columns={"virus name": "strain","Postal code": "ZIP"}).astype(str)
+    df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"}).astype(str)
+    df3 = pd.read_excel(ghent_file).rename(columns={"Virus name": "strain", "Postcode": "ZIP"}).astype(str)
+    df4 = pd.read_excel(ghent_file2).rename(columns={"Naam-GISAID": "strain","Postcode":"ZIP"}).astype(str)
 
-    df = pd.concat([df,df2])
+    # df = pd.concat([df,df2])
+    df = pd.concat([df,df2,df3,df4],ignore_index=True,verify_integrity=True)
 
     def sf(s):
         if s.startswith("hCoV-19"):
@@ -296,6 +302,8 @@ def build_strain_to_zip():
             m[k] = str(v)
         except:
             pass
+    print(f"Sequences with zip maps: {len(m.keys())}")
+    print(m.keys())
     return m
 
 def build_isl_to_zip():
