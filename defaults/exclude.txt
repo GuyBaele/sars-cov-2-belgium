@@ -1216,6 +1216,10 @@ Belgium/ITM_C2182/2020
 Belgium/ITM_C2183/2020
 Belgium/ITM_C2184_2/2020
 Belgium/ITM_C2185/2020
+Belgium/rega-0803756/2020
+Belgium/un-EMC-7/2020
+Belgium/un-EMC-6/2020/2020
+Belgium/rega-0501635/2020
 
 # Some non-Belgian sequences that worked their way into the mix
 SARS2-CoV/Belgium/Human/rega-0703808
