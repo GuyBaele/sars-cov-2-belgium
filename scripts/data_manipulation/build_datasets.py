@@ -169,8 +169,7 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
             for item in set(metadata.columns).difference(set(new_meta.columns)):
                 new_meta[item] = "?"
 
-            metadata = pd.concat([metadata, new_meta])
-            metadata = metadata.reset_index(drop=True)
+            metadata = pd.concat([metadata, new_meta]).drop_duplicates().reset_index(drop=True)
 
             print(f"New metadata length: {len(metadata)}")
 
@@ -238,8 +237,8 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
         print(thing)
 
     # Before we write, drop all the filenames
-    metadata = metadata.drop(index=drop_rows)
-    metadata = metadata.drop(columns=drop_cols)
+    metadata = metadata.drop(index=drop_rows).drop(columns=drop_cols)
+    metadata = metadata.drop_duplicates(subset=['strain']).reset_index(drop=True)
 
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
@@ -280,13 +279,17 @@ def build_strain_to_zip():
     liege_file2 = f"{zd}/SARS-CoV-2_ULiegeSeq_011220.csv"
     ghent_file = f"{zd}/Postcodes-2021-01-22_GB.xlsx"
     ghent_file2 = f"{zd}/Postcodes_Gent_1004-1092.xlsx"
+    liege_file3 = f"{zd}/PO-Codes_Batch24B-25-26.xlsx"
+    liege_file4 = f"{zd}/Postal-codes-B27-28-30-31-32-33.xlsx"
     df = pd.read_excel(liege_file).rename(columns={"virus name": "strain","Postal code": "ZIP"}).astype(str)
     df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"}).astype(str)
     df3 = pd.read_excel(ghent_file).rename(columns={"Virus name": "strain", "Postcode": "ZIP"}).astype(str)
     df4 = pd.read_excel(ghent_file2).rename(columns={"Naam-GISAID": "strain","Postcode":"ZIP"}).astype(str)
+    df5 = pd.read_excel(liege_file3).rename(columns={" virus name": "strain","Postal code":"ZIP"}).astype(str)
+    df6 = pd.read_excel(liege_file4).rename(columns={" virus name": "strain","Postal code":"ZIP"}).astype(str)
 
     # df = pd.concat([df,df2])
-    df = pd.concat([df,df2,df3,df4],ignore_index=True,verify_integrity=True)
+    df = pd.concat([df,df2,df3,df4,df5,df6],ignore_index=True,verify_integrity=True)
 
     def sf(s):
         if s.startswith("hCoV-19"):
