@@ -71,13 +71,15 @@ wildcard_constraints:
     build_name = r'(?:[_a-zA-Z-](?!(tip-frequencies|gisaid|zh)))+',
     date = r"[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
 
-localrules: download
+# localrules: download
 
 # Create a standard ncov build for auspice, by default.
 rule all:
     input:
         auspice_json = expand("auspice/ncov_{build_name}.json", build_name=BUILD_NAMES),
-        tip_frequency_json = expand("auspice/ncov_{build_name}_tip-frequencies.json", build_name=BUILD_NAMES)
+        tip_frequency_json = expand("auspice/ncov_{build_name}_tip-frequencies.json", build_name=BUILD_NAMES),
+        updated_meta =config['metadata'],
+        ecdc="data/PREPROCESSING/results/ecdc.csv",
 
 rule clean:
     message: "Removing directories: {params}"
