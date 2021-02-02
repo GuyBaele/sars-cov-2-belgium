@@ -1,14 +1,14 @@
-rule download:
-    message: "Downloading metadata and fasta files from S3"
-    output:
-        sequences = config["sequences"],
-        metadata = config["metadata"]
-    conda: config["conda_environment"]
-    shell:
-        """
-        aws s3 cp s3://nextstrain-ncov-private/metadata.tsv.gz - | gunzip -cq >{output.metadata:q}
-        aws s3 cp s3://nextstrain-ncov-private/sequences.fasta.gz - | gunzip -cq > {output.sequences:q}
-        """
+# rule download:
+#     message: "Downloading metadata and fasta files from S3"
+#     output:
+#         sequences = config["sequences"],
+#         metadata = config["metadata"]
+#     conda: config["conda_environment"]
+#     shell:
+#         """
+#         aws s3 cp s3://nextstrain-ncov-private/metadata.tsv.gz - | gunzip -cq >{output.metadata:q}
+#         aws s3 cp s3://nextstrain-ncov-private/sequences.fasta.gz - | gunzip -cq > {output.sequences:q}
+#         """
 
 rule filter:
     message:
@@ -17,8 +17,10 @@ rule filter:
           - excluding strains in {input.exclude}
         """
     input:
-        sequences = rules.download.output.sequences,
-        metadata = rules.download.output.metadata,
+        # sequences = rules.download.output.sequences,
+        # metadata = rules.download.output.metadata,
+        sequences = config['sequences'],
+        metadata = config['metadata'],
         include = config["files"]["include"],
         exclude = config["files"]["exclude"]
     output:
@@ -51,8 +53,10 @@ rule excluded_sequences:
         Generating fasta file of excluded sequences
         """
     input:
-        sequences = rules.download.output.sequences,
-        metadata = rules.download.output.metadata,
+        # sequences = rules.download.output.sequences,
+        # metadata = rules.download.output.metadata,
+        sequences = config['sequences'],
+        metadata = config['metadata'],
         include = config["files"]["exclude"]
     output:
         sequences = "results/excluded.fasta"
@@ -98,7 +102,8 @@ rule diagnose_excluded:
     message: "Scanning excluded sequences {input.alignment} for problematic sequences"
     input:
         alignment = rules.align_excluded.output.alignment,
-        metadata = rules.download.output.metadata,
+        # metadata = rules.download.output.metadata,
+        metadata = config['metadata'],
         reference = config["files"]["reference"]
     output:
         diagnostics = "results/excluded-sequence-diagnostics.tsv",
@@ -193,7 +198,8 @@ rule diagnostic:
     message: "Scanning aligned sequences {input.alignment} for problematic sequences"
     input:
         alignment = rules.aggregate_alignments.output.alignment,
-        metadata = rules.download.output.metadata,
+        # metadata = rules.download.output.metadata,
+        metadata = config['metadata'],
         reference = config["files"]["reference"]
     output:
         diagnostics = "results/sequence-diagnostics.tsv",
@@ -225,7 +231,8 @@ rule refilter:
         """
     input:
         sequences = rules.aggregate_alignments.output.alignment,
-        metadata = rules.download.output.metadata,
+        # metadata = rules.download.output.metadata,
+        metadata = config['metadata'],
         exclude = rules.diagnostic.output.to_exclude
     output:
         sequences = "results/aligned-filtered.fasta"
@@ -363,10 +370,12 @@ rule subsample:
          - include: {params.include_argument}
          - query: {params.query_argument}
          - priority: {params.priority_argument}
+         - sampling_scheme: {params.sampling_scheme}
         """
     input:
         sequences = rules.mask.output.alignment,
-        metadata = rules.download.output.metadata,
+        # metadata = rules.download.output.metadata,
+        metadata = config['metadata'],
         include = config["files"]["include"],
         priorities = get_priorities
     output:
@@ -382,7 +391,8 @@ rule subsample:
         query_argument = _get_specific_subsampling_setting("query", optional=True),
         min_date = _get_specific_subsampling_setting("min_date", optional=True),
         max_date = _get_specific_subsampling_setting("max_date", optional=True),
-        priority_argument = get_priority_argument
+        priority_argument = get_priority_argument,
+        sampling_scheme = _get_specific_subsampling_setting("sampling_scheme", optional=True),
     conda: config["conda_environment"]
     shell:
         """
@@ -399,6 +409,7 @@ rule subsample:
             --group-by {params.group_by} \
             {params.sequences_per_group} \
             {params.subsample_max_sequences} \
+            {params.sampling_scheme} \
             --output {output.sequences} 2>&1 | tee {log}
         """
 
@@ -410,7 +421,8 @@ rule proximity_score:
         """
     input:
         alignment = rules.mask.output.alignment,
-        metadata = rules.download.output.metadata,
+        # metadata = rules.download.output.metadata,
+        metadata = config['metadata'],
         reference = config["files"]["reference"],
         focal_alignment = "results/{build_name}/sample-{focus}.fasta"
     output:
@@ -463,7 +475,8 @@ rule adjust_metadata_regions:
         Adjusting metadata for build '{wildcards.build_name}'
         """
     input:
-        metadata = rules.download.output.metadata
+        # metadata = rules.download.output.metadata
+        metadata = config['metadata'],
     output:
         metadata = "results/{build_name}/metadata_adjusted.tsv"
     params:
