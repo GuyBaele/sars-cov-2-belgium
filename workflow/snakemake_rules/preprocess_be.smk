@@ -54,7 +54,7 @@ rule align_bel:
     output:
         alignment = "data/PREPROCESSING/results/split_alignments/{cluster}.fasta"
     log:
-        ".logs/align_{cluster}.txt"
+        "logs/align_{cluster}.txt"
     threads: 2
     shell:
         """
@@ -78,7 +78,7 @@ rule aggregate_alignments_bel:
     output:
         alignment = "data/PREPROCESSING/results/be_aligned.fasta"
     log:
-        ".logs/aggregate_alignments.txt"
+        "logs/aggregate_alignments.txt"
     shell:
         """
         cat {input.alignments} > {output.alignment} 2> {log}
@@ -91,6 +91,8 @@ rule pangolin_belgium:
         be_pangolin="data/PREPROCESSING/results/be_pangolin.csv",
     params:
         pango_threads=config["pangolin_threads"],
+    conda:
+        "pangolin.yaml"
     # having issues with conda so for run everything from the env w pangolin
     # conda:
     #     #"data/PREPROCESSING/config/pangolin.yaml"
