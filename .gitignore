@@ -66,3 +66,5 @@ slurm-*.out
 auspice/ncov_belgium*
 scripts/data_manipulation/gisaid_meta_to_nextstrain/*.tsv
 scripts/data_manipulation/gisaid_meta_to_nextstrain/*.fasta
+scripts/data_manipulation/gisaid_meta_to_nextstrain/*.xlsx
+scripts/data_manipulation/gisaid_meta_to_nextstrain/archive/
