@@ -1,7 +1,7 @@
 ##################
 # Snakemake rules
 ##################
-                                
+
 rule download_latest_ECDC:
     output:
         ecdc="data/PREPROCESSING/results/ecdc.csv",

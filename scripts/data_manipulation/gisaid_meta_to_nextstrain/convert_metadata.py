@@ -9,7 +9,7 @@ def get_seq_len(s):
     return seqdict
 
 def fix_seq_names(s):
-    n = f"updated_{s}.fasta"
+    n = f"updated_{s}"
     records = []
     for r in SeqIO.parse(s,'fasta'):
         r.id = sf(str(r.id.split("|")[0].split(" ")[0]))
