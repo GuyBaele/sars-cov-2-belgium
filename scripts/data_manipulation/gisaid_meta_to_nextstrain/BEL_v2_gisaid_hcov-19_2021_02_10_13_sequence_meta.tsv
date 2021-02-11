@@ -1,0 +1,11 @@
+Virus name	Accession ID	Collection date	Location	Host	Passage	Specimen	Additional host information	Sequencing technology	Assembly method	Comment	Comment type	Lineage	Clade
+hCoV-19/Belgium/Jessa_55-2103-000369/2021	EPI_ISL_949109	2021-01-20	Europe / Belgium / Hasselt	Human	Original			Illumina MiSeq		NS7b_E39stop results in 11.6% truncation of the protein sequence.	info	B.1.351	GH
+hCoV-19/Belgium/Jessa_11-2104-001668/2021	EPI_ISL_949163	2021-01-25	Europe / Belgium / Alken	Human	Original			Illumina MiSeq				B.1.351	GH
+hCoV-19/Belgium/Jessa_21-2105-001266/2021	EPI_ISL_953378	2021-02-04	Europe / Belgium / Beringen	Human	Original			Illumina MiSeq				B.1.351	GH
+hCoV-19/Belgium/Jessa_55-2105-000419/2021	EPI_ISL_953435	2021-02-02	Europe / Belgium / Zonhoven	Human	Original			Illumina MiSeq		NS7b_E39stop results in 11.6% truncation of the protein sequence.	info	B.1.351	GH
+hCoV-19/Belgium/Jessa_11-2105-001378/2021	EPI_ISL_953441	2021-02-01	Europe / Belgium / Herk-De-Stad	Human	Original			Illumina MiSeq				B.1.351	GH
+hCoV-19/Belgium/AZDelta03623-2105R/2021	EPI_ISL_954771	2021-02-01	Europe / Belgium / Gistel	Human	Original	Nasopharyngeal swab	unbiased surveillance	Illumina MiSeq				B.1.351	GH
+hCoV-19/Belgium/AZDelta-23523/2021	EPI_ISL_954779	2021-01-30	Europe / Belgium / Torhout	Human	Original	Nasopharyngeal swab	unbiased surveillance	Illumina MiSeq				B.1.351	GH
+hCoV-19/Belgium/ULG-11613/2021	EPI_ISL_959597	2021-01-24	Europe / Belgium / Luxembourg	Human	Original			Nanopore MinION	Artic network	Gap of 18 nucleotides when compared to the reference sequence.	info	B.1.351	GH
+hCoV-19/Belgium/AZDelta05413-2105R/2021	EPI_ISL_961189	2021-02-04	Europe / Belgium / Torhout	Human	Original	Nasopharyngeal swab	Unbiased surveillance	Illumina MiSeq				B.1.351	GH
+hCoV-19/Belgium/AZDelta07698-2105R/2021	EPI_ISL_961200	2021-02-04	Europe / Belgium / Roeselare	Human	Original	Nasopharyngeal swab	Unbiased surveillance	Illumina MiSeq				B.1.351	O

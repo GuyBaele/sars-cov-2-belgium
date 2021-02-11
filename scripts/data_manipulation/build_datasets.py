@@ -12,8 +12,8 @@ def main():
     # There should be two files that come from GISAID:
     #   1) A dated metadata tsv
     #   2) A dated sequences fasta
-    gisaid_metadata = "data/metadata_2021-01-08_18-19.tsv"
-    gisaid_fasta = "data/sequences_2021-01-08_08-46.fasta"
+    gisaid_metadata = "data/metadata.tsv"
+    gisaid_fasta = "data/sequences.fasta"
 
 
     # We expect to have a directory full of data (both sequence and metadata)
@@ -240,6 +240,8 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     # Before we write, drop all the filenames
     metadata = metadata.drop(index=drop_rows)
     metadata = metadata.drop(columns=drop_cols)
+    # Drop duplicates
+    metadata = metadata.drop_duplicates(subset="strain", ignore_index=True).reset_index()
 
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
