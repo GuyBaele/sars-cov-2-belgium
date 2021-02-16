@@ -5,10 +5,9 @@ import pandas as pd
 from Bio import SeqIO
 from random import choice
 
-def get_lineages(f):
-    return [x for x in pd.read_csv(f)['lineage'].unique() if x!='None']
 
-def set_bel_lineage(df,lineages):
+def set_bel_lineage(df):
+    lineages = df.query("country == 'Belgium'")['pangolin_lineage'].unique()
     df['be_lineage'] = df.apply(lambda x: int(any([x['country']=='Belgium',
                                         x['pangolin_lineage'] in lineages])), axis=1)
     df['be_lineage'] = df['be_lineage'].apply(lambda x: "yes" if x==1 else 'no')
@@ -91,7 +90,6 @@ if __name__=="__main__":
     # Argument parser for the command line
     parser = ArgumentParser("Modifies default metadatafile for custom subsampling")
     parser.add_argument("-m", "--metadata", type=str, required=True, help="Name of the nextstrain metadata file to modify.")
-    parser.add_argument("-p", "--pangolin", type=str, required=True, help="Name of the pangolin clade assignment output CSV.")
     parser.add_argument("-c", "--cases", type=str, required=True, help="Name of the ECDC case counts csv file")
     parser.add_argument("-s", "--seqs", type=str, required=True, help="Fasta alignment of all Belgian sequences")
     parser.add_argument("-o", "--out", type=str,required=True, help="output file name")
@@ -99,7 +97,7 @@ if __name__=="__main__":
     
     nextmeta = pd.read_csv(args.metadata, low_memory=False,sep='\t')
     print('... Adding lineage filter ....')
-    set_bel_lineage(nextmeta, get_lineages(args.pangolin))
+    set_bel_lineage(nextmeta)
     cases = case_tiers(args.cases)
     tier1 = cases.loc[cases['perc']<0.5].index.values
     tier2 = tier2 = cases.query('perc >=0.5').query('perc <0.9').index.values
@@ -113,7 +111,7 @@ if __name__=="__main__":
     nextmeta['dedup'] = nextmeta['strain'].map(dedup_dict).fillna("NA")
     nextmeta['time_window'] = nextmeta['date'].apply(date_window)
 
-    nextmeta.to_csv(args.out,sep='\t',index=False)
+    nextmeta.drop_duplicates().to_csv(args.out,sep='\t',index=False)
     
     
     
