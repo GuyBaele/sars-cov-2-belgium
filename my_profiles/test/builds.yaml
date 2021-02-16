@@ -23,12 +23,12 @@ builds:
     colors: "my_profiles/belgium-sars2-cov/colors.tsv"
     title: "SARS-CoV-2 Sequences in Belgium"
 
-  TEST-belgium-voc:
-    subsampling_scheme: belgium-voc
-    region: Europe
-    country: Belgium
-    colors: "my_profiles/belgium-sars2-cov/colors.tsv"
-    title: "SARS-CoV-2 VOC Sequences in Belgium"
+  # TEST-belgium-voc:
+  #   subsampling_scheme: belgium-voc
+  #   region: Europe
+  #   country: Belgium
+  #   colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+  #   title: "SARS-CoV-2 VOC Sequences in Belgium"
 
 
 
@@ -138,5 +138,5 @@ subsampling:
 # If you want to specify specific files for each build - you can!
 # See the 'example_advanced_customization' builds.yaml
 files:
-  auspice_config: "my_profiles/belgium-sars2-cov/test/my_auspice_config.json"
-  description: "my_profiles/belgium-sars2-cov/test/my_description.md"
+  auspice_config: "my_profiles/test/my_auspice_config.json"
+  description: "my_profiles/test/my_description.md"
