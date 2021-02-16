@@ -8,7 +8,7 @@
 
 configfile:
   - defaults/parameters.yaml # Pull in the default values
-  - my_profiles/belgium-sars2-cov/builds.yaml # Pull in our list of desired builds
+  - my_profiles/test/builds.yaml # Pull in our list of desired builds
 
 config:
   - sequences=data/TEST/TEST_NEXTMETA.fasta
