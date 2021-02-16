@@ -1,0 +1,20 @@
+Virus name	Accession ID	Collection date	Location	Host	Additional location information	Gender	Patient age	Patient status	Passage	Specimen	Additional host information	Lineage	Clade
+hCoV-19/Belgium/Jessa_11-2106-000490/2021	EPI_ISL_995501	2021-02-08	Europe / Belgium / Lummen	Human		Male	85	unknown	Original			B.1.160	GH
+hCoV-19/Belgium/Jessa_11-2106-000501/2021	EPI_ISL_995502	2021-02-08	Europe / Belgium / Herk-De-Stad	Human		Male	50	unknown	Original			B.1.160	GH
+hCoV-19/Belgium/Jessa_11-2106-000929/2021	EPI_ISL_995503	2021-02-08	Europe / Belgium / Gingelom	Human		Male	66	unknown	Original			B.1.221	G
+hCoV-19/Belgium/Jessa_11-2106-001010/2021	EPI_ISL_995504	2021-02-08	Europe / Belgium / Riemst	Human		Female	60	unknown	Original			B.1.1.7	GR
+hCoV-19/Belgium/Jessa_11-2106-001174/2021	EPI_ISL_995505	2021-02-08	Europe / Belgium / Hasselt	Human		Female	72	unknown	Original			B.1.36	GH
+hCoV-19/Belgium/Jessa_11-2106-001217/2021	EPI_ISL_995506	2021-02-08	Europe / Belgium / Riemst	Human		Male	68	unknown	Original			B.1.221	G
+hCoV-19/Belgium/Jessa_11-2106-001242/2021	EPI_ISL_995507	2021-02-08	Europe / Belgium / Lanaken	Human		Female	49	unknown	Original			B.1.1.7	GR
+hCoV-19/Belgium/Jessa_11-2106-001461/2021	EPI_ISL_995508	2021-02-08	Europe / Belgium / Heusden-Zolder	Human		Female	35	unknown	Original			B.1.1.7	GR
+hCoV-19/Belgium/Jessa_11-2106-002120/2021	EPI_ISL_995509	2021-02-09	Europe / Belgium / Heusden-Zolder	Human		Female	84	unknown	Original			B.1.160	GH
+hCoV-19/Belgium/Jessa_51-2105-000038/2021	EPI_ISL_995510	2021-02-08	Europe / Belgium / Hasselt	Human		Male	17	unknown	Original			B.1.221	G
+hCoV-19/Belgium/Jessa_55-2106-000021/2021	EPI_ISL_995528	2021-02-08	Europe / Belgium / Tongeren	Human		Female	35	unknown	Original			B.1.258	G
+hCoV-19/Belgium/Jessa_55-2106-000032/2021	EPI_ISL_995529	2021-02-08	Europe / Belgium / Heusden-Zolder	Human		Male	64	unknown	Original			B.1.160	GH
+hCoV-19/Belgium/Jessa_55-2106-000038/2021	EPI_ISL_995530	2021-02-08	Europe / Belgium / Hasselt	Human		Male	17	unknown	Original			B.1.351	GH
+hCoV-19/Belgium/Jessa_55-2106-000063/2021	EPI_ISL_995531	2021-02-08	Europe / Belgium / Herk-De-Stad	Human		Female	27	unknown	Original			B.1.177	GV
+hCoV-19/Belgium/Jessa_55-2106-000071/2021	EPI_ISL_995532	2021-02-08	Europe / Belgium / Hasselt	Human		Male	74	unknown	Original			B.1.36	GH
+hCoV-19/Belgium/Jessa_55-2106-000121/2021	EPI_ISL_995533	2021-02-08	Europe / Belgium / Hasselt	Human		Male	83	unknown	Original			B.1.177	GV
+hCoV-19/Belgium/Jessa_55-2106-000143/2021	EPI_ISL_995534	2021-02-08	Europe / Belgium / Zonhoven	Human		Female	23	unknown	Original			B.1.1.7	GR
+hCoV-19/Belgium/Jessa_55-2106-000151/2021	EPI_ISL_995535	2021-02-08	Europe / Belgium / Hasselt	Human		Female	37	unknown	Original			A.23.1	S
+hCoV-19/Belgium/Jessa_55-2106-000218/2021	EPI_ISL_995536	2021-02-08	Europe / Belgium / Zonhoven	Human		Male	28	unknown	Original			B.1.351	GH

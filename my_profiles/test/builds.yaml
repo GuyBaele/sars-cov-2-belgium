@@ -1,0 +1,142 @@
+custom_rules:
+  - workflow/snakemake_rules/preprocess_be.smk
+# Define locations for which builds should be created.
+# For each build we specify a subsampling scheme via an explicit key.
+builds:
+  # first we'll define a country-level build, focused on Switzerland.
+  # we'll define the sampling schemes below
+  # belgium:
+  #   subsampling_scheme: belgium # <- use the 'switzerland' sampling scheme
+  #   region: Europe
+  #   country: Belgium
+  #   # If we want to have specific files for colors or the auspice_config file *just*
+  #   # for this build, we can specify this here.
+  #   colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+  #   # auspice_config: "my_profiles/example_advanced_customization/auspice_config_switzerland_build.json"
+  #   # We can also set a title for *just* this build.
+  #   title: "SARS-CoV-2 Sequences in Belgium"
+
+  TEST-belgium-base:
+    subsampling_scheme: belgium
+    region: Europe
+    country:  Belgium
+    colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+    title: "SARS-CoV-2 Sequences in Belgium"
+
+  # TEST-belgium-voc:
+  #   subsampling_scheme: belgium-voc
+  #   region: Europe
+  #   country: Belgium
+  #   colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+  #   title: "SARS-CoV-2 VOC Sequences in Belgium"
+
+
+
+subsampling:
+  # Here we use the default subsampling logic for countries
+  belgium-voc:
+    # Focal samples for country
+    country:
+      group_by: "division year month"
+      max_sequences: 300
+      exclude: "--exclude-where 'country!={country}'"
+    # Contextual samples from country's region
+    region:
+      group_by: "country year month"
+      seq_per_group: 8
+      exclude: "--exclude-where 'country={country}' 'region!={region}'"
+      priorities:
+        type: "proximity"
+        focus: "country"
+    # Contextual samples from the rest of the world,
+    # excluding the current region to avoid resampling.
+    global:
+      group_by: "country year month"
+      seq_per_group: 4
+      exclude: "--exclude-where 'region={region}'"
+      priorities:
+        type: "proximity"
+        focus: "country"
+
+
+  # BELGIUM CUSTOM SUBSAMPLING
+  belgium:
+    country:
+      group_by: "division year month"
+      max_sequences: 25
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q1'"
+      #query: --query "(country == '{country}')" # & (time_window == '2020Q4')"
+      # priorities:
+      #   type: "proximity"
+      #   focus: "country"
+    countryQ4:
+      group_by: "division year month"
+      max_sequences: 75
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q4'"
+
+    countryQ3:
+      group_by: "division year month"
+      max_sequences: 25
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q3'"
+
+    countryQ2:
+      group_by: "division year month"
+      max_sequences: 50
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2020Q2'"
+
+    country21:
+      group_by: "division year month"
+      max_sequences: 75
+      sampling_scheme: "--probabilistic-sampling"
+      exclude: "--exclude-where 'country!={country}' 'time_window!=2021'"
+
+    # Contextual samples from country's region T1 (countries that make the top 50% of cases)
+    regiont1:
+      group_by: "country year month"
+      max_sequences: 55
+      exclude: "--exclude-where 'country={country}' 'region!={region}' 'case_tier!=T1' 'be_lineage!=yes'"
+      sampling_scheme: "--probabilistic-sampling"
+      priorities:
+        type: "proximity"
+        focus: "country"
+    # Contextual samples from country's region T2 (countries that make the second 50-90% of cases)
+    regiont2:
+      group_by: "country year month"
+      max_sequences: 45
+      exclude: "--exclude-where 'country={country}' 'region!={region}' 'case_tier!=T2' 'be_lineage!=yes'"
+      sampling_scheme: "--probabilistic-sampling"
+      priorities:
+        type: "proximity"
+        focus: "country"
+    # Contextual samples from country's region T3 (countries that make the bottom 10% of cases)
+    regiont3:
+      group_by: "year month"
+      max_sequences: 50
+      exclude: "--exclude-where 'country={country}' 'region!={region}' 'case_tier!=T3' 'be_lineage!=yes'"
+      sampling_scheme: "--probabilistic-sampling"
+      priorities:
+        type: "proximity"
+        focus: "country"
+
+    # Contextual samples from the rest of the world,
+    # excluding the current region to avoid resampling.
+    # global:
+    #   group_by: "country year month"
+    #   max_sequences: 400
+    #   sampling_scheme: "--probabilistic-sampling"
+    #   exclude: "--exclude-where 'region={region}'"
+    #   priorities:
+    #     type: "proximity"
+    #     focus: "country"
+
+# Here, you can specify what type of auspice_config you want to use
+# and what description you want. These will apply to all the above builds.
+# If you want to specify specific files for each build - you can!
+# See the 'example_advanced_customization' builds.yaml
+files:
+  auspice_config: "my_profiles/test/my_auspice_config.json"
+  description: "my_profiles/test/my_description.md"

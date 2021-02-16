@@ -4,7 +4,7 @@
 
 rule download_latest_ECDC:
     output:
-        ecdc="data/PREPROCESSING/results/ecdc.csv",
+        ecdc="results/preproc/ecdc.csv",
     shell:
         """
         wget -c https://opendata.ecdc.europa.eu/covid19/nationalcasedeath/csv -O {output.ecdc}
@@ -15,10 +15,10 @@ rule belgium_seqs_fasta:
         fasta=config['sequences'],
         meta=config['raw_metadata'],
     output:
-        be_fasta="data/PREPROCESSING/results/belgium_only.fasta",
+        be_fasta="results/preproc/belgium_only.fasta",
     shell:
         """
-        python data/PREPROCESSING/scripts/get_be_only.py \
+        python scripts/preproc/get_be_only.py \
             --sequences {input.fasta} \
             --metadata {input.meta} \
             --output {output.be_fasta}
@@ -28,7 +28,7 @@ checkpoint partition_sequences_bel:
     input:
         sequences = rules.belgium_seqs_fasta.output.be_fasta,
     output:
-        split_sequences = directory("data/PREPROCESSING/results/split_sequences/")
+        split_sequences = directory("results/preproc/split_sequences/")
     log:
         ".logs/partition_sequences.txt"
     params:
@@ -49,10 +49,10 @@ rule align_bel:
         Cluster:  {wildcards.cluster}
         """
     input:
-        sequences = "data/PREPROCESSING/results/split_sequences/{cluster}.fasta",
+        sequences = "results/preproc/split_sequences/{cluster}.fasta",
         reference = config["reference_preproc"],
     output:
-        alignment = "data/PREPROCESSING/results/split_alignments/{cluster}.fasta"
+        alignment = "results/preproc/split_alignments/{cluster}.fasta"
     log:
         "logs/align_{cluster}.txt"
     threads: 2
@@ -68,7 +68,7 @@ rule align_bel:
 
 def _get_alignments_bel(wildcards):
     checkpoint_output = checkpoints.partition_sequences_bel.get(**wildcards).output[0]
-    return expand("data/PREPROCESSING/results/split_alignments/{i}.fasta",
+    return expand("results/preproc/split_alignments/{i}.fasta",
                   i=glob_wildcards(os.path.join(checkpoint_output, "{i}.fasta")).i)
 
 rule aggregate_alignments_bel:
@@ -76,7 +76,7 @@ rule aggregate_alignments_bel:
     input:
         alignments = _get_alignments_bel
     output:
-        alignment = "data/PREPROCESSING/results/be_aligned.fasta"
+        alignment = "results/preproc/be_aligned.fasta"
     log:
         "logs/aggregate_alignments.txt"
     shell:
@@ -84,36 +84,35 @@ rule aggregate_alignments_bel:
         cat {input.alignments} > {output.alignment} 2> {log}
         """
 
-rule pangolin_belgium:
-    input:
-        be_fasta=rules.aggregate_alignments_bel.output.alignment,
-    output:
-        be_pangolin="data/PREPROCESSING/results/be_pangolin.csv",
-    params:
-        pango_threads=config["pangolin_threads"],
-    conda:
-        "pangolin.yaml"
+#rule pangolin_belgium:
+#    input:
+#        be_fasta=rules.aggregate_alignments_bel.output.alignment,
+#    output:
+#        be_pangolin="data/PREPROCESSING/results/be_pangolin.csv",
+#    params:
+#        pango_threads=config["pangolin_threads"],
+#    conda:
+#        "pangolin.yaml"
     # having issues with conda so for run everything from the env w pangolin
     # conda:
     #     #"data/PREPROCESSING/config/pangolin.yaml"
-    shell:
-        """
-        pangolin --threads {params.pango_threads} --outfile {output.be_pangolin} {input.be_fasta}
-        """
+#    shell:
+#        """
+#        pangolin --threads {params.pango_threads} --outfile {output.be_pangolin} {input.be_fasta}
+#        """
 
 rule update_nextmeta:
     input:
         be_aln=rules.aggregate_alignments_bel.output.alignment,
-        be_pango=rules.pangolin_belgium.output.be_pangolin,
+#        be_pango=rules.pangolin_belgium.output.be_pangolin,
         cases=rules.download_latest_ECDC.output.ecdc,
         nextmeta=config['raw_metadata'],
     output:
         newmeta=config['metadata'],
     shell:
         """
-        python data/PREPROCESSING/scripts/modify_metadata_for_subsampling.py \
+        python scripts/preproc/modify_metadata_for_subsampling.py \
             --metadata {input.nextmeta} \
-            --pangolin {input.be_pango} \
             --cases {input.cases} \
             --seqs {input.be_aln} \
             --out {output.newmeta}
