@@ -107,7 +107,7 @@ if __name__=="__main__":
     grouped_seqs = seq_meta.groupby(["division","month"])['strain'].apply(lambda x:list(x))
     print('... Deduplicating identical BE sequences...')
     dedup_dict,dedup_clusters = dedup_identical(grouped_seqs, seqdict)
-    dedup_clusters.to_csv("BE_identical_seq_clusters.csv")
+    dedup_clusters.to_csv("results/BE_identical_seq_clusters.csv")
     nextmeta['dedup'] = nextmeta['strain'].map(dedup_dict).fillna("NA")
     nextmeta['time_window'] = nextmeta['date'].apply(date_window)
 
