@@ -63,4 +63,5 @@ scripts/developer_scripts/outputs_new_sequences/
 
 # SLURM log files
 slurm-*.out
-scripts/data_manipulation/gisaid_meta_to_nextstrain/
+scripts/data_manipulation/gisaid_meta_to_nextstrain/*.tsv
+scripts/data_manipulation/gisaid_meta_to_nextstrain/*.fasta
