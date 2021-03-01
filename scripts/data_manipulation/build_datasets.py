@@ -5,6 +5,7 @@ import json
 from math import isnan
 import pandas as pd
 from Bio import SeqIO
+import random
 
 def main():
     """The main process to follow for incorporating metadata files
@@ -243,8 +244,34 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     # Drop duplicates
     metadata = metadata.drop_duplicates(subset="strain", ignore_index=True).reset_index()
 
+    metadata = coarse_downsample(metadata,p=.75)
+
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
+
+def coarse_downsample(df,p=0.9):
+    force_includes = read_includes()
+    print(f"Started downsampling with {len(df.index)} rows.")
+    drops = []
+    for index,row in df.iterrows():
+        if df.at[index,"country"] != "Belgium":
+            n = random.random()
+            if (n < p) and (df.at[index, "strain"] not in force_includes):
+                drops.append(index)
+
+    print(f"Attempting to remove {len(drops)} rows.")
+    df = df.drop(index=drops).reset_index()
+    print(f"Final dataset of {len(df.index)} rows.")
+    return df
+
+def read_includes():
+    inclf = "defaults/include.txt"
+    incl = set([])
+    with open(inclf,'r') as f:
+        for line in f.readlines():
+            line=line.strip('\n')
+            incl.add(line)
+    return incl
 
 def fix_strain_name(s):
     """
@@ -376,7 +403,7 @@ def get_zip_location_map():
                     "Brabant Wallon": "BrabantWallon",
                     "West-Vlaanderen": "WestVlaanderen",
                     "Oost-Vlaanderen": "OostVlaanderen",
-                    "Liège": "Liège"}
+                    "Liège": "Liège" }
     myfix = lambda n: fn[n] if n in fn.keys() else n
 
     for index,row in bmap.iterrows():
