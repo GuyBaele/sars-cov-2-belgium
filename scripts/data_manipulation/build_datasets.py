@@ -244,20 +244,25 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     # Drop duplicates
     metadata = metadata.drop_duplicates(subset="strain", ignore_index=True).reset_index()
 
-    metadata = coarse_downsample(metadata,p=.75)
+    metadata = coarse_downsample(metadata)
 
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
 
-def coarse_downsample(df,p=0.9):
+def coarse_downsample(df):
+    p=0.6
+    p1=0.8
     force_includes = read_includes()
     print(f"Started downsampling with {len(df.index)} rows.")
     drops = []
     for index,row in df.iterrows():
         if df.at[index,"country"] != "Belgium":
             n = random.random()
-            if (n < p) and (df.at[index, "strain"] not in force_includes):
-                drops.append(index)
+            if df.at[index,"strain"] not in force_includes:
+                if df.at[index,"country"] in ["Denmark", "United Kingdom"] and (n<p1):
+                    drops.append(index)
+                elif (n < p):
+                    drops.append(index)
 
     print(f"Attempting to remove {len(drops)} rows.")
     df = df.drop(index=drops).reset_index()
