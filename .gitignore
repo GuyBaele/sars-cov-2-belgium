@@ -55,6 +55,8 @@ Thumbs.db
 
 narratives/*pdf
 
+# zip archives
+*.zip
 
 # metadata / new seqs scripts
 scripts/developer_scripts/inputs_new_sequences/

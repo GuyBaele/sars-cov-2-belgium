@@ -250,8 +250,8 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     metadata.to_csv(o_fname, sep='\t', index=False)
 
 def coarse_downsample(df):
-    p=0.6
-    p1=0.8
+    p=0.0
+    p1=0.4
     force_includes = read_includes()
     print(f"Started downsampling with {len(df.index)} rows.")
     drops = []
@@ -259,13 +259,14 @@ def coarse_downsample(df):
         if df.at[index,"country"] != "Belgium":
             n = random.random()
             if df.at[index,"strain"] not in force_includes:
-                if df.at[index,"country"] in ["Denmark", "United Kingdom"] and (n<p1):
-                    drops.append(index)
+                if df.at[index,"country"] in ["Denmark", "United Kingdom"]:
+                    if (n<p1):
+                        drops.append(index)
                 elif (n < p):
                     drops.append(index)
 
     print(f"Attempting to remove {len(drops)} rows.")
-    df = df.drop(index=drops).reset_index()
+    df = df.drop(index=drops).reset_index() # drop the noted sequences
     print(f"Final dataset of {len(df.index)} rows.")
     return df
 
