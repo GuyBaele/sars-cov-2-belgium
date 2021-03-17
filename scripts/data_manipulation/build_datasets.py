@@ -5,6 +5,7 @@ import json
 from math import isnan
 import pandas as pd
 from Bio import SeqIO
+import random
 
 def main():
     """The main process to follow for incorporating metadata files
@@ -169,7 +170,8 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
             for item in set(metadata.columns).difference(set(new_meta.columns)):
                 new_meta[item] = "?"
 
-            metadata = pd.concat([metadata, new_meta]).drop_duplicates().reset_index(drop=True)
+            metadata = pd.concat([metadata, new_meta])
+            metadata = metadata.reset_index(drop=True)
 
             print(f"New metadata length: {len(metadata)}")
 
@@ -237,11 +239,45 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
         print(thing)
 
     # Before we write, drop all the filenames
-    metadata = metadata.drop(index=drop_rows).drop(columns=drop_cols)
-    metadata = metadata.drop_duplicates(subset=['strain']).reset_index(drop=True)
+    metadata = metadata.drop(index=drop_rows)
+    metadata = metadata.drop(columns=drop_cols)
+    # Drop duplicates
+    metadata = metadata.drop_duplicates(subset="strain", ignore_index=True).reset_index()
+
+    metadata = coarse_downsample(metadata)
 
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
+
+def coarse_downsample(df):
+    p=0.0
+    p1=0.4
+    force_includes = read_includes()
+    print(f"Started downsampling with {len(df.index)} rows.")
+    drops = []
+    for index,row in df.iterrows():
+        if df.at[index,"country"] != "Belgium":
+            n = random.random()
+            if df.at[index,"strain"] not in force_includes:
+                if df.at[index,"country"] in ["Denmark", "United Kingdom"]:
+                    if (n<p1):
+                        drops.append(index)
+                elif (n < p):
+                    drops.append(index)
+
+    print(f"Attempting to remove {len(drops)} rows.")
+    df = df.drop(index=drops).reset_index() # drop the noted sequences
+    print(f"Final dataset of {len(df.index)} rows.")
+    return df
+
+def read_includes():
+    inclf = "defaults/include.txt"
+    incl = set([])
+    with open(inclf,'r') as f:
+        for line in f.readlines():
+            line=line.strip('\n')
+            incl.add(line)
+    return incl
 
 def fix_strain_name(s):
     """
