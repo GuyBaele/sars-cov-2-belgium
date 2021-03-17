@@ -55,6 +55,8 @@ Thumbs.db
 
 narratives/*pdf
 
+# zip archives
+*.zip
 
 # metadata / new seqs scripts
 scripts/developer_scripts/inputs_new_sequences/
@@ -63,7 +65,6 @@ scripts/developer_scripts/outputs_new_sequences/
 
 # SLURM log files
 slurm-*.out
-auspice/ncov_belgium*
 scripts/data_manipulation/gisaid_meta_to_nextstrain/*.tsv
 scripts/data_manipulation/gisaid_meta_to_nextstrain/*.fasta
 scripts/data_manipulation/gisaid_meta_to_nextstrain/*.xlsx
