@@ -1237,5 +1237,11 @@ SARS2-CoV/Poland/Human/rega-0429664
 Belgium/NIM-0324161/2020
 Belgium/SJ-030583/2020
 
-# This one is weird
+# These ones are weird
 Belgium/Rega-0329218/2020
+Belgium/AZDelta02297-2107R/2021
+Belgium/AZKLINA121-042086/2021
+Belgium/Jessa_55-2108-000015/2021
+Belgium/AZDelta-14509-2109R/2021
+Belgium/UZA-UA-8754/2021
+Belgium/UZA-UA-3523/2021
