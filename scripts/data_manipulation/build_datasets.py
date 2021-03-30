@@ -133,7 +133,7 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
         # Only deal with excel spreadsheets for now
         if file.endswith(".xlsx"):
             # Make a new dataframe
-            new_meta = pd.read_excel(f"{meta_dir}/{file}")
+            new_meta = pd.read_excel(f"{meta_dir}/{file}", engine='openpyxl')
             # Rename the columns appropriately so that the stuff we want matches
             new_meta = new_meta.rename(columns=renames)
             # Slam in some "reasonable" assumptions:
@@ -153,10 +153,13 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
             drop_rows = []
             for (index, row) in new_meta.iterrows():
                 # strain name fix. I know this sucks
-                new_meta.at[index,"date"] = pd.to_datetime(row["date"]).strftime("%Y-%m-%d")
-                row["strain"] = fix_strain_name(row["strain"])
-                # fix country
-                row["country"] = fix_country_from_strain_name(row["strain"])
+                try:
+                    new_meta.at[index,"date"] = pd.to_datetime(row["date"]).strftime("%Y-%m-%d")
+                    row["strain"] = fix_strain_name(row["strain"])
+                    # fix country
+                    row["country"] = fix_country_from_strain_name(row["strain"])
+                except:
+                    drop_rows.append(index)
                 # set length for each sequence, if it doesn't have a length for some reason indicate it should be dropped
                 if row["strain"] in records.keys():
                     new_meta.at[index,"length"] = int(len(records[row["strain"]].seq))
@@ -245,13 +248,16 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     metadata = metadata.drop_duplicates(subset="strain", ignore_index=True).reset_index()
 
     metadata = coarse_downsample(metadata)
+    print(metadata)
+
 
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
 
 def coarse_downsample(df):
-    p=0.0
-    p1=0.4
+    p=0.4 # drop European, non-belgian sequences
+    p1=0.6 # drop DK and UK sequences
+    p2=0.8 # drop non-european sequences
     force_includes = read_includes()
     print(f"Started downsampling with {len(df.index)} rows.")
     drops = []
@@ -262,8 +268,17 @@ def coarse_downsample(df):
                 if df.at[index,"country"] in ["Denmark", "United Kingdom"]:
                     if (n<p1):
                         drops.append(index)
+                elif df.at[index,"region"] != "Europe":
+                    if n<p2:
+                        drops.append(index)
                 elif (n < p):
                     drops.append(index)
+            if not df.at[index,"date"]:
+                drops.append(index)
+            elif not df.at[index,"strain"]:
+                drops.append(index)
+            elif not df.at[index,"date_submitted"]:
+                drops.append(index)
 
     print(f"Attempting to remove {len(drops)} rows.")
     df = df.drop(index=drops).reset_index() # drop the noted sequences
@@ -283,6 +298,8 @@ def fix_strain_name(s):
     """
     This can be expanded later if we need it
     """
+    # Cast to str
+    s = str(s)
     # Remove trailing dates from strain names
     if s.endswith("/2020") or s.endswith("/2019"):
         s = "/".join(s.split("/")[:-1])
@@ -312,7 +329,7 @@ def build_strain_to_zip():
     m = {}
     liege_file = "data/zip_codes/SARS-CoV-2_ULiegeSeq_211220.xlsx"
     liege_file2 = "data/zip_codes/SARS-CoV-2_ULiegeSeq_011220.csv"
-    df = pd.read_excel(liege_file).rename(columns={"virus name": "strain","Postal code": "ZIP"})
+    df = pd.read_excel(liege_file, engine='openpyxl').rename(columns={"virus name": "strain","Postal code": "ZIP"})
     df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"})
 
     df = pd.concat([df,df2])
@@ -337,7 +354,7 @@ def build_isl_to_zip():
     r = {}
     # Add other files here
     gfile = "data/zip_codes/PostCodes_2020-12-29.xlsx"
-    df = pd.concat([pd.read_excel(gfile,sheet_name=0),pd.read_excel(gfile,sheet_name=1)])
+    df = pd.concat([pd.read_excel(gfile,sheet_name=0, engine='openpyxl'),pd.read_excel(gfile,sheet_name=1, engine='openpyxl')])
     for i,row in df.iterrows():
         s = str(df.at[i,"GISAID_ID"])
         if s.startswith("EPI"):
