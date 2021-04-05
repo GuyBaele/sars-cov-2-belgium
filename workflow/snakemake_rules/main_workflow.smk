@@ -437,23 +437,33 @@ def _get_subsampled_files(wildcards):
         for subsample in subsampling_settings
     ]
 
+# Barney
+# rule combine_samples:
+#     message:
+#         """
+#         Combine and deduplicate FASTAs
+#         """
+#     input:
+#         _get_subsampled_files
+#     output:
+#         alignment = "results/{build_name}/subsampled_alignment.fasta"
+#     log:
+#         "logs/subsample_regions_{build_name}.txt"
+#     conda: config["conda_environment"]
+#     shell:
+#         """
+#         python3 scripts/combine-and-dedup-fastas.py \
+#             --input {input} \
+#             --output {output} 2>&1 | tee {log}
+#         """
 rule combine_samples:
-    message:
-        """
-        Combine and deduplicate FASTAs
-        """
     input:
-        _get_subsampled_files
+        ".gitignore"
     output:
-        alignment = "results/{build_name}/subsampled_alignment.fasta"
-    log:
-        "logs/subsample_regions_{build_name}.txt"
-    conda: config["conda_environment"]
+        alignment = "results/belgium/TEST_FASTA.fasta"
     shell:
         """
-        python3 scripts/combine-and-dedup-fastas.py \
-            --input {input} \
-            --output {output} 2>&1 | tee {log}
+        touch {output}
         """
 
 # TODO: This will probably not work for build names like "country_usa" where we need to know the country is "USA".
