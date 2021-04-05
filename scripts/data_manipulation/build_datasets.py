@@ -1,10 +1,12 @@
 import sys,os
+import subprocess
 import datetime as dt
 import numpy as np
 import json
 from math import isnan
 import pandas as pd
 from Bio import SeqIO
+from tqdm import tqdm
 import random
 
 def main():
@@ -55,10 +57,14 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
     # Initialize empty lists
     records = []
     record_ids = set()
+    duplicates = []
     # Read the gisaid fasta
     with open(base_fname, "r") as handle:
         print(f"Processing {base_fname}")
-        for record in SeqIO.parse(handle, "fasta"):
+        call = ["grep", "-c", "\">\"", base_fname]
+        lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
+        nlines = int(lines.stdout.read().strip())
+        for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines):
             # Check if a sequence with the same name already exists in the dataset
             if record.id not in record_ids:
                 # If not add the record to the master group of records
@@ -67,7 +73,7 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
                 record_ids.add(record.id)
             else:
                 # If it already exists, warn the user
-                print(f"WARNING: Duplicate record ID {record.id}, skipping.")
+                duplicates.append(f"WARNING: Duplicate record ID {record.id}, skipping.")
     print(f"Added {len(record_ids)} records")
 
     # Now, process each of the files in the directory that contains non-gisaid fasta files
@@ -78,20 +84,24 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
             # Keep track of how many new sequences were added from the file for debugging
             added = 0
             with open(f"{fasta_dir}/{fname}", "r") as handle:
-                for record in SeqIO.parse(handle, "fasta"):
+                for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Importing {fname}"):
                     # Use the same logic as we did handling the gisaid fasta above
                     if record.id not in record_ids:
                         records.append(record)
                         record_ids.add(record.id)
                         added += 1
                     else:
-                        print(f"Duplicate record ID: {record.id}, skipping.")
+                        duplicates.append(f"Duplicate record ID: {record.id}, skipping.")
             print(f"Added {added} records")
 
     # Write the output fasta
     print(f"Writing {o_fname}")
     with open(o_fname, "w") as output_handle:
         SeqIO.write(records, output_handle, "fasta")
+    print(f"Writing duplicates to results/duplicate_sequence.txt")
+    with open("results/duplicate_sequences.txt", "w") as output_handle:
+        for line in duplicates:
+            output_handle.write(f"{line}\n")
 
     # Transform records into a dictionary keyed on id, as that will be easier to handle later
     transform_records = lambda records: { record.id: record for record in records }
@@ -129,7 +139,7 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     print(f"Metadata original rows: {len(metadata)}")
 
     # Second, look at every file in the
-    for file in os.listdir(meta_dir):
+    for file in tqdm(os.listdir(meta_dir), desc="Reading metadata files"):
         # Only deal with excel spreadsheets for now
         if file.endswith(".xlsx"):
             # Make a new dataframe
@@ -151,7 +161,7 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
             # 2) set country (if it isn't Belgium)
             # 3) set sequence length
             drop_rows = []
-            for (index, row) in new_meta.iterrows():
+            for (index, row) in tqdm(new_meta.iterrows(), total=len(new_meta)):
                 # strain name fix. I know this sucks
                 try:
                     new_meta.at[index,"date"] = pd.to_datetime(row["date"]).strftime("%Y-%m-%d")
@@ -247,17 +257,17 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     # Drop duplicates
     metadata = metadata.drop_duplicates(subset="strain", ignore_index=True).reset_index()
 
-    metadata = coarse_downsample(metadata)
-    print(metadata)
+    # metadata = coarse_downsample(metadata)
+    # print(metadata)
 
 
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
 
 def coarse_downsample(df):
-    p=0.4 # drop European, non-belgian sequences
-    p1=0.6 # drop DK and UK sequences
-    p2=0.8 # drop non-european sequences
+    p=0.0 # drop European, non-belgian sequences
+    p1=0.0 # drop DK and UK sequences
+    p2=0.0 # drop non-european sequences
     force_includes = read_includes()
     print(f"Started downsampling with {len(df.index)} rows.")
     drops = []
@@ -376,11 +386,11 @@ def read_muni_map():
         try:
             map[fixit(item["TX_DESCR_NL"])] = item["PROVINCE"]
         except:
-            print("failed on a dutch name")
+            pass
         try:
             map[fixit(item["TX_DESCR_FR"])] = item["PROVINCE"]
         except:
-            print("failed on a french name")
+            pass
     with open("data/source_files/municipalities_to_provinces.csv",'r') as f:
         for line in f.readlines():
             try:
@@ -405,14 +415,13 @@ def read_manual_fix_map():
     return m
 
 def fix_liege(df,i):
-    if df.at[i,"location"] == "Liege":
-        df.at[i,"location"] = "Liège"
-    if df.at[i,"location_exposure"] == "Liege":
-        df.at[i,"location_exposure"] = "Liège"
-    if df.at[i,"division"] == "Liege":
-        df.at[i,"division"] = "Liège"
-    if df.at[i,"division_exposure"] == "Liege":
-        df.at[i,"division_exposure"] = "Liège"
+    """
+    Add diacritic marks to Liège
+    """
+    geo_fixes = ["location", "location_exposure", "division", "division_exposure"]
+    for gf in geo_fixes:
+        if df.at[i,gf] == "Liege":
+            df.at[i,gf] = "Liège"
 
 def get_zip_location_map():
     """make dictionaries taking zip code to province and municipality
