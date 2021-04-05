@@ -1,9 +1,0 @@
-auspice/sars-cov-2-belgium_voc_tip-frequencies.json filter=lfs diff=lfs merge=lfs -text
-auspice/ncov_belgium_tip-frequencies.json filter=lfs diff=lfs merge=lfs -text
-auspice/sars-cov-2-belgium.json filter=lfs diff=lfs merge=lfs -text
-auspice/sars-cov-2-belgium_root-sequence.json filter=lfs diff=lfs merge=lfs -text
-auspice/sars-cov-2-belgium_tip-frequencies.json filter=lfs diff=lfs merge=lfs -text
-auspice/sars-cov-2-belgium_voc.json filter=lfs diff=lfs merge=lfs -text
-auspice/sars-cov-2-belgium_voc_root-sequence.json filter=lfs diff=lfs merge=lfs -text
-auspice/ncov_belgium.json filter=lfs diff=lfs merge=lfs -text
-auspice/ncov_belgium_root-sequence.json filter=lfs diff=lfs merge=lfs -text
