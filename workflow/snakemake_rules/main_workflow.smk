@@ -460,7 +460,7 @@ rule combine_samples:
     input:
         ".gitignore"
     output:
-        alignment = "results/belgium/TEST_FASTA.fasta"
+        alignment = "results/belgium/B.1.525.aligned.fasta"
     shell:
         """
         touch {output}
@@ -570,9 +570,10 @@ rule refine:
             --date-inference {params.date_inference} \
             --divergence-unit {params.divergence_unit} \
             --date-confidence \
-            --no-covariance \
-            --clock-filter-iqd {params.clock_filter_iqd} 2>&1 | tee {log}
+            --no-covariance 2>&1 | tee {log}
         """
+
+#--clock-filter-iqd {params.clock_filter_iqd} 2>&1 | tee {log}
 
 rule ancestral:
     message:
