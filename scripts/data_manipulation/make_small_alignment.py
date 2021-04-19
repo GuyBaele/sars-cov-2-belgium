@@ -1,37 +1,21 @@
+"""make_small_alignment.py
+TODO: Give this a better CLI
+"""
 import argh
 from Bio import SeqIO
 import random
 import subprocess
 from tqdm import tqdm
 
-# def main():
-#     size = 100
-#     full_aln = "results/aligned-filtered.fasta"
-#     smaller_aln = "results/belgium/TEST_FASTA.fasta"
-#     records = []
-#
-#     with open(full_aln, "r") as handle:
-#         print(f"Processing {full_aln}")
-#         call = ["grep", "-c", "\">\"", full_aln]
-#         lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
-#         nlines = int(lines.stdout.read().strip())
-#         for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines):
-#             n = random.random()
-#             if (record.id in ['Wuhan/Hu-1/2019', 'Wuhan/WH01/2019'] or n < (size/nlines)):
-#                 records.append(record)
-    #
-    # print(f"Writing {smaller_aln}")
-    # with open(smaller_aln, "w") as output_handle:
-    #     SeqIO.write(records, output_handle, "fasta")
-
 def create_unaligned_fasta(build, excludes=None):
     master_fasta = "data/ALL_SEQUENCES.fasta"
     seq_list_file = f"data/sequence_lists/{build}.txt"
-    aln_out_file = f"results/belgium/{build}_unaligned.fasta"
+    aln_out_file = f"results/fastas/{build}_unaligned.fasta"
     metadata_file = "data/ALL_METADATA.tsv"
 
     if not excludes:
         excludes = set([])
+    e = len(excludes)
     meta_sequences = set([])
     with open(metadata_file, "r") as f:
         for line in f.readlines():
@@ -39,7 +23,7 @@ def create_unaligned_fasta(build, excludes=None):
             meta_sequences.add(line[1])
             if len(line[5]) < 10: # Exclude sequences with bad dates
                 excludes.add(line[1])
-                print(f"{line[1]}: {line[5]}")
+    print(f"Ignored {len(excludes)-e} sequences (out of the full metadata tsv) with poorly formatte dates.")
 
     with open(seq_list_file, "r") as f:
         seq_list = set([])
@@ -82,7 +66,7 @@ def create_aligned_fasta(build, unaligned):
              "--verbose",
              f"--sequences={unaligned}",
              "--reference=data/source_files/reference.fasta",
-             "--output-dir=results/belgium",
+             "--output-dir=results/fastas",
              f"--output-basename={build}"
            ]
 
