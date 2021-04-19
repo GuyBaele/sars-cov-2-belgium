@@ -4,25 +4,25 @@ import random
 import subprocess
 from tqdm import tqdm
 
-def main():
-    size = 100
-    full_aln = "results/aligned-filtered.fasta"
-    smaller_aln = "results/belgium/TEST_FASTA.fasta"
-    records = []
-
-    with open(full_aln, "r") as handle:
-        print(f"Processing {full_aln}")
-        call = ["grep", "-c", "\">\"", full_aln]
-        lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
-        nlines = int(lines.stdout.read().strip())
-        for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines):
-            n = random.random()
-            if (record.id in ['Wuhan/Hu-1/2019', 'Wuhan/WH01/2019'] or n < (size/nlines)):
-                records.append(record)
-
-    print(f"Writing {smaller_aln}")
-    with open(smaller_aln, "w") as output_handle:
-        SeqIO.write(records, output_handle, "fasta")
+# def main():
+#     size = 100
+#     full_aln = "results/aligned-filtered.fasta"
+#     smaller_aln = "results/belgium/TEST_FASTA.fasta"
+#     records = []
+#
+#     with open(full_aln, "r") as handle:
+#         print(f"Processing {full_aln}")
+#         call = ["grep", "-c", "\">\"", full_aln]
+#         lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
+#         nlines = int(lines.stdout.read().strip())
+#         for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines):
+#             n = random.random()
+#             if (record.id in ['Wuhan/Hu-1/2019', 'Wuhan/WH01/2019'] or n < (size/nlines)):
+#                 records.append(record)
+    #
+    # print(f"Writing {smaller_aln}")
+    # with open(smaller_aln, "w") as output_handle:
+    #     SeqIO.write(records, output_handle, "fasta")
 
 def create_unaligned_fasta(build, excludes=None):
     master_fasta = "data/ALL_SEQUENCES.fasta"
@@ -42,7 +42,13 @@ def create_unaligned_fasta(build, excludes=None):
                 print(f"{line[1]}: {line[5]}")
 
     with open(seq_list_file, "r") as f:
-        seq_list = set([line.strip() for line in f.readlines()])
+        seq_list = set([])
+        for line in f.readlines():
+            if line:
+                if line.startswith("#"):
+                    pass
+                else:
+                    seq_list.add(line.strip())
 
     print(f"Read {len(seq_list)} sequences to be added to fasta")
 
