@@ -1241,10 +1241,52 @@ SARS2-CoV/Poland/Human/rega-0429664
 Belgium/NIM-0324161/2020
 Belgium/SJ-030583/2020
 
-# This one is weird
+# These ones are weird
 Belgium/Rega-0329218/2020
+Belgium/AZDelta02297-2107R/2021
+Belgium/AZKLINA121-042086/2021
+Belgium/Jessa_55-2108-000015/2021
+Belgium/AZDelta-14509-2109R/2021
+Belgium/UZA-UA-8754/2021
+Belgium/UZA-UA-3523/2021
+Belgium/UZA-UA-4629/2021
 
-# Dates that had XX
-Belgium/AZDelta2103-24025/2021
-Belgium/AZDelta2103-24042/2021
-Belgium/AZDelta2103-25765/2021
+# French sequences with bad dates crash the insertion variant builds
+France/IDF-IPP04293/2021
+France/IDF-IPP04295/2021
+France/IDF-IPP04296/2021
+France/IDF-IPP04297/2021
+France/IDF-IPP04298/2021
+France/IDF-IPP04299/2021
+France/IDF-IPP04300/2021
+France/IDF-IPP04301/2021
+France/IDF-IPP04302/2021
+France/IDF-IPP04303/2021
+France/IDF-IPP04304/2021
+France/IDF-IPP04305/2021
+France/IDF-IPP04306/2021
+France/IDF-IPP04307/2021
+France/IDF-IPP04309/2021
+France/IDF-IPP04310/2021
+France/IDF-IPP04311/2021
+France/IDF-IPP04312/2021
+France/IDF-IPP04313/2021
+France/IDF-IPP04314/2021
+France/IDF-IPP04316/2021
+France/IDF-IPP04319/2021
+France/IDF-IPP04323/2021
+France/IDF-IPP04325/2021
+
+# Sequences to exclude from insertion variant build
+Belgium/rega-4684/2021
+Switzerland/BS-UHB-65276351/2021
+Switzerland/BL-ETHZ-460913/2021
+Switzerland/BL-ETHZ-451076/2021
+Switzerland/SO-ETHZ-500694/2021
+England/MILK-E6578E/2020
+Senegal/SN-MBO-211970/2021
+
+# Swiss sequences without metadata
+Switzerland/ZH-ETHZ-530260/2020
+Switzerland/ZH-ETHZ-530313/2020
+Switzerland/VD-ETHZ-510906/2021

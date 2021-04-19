@@ -449,23 +449,33 @@ def _get_subsampled_files(wildcards):
         for subsample in subsampling_settings
     ]
 
+# Barney
+# rule combine_samples:
+#     message:
+#         """
+#         Combine and deduplicate FASTAs
+#         """
+#     input:
+#         _get_subsampled_files
+#     output:
+#         alignment = "results/{build_name}/subsampled_alignment.fasta"
+#     log:
+#         "logs/subsample_regions_{build_name}.txt"
+#     conda: config["conda_environment"]
+#     shell:
+#         """
+#         python3 scripts/combine-and-dedup-fastas.py \
+#             --input {input} \
+#             --output {output} 2>&1 | tee {log}
+#         """
 rule combine_samples:
-    message:
-        """
-        Combine and deduplicate FASTAs
-        """
     input:
-        _get_subsampled_files
+        ".gitignore"
     output:
-        alignment = "results/{build_name}/subsampled_alignment.fasta"
-    log:
-        "logs/subsample_regions_{build_name}.txt"
-    conda: config["conda_environment"]
+        alignment = "results/belgium/B.1.167.aligned.fasta"
     shell:
         """
-        python3 scripts/combine-and-dedup-fastas.py \
-            --input {input} \
-            --output {output} 2>&1 | tee {log}
+        touch {output}
         """
 
 # TODO: This will probably not work for build names like "country_usa" where we need to know the country is "USA".
@@ -573,9 +583,10 @@ rule refine:
             --date-inference {params.date_inference} \
             --divergence-unit {params.divergence_unit} \
             --date-confidence \
-            --no-covariance \
-            --clock-filter-iqd {params.clock_filter_iqd} 2>&1 | tee {log}
+            --no-covariance 2>&1 | tee {log}
         """
+
+#--clock-filter-iqd {params.clock_filter_iqd} 2>&1 | tee {log}
 
 rule ancestral:
     message:
@@ -1000,9 +1011,9 @@ rule finalize:
         frequencies = rules.tip_frequencies.output.tip_frequencies_json,
         root_sequence_json = rules.export.output.root_sequence_json
     output:
-        auspice_json = "auspice/ncov_{build_name}.json",
-        tip_frequency_json = "auspice/ncov_{build_name}_tip-frequencies.json",
-        root_sequence_json = "auspice/ncov_{build_name}_root-sequence.json"
+        auspice_json = "auspice/sars-cov-2-belgium_{build_name}.json",
+        tip_frequency_json = "auspice/sars-cov-2-belgium_{build_name}_tip-frequencies.json",
+        root_sequence_json = "auspice/sars-cov-2-belgium_{build_name}_root-sequence.json"
     log:
         "logs/fix_colorings_{build_name}.txt"
     conda: config["conda_environment"]

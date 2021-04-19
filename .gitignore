@@ -67,5 +67,3 @@ scripts/developer_scripts/outputs_new_sequences/
 slurm-*.out
 scripts/data_manipulation/gisaid_meta_to_nextstrain/*.tsv
 scripts/data_manipulation/gisaid_meta_to_nextstrain/*.fasta
-scripts/data_manipulation/gisaid_meta_to_nextstrain/*.xlsx
-scripts/data_manipulation/gisaid_meta_to_nextstrain/archive/

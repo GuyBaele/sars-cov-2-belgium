@@ -1,10 +1,12 @@
 import sys,os
+import subprocess
 import datetime as dt
 import numpy as np
 import json
 from math import isnan
 import pandas as pd
 from Bio import SeqIO
+from tqdm import tqdm
 import random
 
 def main():
@@ -55,10 +57,14 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
     # Initialize empty lists
     records = []
     record_ids = set()
+    duplicates = []
     # Read the gisaid fasta
     with open(base_fname, "r") as handle:
         print(f"Processing {base_fname}")
-        for record in SeqIO.parse(handle, "fasta"):
+        call = ["grep", "-c", "\">\"", base_fname]
+        lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
+        nlines = int(lines.stdout.read().strip())
+        for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines):
             # Check if a sequence with the same name already exists in the dataset
             if record.id not in record_ids:
                 # If not add the record to the master group of records
@@ -67,7 +73,7 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
                 record_ids.add(record.id)
             else:
                 # If it already exists, warn the user
-                print(f"WARNING: Duplicate record ID {record.id}, skipping.")
+                duplicates.append(f"WARNING: Duplicate record ID {record.id}, skipping.")
     print(f"Added {len(record_ids)} records")
 
     # Now, process each of the files in the directory that contains non-gisaid fasta files
@@ -78,20 +84,24 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
             # Keep track of how many new sequences were added from the file for debugging
             added = 0
             with open(f"{fasta_dir}/{fname}", "r") as handle:
-                for record in SeqIO.parse(handle, "fasta"):
+                for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Importing {fname}"):
                     # Use the same logic as we did handling the gisaid fasta above
                     if record.id not in record_ids:
                         records.append(record)
                         record_ids.add(record.id)
                         added += 1
                     else:
-                        print(f"Duplicate record ID: {record.id}, skipping.")
+                        duplicates.append(f"Duplicate record ID: {record.id}, skipping.")
             print(f"Added {added} records")
 
     # Write the output fasta
     print(f"Writing {o_fname}")
     with open(o_fname, "w") as output_handle:
         SeqIO.write(records, output_handle, "fasta")
+    print(f"Writing duplicates to results/duplicate_sequence.txt")
+    with open("results/duplicate_sequences.txt", "w") as output_handle:
+        for line in duplicates:
+            output_handle.write(f"{line}\n")
 
     # Transform records into a dictionary keyed on id, as that will be easier to handle later
     transform_records = lambda records: { record.id: record for record in records }
@@ -129,11 +139,11 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     print(f"Metadata original rows: {len(metadata)}")
 
     # Second, look at every file in the
-    for file in os.listdir(meta_dir):
+    for file in tqdm(os.listdir(meta_dir), desc="Reading metadata files"):
         # Only deal with excel spreadsheets for now
         if file.endswith(".xlsx"):
             # Make a new dataframe
-            new_meta = pd.read_excel(f"{meta_dir}/{file}")
+            new_meta = pd.read_excel(f"{meta_dir}/{file}", engine='openpyxl')
             # Rename the columns appropriately so that the stuff we want matches
             new_meta = new_meta.rename(columns=renames)
             # Slam in some "reasonable" assumptions:
@@ -151,12 +161,15 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
             # 2) set country (if it isn't Belgium)
             # 3) set sequence length
             drop_rows = []
-            for (index, row) in new_meta.iterrows():
+            for (index, row) in tqdm(new_meta.iterrows(), total=len(new_meta)):
                 # strain name fix. I know this sucks
-                new_meta.at[index,"date"] = pd.to_datetime(row["date"]).strftime("%Y-%m-%d")
-                row["strain"] = fix_strain_name(row["strain"])
-                # fix country
-                row["country"] = fix_country_from_strain_name(row["strain"])
+                try:
+                    new_meta.at[index,"date"] = pd.to_datetime(row["date"]).strftime("%Y-%m-%d")
+                    row["strain"] = fix_strain_name(row["strain"])
+                    # fix country
+                    row["country"] = fix_country_from_strain_name(row["strain"])
+                except:
+                    drop_rows.append(index)
                 # set length for each sequence, if it doesn't have a length for some reason indicate it should be dropped
                 if row["strain"] in records.keys():
                     new_meta.at[index,"length"] = int(len(records[row["strain"]].seq))
@@ -244,14 +257,17 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     # Drop duplicates
     metadata = metadata.drop_duplicates(subset="strain", ignore_index=True).reset_index()
 
-    metadata = coarse_downsample(metadata)
+    # metadata = coarse_downsample(metadata)
+    # print(metadata)
+
 
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
 
 def coarse_downsample(df):
-    p=0.0
-    p1=0.4
+    p=0.0 # drop European, non-belgian sequences
+    p1=0.0 # drop DK and UK sequences
+    p2=0.0 # drop non-european sequences
     force_includes = read_includes()
     print(f"Started downsampling with {len(df.index)} rows.")
     drops = []
@@ -262,8 +278,17 @@ def coarse_downsample(df):
                 if df.at[index,"country"] in ["Denmark", "United Kingdom"]:
                     if (n<p1):
                         drops.append(index)
+                elif df.at[index,"region"] != "Europe":
+                    if n<p2:
+                        drops.append(index)
                 elif (n < p):
                     drops.append(index)
+            if not df.at[index,"date"]:
+                drops.append(index)
+            elif not df.at[index,"strain"]:
+                drops.append(index)
+            elif not df.at[index,"date_submitted"]:
+                drops.append(index)
 
     print(f"Attempting to remove {len(drops)} rows.")
     df = df.drop(index=drops).reset_index() # drop the noted sequences
@@ -283,6 +308,8 @@ def fix_strain_name(s):
     """
     This can be expanded later if we need it
     """
+    # Cast to str
+    s = str(s)
     # Remove trailing dates from strain names
     if s.endswith("/2020") or s.endswith("/2019"):
         s = "/".join(s.split("/")[:-1])
@@ -310,19 +337,10 @@ def fix_country_from_strain_name(s):
 
 def build_strain_to_zip():
     m = {}
-    zd = "data/zip_codes"
-    liege_file = f"{zd}/SARS-CoV-2_ULiegeSeq_211220.xlsx"
-    liege_file2 = f"{zd}/SARS-CoV-2_ULiegeSeq_011220.csv"
-    ghent_file = f"{zd}/Postcodes-2021-01-22_GB.xlsx"
-    ghent_file2 = f"{zd}/Postcodes_Gent_1004-1092.xlsx"
-    liege_file3 = f"{zd}/PO-Codes_Batch24B-25-26.xlsx"
-    liege_file4 = f"{zd}/Postal-codes-B27-28-30-31-32-33.xlsx"
-    df = pd.read_excel(liege_file).rename(columns={"virus name": "strain","Postal code": "ZIP"}).astype(str)
-    df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"}).astype(str)
-    df3 = pd.read_excel(ghent_file).rename(columns={"Virus name": "strain", "Postcode": "ZIP"}).astype(str)
-    df4 = pd.read_excel(ghent_file2).rename(columns={"Naam-GISAID": "strain","Postcode":"ZIP"}).astype(str)
-    df5 = pd.read_excel(liege_file3).rename(columns={" virus name": "strain","Postal code":"ZIP"}).astype(str)
-    df6 = pd.read_excel(liege_file4).rename(columns={" virus name": "strain","Postal code":"ZIP"}).astype(str)
+    liege_file = "data/zip_codes/SARS-CoV-2_ULiegeSeq_211220.xlsx"
+    liege_file2 = "data/zip_codes/SARS-CoV-2_ULiegeSeq_011220.csv"
+    df = pd.read_excel(liege_file, engine='openpyxl').rename(columns={"virus name": "strain","Postal code": "ZIP"})
+    df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"})
 
     # df = pd.concat([df,df2])
     df = pd.concat([df,df2,df3,df4,df5,df6],ignore_index=True,verify_integrity=True)
@@ -349,7 +367,7 @@ def build_isl_to_zip():
     r = {}
     # Add other files here
     gfile = "data/zip_codes/PostCodes_2020-12-29.xlsx"
-    df = pd.concat([pd.read_excel(gfile,sheet_name=0),pd.read_excel(gfile,sheet_name=1)])
+    df = pd.concat([pd.read_excel(gfile,sheet_name=0, engine='openpyxl'),pd.read_excel(gfile,sheet_name=1, engine='openpyxl')])
     for i,row in df.iterrows():
         s = str(df.at[i,"GISAID_ID"])
         if s.startswith("EPI"):
@@ -371,11 +389,11 @@ def read_muni_map():
         try:
             map[fixit(item["TX_DESCR_NL"])] = item["PROVINCE"]
         except:
-            print("failed on a dutch name")
+            pass
         try:
             map[fixit(item["TX_DESCR_FR"])] = item["PROVINCE"]
         except:
-            print("failed on a french name")
+            pass
     with open("data/source_files/municipalities_to_provinces.csv",'r') as f:
         for line in f.readlines():
             try:
@@ -400,14 +418,13 @@ def read_manual_fix_map():
     return m
 
 def fix_liege(df,i):
-    if df.at[i,"location"] == "Liege":
-        df.at[i,"location"] = "Liège"
-    if df.at[i,"location_exposure"] == "Liege":
-        df.at[i,"location_exposure"] = "Liège"
-    if df.at[i,"division"] == "Liege":
-        df.at[i,"division"] = "Liège"
-    if df.at[i,"division_exposure"] == "Liege":
-        df.at[i,"division_exposure"] = "Liège"
+    """
+    Add diacritic marks to Liège
+    """
+    geo_fixes = ["location", "location_exposure", "division", "division_exposure"]
+    for gf in geo_fixes:
+        if df.at[i,gf] == "Liege":
+            df.at[i,gf] = "Liège"
 
 def get_zip_location_map():
     """make dictionaries taking zip code to province and municipality
@@ -421,7 +438,7 @@ def get_zip_location_map():
                     "Brabant Wallon": "BrabantWallon",
                     "West-Vlaanderen": "WestVlaanderen",
                     "Oost-Vlaanderen": "OostVlaanderen",
-                    "Liège": "Liège"}
+                    "Liège": "Liège" }
     myfix = lambda n: fn[n] if n in fn.keys() else n
 
     for index,row in bmap.iterrows():
