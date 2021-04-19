@@ -460,7 +460,7 @@ rule combine_samples:
     input:
         ".gitignore"
     output:
-        alignment = "results/belgium/B.1.525.aligned.fasta"
+        alignment = "results/belgium/B.1.167.aligned.fasta"
     shell:
         """
         touch {output}
@@ -998,9 +998,9 @@ rule finalize:
         frequencies = rules.tip_frequencies.output.tip_frequencies_json,
         root_sequence_json = rules.export.output.root_sequence_json
     output:
-        auspice_json = "auspice/ncov_{build_name}.json",
-        tip_frequency_json = "auspice/ncov_{build_name}_tip-frequencies.json",
-        root_sequence_json = "auspice/ncov_{build_name}_root-sequence.json"
+        auspice_json = "auspice/sars-cov-2-belgium_{build_name}.json",
+        tip_frequency_json = "auspice/sars-cov-2-belgium_{build_name}_tip-frequencies.json",
+        root_sequence_json = "auspice/sars-cov-2-belgium_{build_name}_root-sequence.json"
     log:
         "logs/fix_colorings_{build_name}.txt"
     conda: config["conda_environment"]
