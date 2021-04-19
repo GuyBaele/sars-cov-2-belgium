@@ -3,30 +3,16 @@
 builds:
   # first we'll define a country-level build, focused on Switzerland.
   # we'll define the sampling schemes below
-  # belgium:
-  #   subsampling_scheme: belgium # <- use the 'switzerland' sampling scheme
-  #   region: Europe
-  #   country: Belgium
-  #   # If we want to have specific files for colors or the auspice_config file *just*
-  #   # for this build, we can specify this here.
-  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
-  #   # auspice_config: "my_profiles/example_advanced_customization/auspice_config_switzerland_build.json"
-  #   # We can also set a title for *just* this build.
-  #   title: "SARS-CoV-2 Sequences in Belgium"
-
-  # belgium:
-  #   subsampling_scheme: belgium
-  #   region: Europe
-  #   country:  Belgium
-  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
-  #   title: "SARS-CoV-2 Sequences in Belgium"
-
-  # belgium-voc:
-  #   subsampling_scheme: belgium-voc
-  #   region: Europe
-  #   country: Belgium
-  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
-  #   title: "SARS-CoV-2 VOC Sequences in Belgium"
+  demo:
+    # We set the region and country names for the build
+    region: Europe
+    country: Belgium
+    # If we want to have specific files for colors or the auspice_config file *just*
+    # for this build, we can specify this here.
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    # auspice_config: "my_profiles/example_advanced_customization/auspice_config_switzerland_build.json"
+    # We can also set a title for *just* this build.
+    title: "SARS-CoV-2 Sequences in Belgium"
 
   B.1.525:
     region: Europe

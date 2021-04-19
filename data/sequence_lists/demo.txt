@@ -1,0 +1,26 @@
+# All builds should contain the following sequences (will generate a nextstrain
+# error if they are omitted)
+Wuhan/WH01/2019
+Wuhan/0126-C13/2020
+Wuhan/Hu-1/2019
+
+# Otherwise, list any sequence names of interest.
+# Note that if you pull sequences from GISAID, they will all have a 'hCoV-19/'
+# prepended to their names. This disagrees with what nextstrain expects
+# so those should be removed. (I use a simple find & replace)
+Belgium/ULG-11598/2021
+Belgium/rega-1818/2020
+Belgium/rega-2113/2020
+Belgium/rega-12111386/2020
+Belgium/rega-3271/2021
+Belgium/CHUNamur1320834901/2021
+Belgium/rega-5012/2021
+Belgium/rega-1494/2020
+Belgium/rega-1533/2020
+Belgium/ULG-12767/2021
+Belgium/rega-5050/2021
+Belgium/ULG-12917/2021
+
+# Oh, and comments, empty lines, and duplicate sequences will be ignored
+# so don't worry too much about that sort of stuff
+Belgium/ULG-12917/2021
