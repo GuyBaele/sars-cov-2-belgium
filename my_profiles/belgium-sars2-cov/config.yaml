@@ -12,7 +12,10 @@ configfile:
 
 config:
   - sequences=data/ALL_SEQUENCES.fasta
-  - metadata=data/ALL_METADATA.tsv
+  - raw_metadata=data/ALL_METADATA.tsv
+  - metadata=data/ALL_METADATA_updated.tsv
+  - pangolin_threads=4
+  - reference_preproc=defaults/reference_seq.gb
 
 # Set the maximum number of cores you want Snakemake to use for this pipeline.
 cores: 30

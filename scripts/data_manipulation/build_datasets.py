@@ -342,7 +342,8 @@ def build_strain_to_zip():
     df = pd.read_excel(liege_file, engine='openpyxl').rename(columns={"virus name": "strain","Postal code": "ZIP"})
     df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"})
 
-    df = pd.concat([df,df2])
+    # df = pd.concat([df,df2])
+    df = pd.concat([df,df2,df3,df4,df5,df6],ignore_index=True,verify_integrity=True)
 
     def sf(s):
         if s.startswith("hCoV-19"):
@@ -358,6 +359,8 @@ def build_strain_to_zip():
             m[k] = str(v)
         except:
             pass
+    print(f"Sequences with zip maps: {len(m.keys())}")
+    print(m.keys())
     return m
 
 def build_isl_to_zip():
