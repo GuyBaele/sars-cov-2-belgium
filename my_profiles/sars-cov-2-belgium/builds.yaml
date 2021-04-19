@@ -1,5 +1,3 @@
-custom_rules:
-  - workflow/snakemake_rules/preprocess_be.smk
 # Define locations for which builds should be created.
 # For each build we specify a subsampling scheme via an explicit key.
 builds:
@@ -11,7 +9,7 @@ builds:
   #   country: Belgium
   #   # If we want to have specific files for colors or the auspice_config file *just*
   #   # for this build, we can specify this here.
-  #   colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
   #   # auspice_config: "my_profiles/example_advanced_customization/auspice_config_switzerland_build.json"
   #   # We can also set a title for *just* this build.
   #   title: "SARS-CoV-2 Sequences in Belgium"
@@ -20,17 +18,39 @@ builds:
   #   subsampling_scheme: belgium
   #   region: Europe
   #   country:  Belgium
-  #   colors: "my_profiles/belgium-sars2-cov/colors.tsv"
+  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
   #   title: "SARS-CoV-2 Sequences in Belgium"
 
-  belgium-voc:
-    subsampling_scheme: belgium-voc
+  # belgium-voc:
+  #   subsampling_scheme: belgium-voc
+  #   region: Europe
+  #   country: Belgium
+  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+  #   title: "SARS-CoV-2 VOC Sequences in Belgium"
+
+  B.1.525:
     region: Europe
     country: Belgium
-    colors: "my_profiles/belgium-sars2-cov/colors.tsv"
-    title: "SARS-CoV-2 VOC Sequences in Belgium"
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    title: "SARS-CoV-2 B.1.525 Sequences in Belgium"
 
+  B.1.214:
+    region: Europe
+    country: Belgium
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    title: "SARS-CoV-2 B.1.214 (insertion variant) Sequences in Belgium"
 
+  B.1.617:
+    region: Europe
+    country: Belgium
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    title: "SARS-CoV-2 B.1.617 Sequences in Belgium"
+
+  P.1:
+    region: Europe
+    country: Belgium
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    title: "SARS-CoV-2 P.1 Sequences in Belgium"
 
 subsampling:
   # Here we use the default subsampling logic for countries
@@ -138,5 +158,5 @@ subsampling:
 # If you want to specify specific files for each build - you can!
 # See the 'example_advanced_customization' builds.yaml
 files:
-  auspice_config: "my_profiles/belgium-sars2-cov/my_auspice_config.json"
-  description: "my_profiles/belgium-sars2-cov/my_description.md"
+  auspice_config: "my_profiles/sars-cov-2-belgium/my_auspice_config.json"
+  description: "my_profiles/sars-cov-2-belgium/my_description.md"
