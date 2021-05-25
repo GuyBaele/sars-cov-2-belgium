@@ -1,7 +1,18 @@
-
+rule generate_master_dataset:
+    input:
+        sequences = "data/sequences.fasta",
+        metadata = "data/metadata.tsv"
+    output:
+        sequences = "data/ALL_SEQUENCES.fasta",
+        metadata = "data/ALL_METADATA.tsv"
+    log:
+        "logs/generate_master_dataset.txt"
+    shell:
+        "python scripts/data_manipulation/build_datasets.py 2>&1 | tee {log}"
 
 rule generate_alignment:
     input:
+        sequences = rules.generate_master_dataset.output.sequences,
         sequence_list = "data/sequence_lists/{build_name}.txt"
     output:
         alignment = "results/fastas/{build_name}.aligned.fasta"
@@ -20,8 +31,7 @@ rule adjust_metadata_regions:
         Adjusting metadata for build '{wildcards.build_name}'
         """
     input:
-        # metadata = rules.download.output.metadata
-        metadata = config['metadata'],
+        metadata = rules.generate_master_dataset.output.metadata,
     output:
         metadata = "results/{build_name}/metadata_adjusted.tsv"
     params:
@@ -543,12 +553,12 @@ rule finalize:
     message: "Remove extraneous colorings for main build and move frequencies"
     input:
         auspice_json = rules.incorporate_travel_history.output.auspice_json,
-        frequencies = rules.tip_frequencies.output.tip_frequencies_json,
-        root_sequence_json = rules.export.output.root_sequence_json
+        # frequencies = rules.tip_frequencies.output.tip_frequencies_json,
+        root_sequence_json = rules.export.output.root_sequence_json,
     output:
         auspice_json = "auspice/sars-cov-2-belgium_{build_name}.json",
-        tip_frequency_json = "auspice/sars-cov-2-belgium_{build_name}_tip-frequencies.json",
-        root_sequence_json = "auspice/sars-cov-2-belgium_{build_name}_root-sequence.json"
+        # tip_frequency_json = "auspice/sars-cov-2-belgium_{build_name}_tip-frequencies.json",
+        root_sequence_json = "auspice/sars-cov-2-belgium_{build_name}_root-sequence.json",
     log:
         "logs/fix_colorings_{build_name}.txt"
     conda: config["conda_environment"]
@@ -557,6 +567,16 @@ rule finalize:
         python3 scripts/fix-colorings.py \
             --input {input.auspice_json} \
             --output {output.auspice_json} 2>&1 | tee {log} &&
+        cp {input.root_sequence_json} {output.root_sequence_json}
+        """
+
+'''
+    shell:
+        """
+        python3 scripts/fix-colorings.py \
+            --input {input.auspice_json} \
+            --output {output.auspice_json} 2>&1 | tee {log} &&
         cp {input.frequencies} {output.tip_frequency_json} &&
         cp {input.root_sequence_json} {output.root_sequence_json}
         """
+'''
