@@ -1,5 +1,7 @@
 """make_small_alignment.py
 TODO: Give this a better CLI
+
+TODO: Write a better set of documentation for this
 """
 import argh
 from Bio import SeqIO
@@ -21,8 +23,8 @@ def create_unaligned_fasta(build, excludes=None):
         for line in f.readlines():
             line = line.split("\t")
             meta_sequences.add(line[1])
-            if len(line[5]) < 10: # Exclude sequences with bad dates
-                excludes.add(line[1])
+            # if len(line[5]) < 10: # Exclude sequences with bad dates
+            #     excludes.add(line[1])
     print(f"Ignored {len(excludes)-e} sequences (out of the full metadata tsv) with poorly formatte dates.")
 
     with open(seq_list_file, "r") as f:
