@@ -103,13 +103,11 @@
     "division",
     "country",
     "region",
-    "host",
     "author"
   ],
   "panels": [
     "tree",
     "map",
-    "entropy",
-    "frequencies"
+    "entropy"
   ]
 }
