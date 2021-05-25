@@ -4,20 +4,27 @@ channels:
 - defaults
 dependencies:
 - argh
+- auspice
 - cvxopt
 - datrie
 - fasttree
 - iqtree
 - mafft
+- nextalign
 - opencv
 - pandas
 - psutil
 - python=3.6*
 - nodejs=10
 - raxml
+- snakemake
 - vcftools
+- ipython
+- tqdm
 - git
 - pip
+- yappi
+- openpyxl=2.6.1
 - pip:
   - awscli==1.18.45
   - nextstrain-augur==10.0.2
