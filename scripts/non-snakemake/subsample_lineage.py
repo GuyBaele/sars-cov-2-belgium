@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 def read_metadata(f):
 	print(f"reading metadata file {f}...")
 	df = pd.read_csv(f,sep='\t',low_memory=False)
-	df['fulldate'] = df['date'].apply(lambda x: "XX" not in x)
+	df['fulldate'] = df['date'].apply(lambda x: "XX" not in str(x))
 	df = df.query("fulldate == True").copy()
 	df['date'] = pd.to_datetime(df['date'])
 	df['week'] = df['date'].apply(lambda x:f"{x.year}-{x.week}")
