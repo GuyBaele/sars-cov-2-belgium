@@ -60,7 +60,7 @@ mask:
   mask_sites: "13402 24389 24390"
 
 tree:
-  tree-builder-args: "'-ninit 10 -n 4'"
+  tree-builder-args: "'-ninit 10 -n 4 -v'"
 
 # TreeTime settings
 refine:

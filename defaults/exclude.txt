@@ -1200,7 +1200,6 @@ Zimbabwe/ZW-9953/2020
 Zimbabwe/ZW-9955/2020
 Zimbabwe/ZW-9957/2020
 
-
 # Excluding in favor of USA/MA-JLL-796350S/2020 from same patient. The 'N' sample is nasopharangeal and the 'S' sample is stool. The N is missing some data / is too short. See https://bedfordlab.slack.com/archives/CTZKJC7PZ/p1606163488161000
 USA/MA-JLL-796350N/2020
 
@@ -1290,3 +1289,17 @@ Senegal/SN-MBO-211970/2021
 Switzerland/ZH-ETHZ-530260/2020
 Switzerland/ZH-ETHZ-530313/2020
 Switzerland/VD-ETHZ-510906/2021
+
+# Bad B.1.620 sequences
+France/ARA-HCL021061598501/2021
+Belgium/UZA-UA-24912930/2021
+
+# Bad P.1 sequences
+Belgium/AZKLINA121-088538/2021
+Belgium/UMONS-CV2154800032/2021
+
+# Sequences with imprecise dates
+Thailand/Bangkok_CF11695/2021
+Canada/ON-PHL-21-11219/2021
+Canada/ON-PHL-21-09285/2021
+Canada/ON-PHL-21-08730-v2/2021
