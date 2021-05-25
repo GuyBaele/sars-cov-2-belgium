@@ -1,4 +1,4 @@
-# NextStrain background
+# Nextstrain background
 Wuhan/WH01/2019
 Australia/NSW02/2020
 Australia/SA02/2020
