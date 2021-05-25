@@ -1,13 +1,13 @@
-import sys,os
+import os
 import subprocess
 import datetime as dt
 import numpy as np
 import json
-from math import isnan
 import pandas as pd
 from Bio import SeqIO
 from tqdm import tqdm
 import random
+
 
 def main():
     """The main process to follow for incorporating metadata files
@@ -15,37 +15,52 @@ def main():
     # There should be two files that come from GISAID:
     #   1) A dated metadata tsv
     #   2) A dated sequences fasta
+    # These files can be found throught:
+    # GISAID
+    #   -> EpiCoV
+    #     -> Downloads
+    #        -> Genomic epidemiology
+    #          -> "FASTA" and "metadata" links
+    # After being downloaded and extracted with `gunzip`
+    # they can be renamed/relocated to the paths shown below
     gisaid_metadata = "data/metadata.tsv"
     gisaid_fasta = "data/sequences.fasta"
-
 
     # We expect to have a directory full of data (both sequence and metadata)
     # which is not on GISAID
     non_gisaid_dir = "data/non_gisaid"
 
-    # Define names of the updated sequence and metadata files that we want at the end
+    # Define names of the updated sequence and metadata files
+    # that we want at the end of the pipeline
     OUTPUT_FASTA = "data/ALL_SEQUENCES.fasta"
     OUTPUT_META_FNAME = "data/ALL_METADATA.tsv"
 
     # We will take a set of other metadata files from other sources as well
-    #they
-    #should
-    #go
-    #here
+    # they
+    # should
+    # go
+    # here
 
     ##################
     #  Main process  #
     ##################
     # First, concatenate all the fasta files into one master fasta
     # This gives us two outputs:
-    #    record_ids: set of all the record names (i.e. fasta headers) that are included in the dataset
-    #    records: dictionary mapping the record_ids to their associated sequence
-    #       TODO: Change this to be just sequence length, since that is all we need
-    (record_ids, records) = concat_and_write_fasta(gisaid_fasta, non_gisaid_dir, OUTPUT_FASTA)
+    #   record_ids: set of all the record names (i.e. fasta headers)
+    #     that are included in the dataset
+    #   records: dictionary mapping the record_ids to their associated sequence
+    #     TODO: Change this to be just sequence length, since that is all we need
+    (record_ids, records) = concat_and_write_fasta(gisaid_fasta,
+                                                   non_gisaid_dir,
+                                                   OUTPUT_FASTA)
 
     # Second, concatenate all the associated metadata
     # This is a bit of a mess
-    concat_and_write_metadata(gisaid_metadata, non_gisaid_dir, OUTPUT_META_FNAME, record_ids, records)
+    concat_and_write_metadata(gisaid_metadata,
+                              non_gisaid_dir,
+                              OUTPUT_META_FNAME,
+                              record_ids, records)
+
 
 def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
     """
@@ -64,7 +79,7 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
         call = ["grep", "-c", "\">\"", base_fname]
         lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
         nlines = int(lines.stdout.read().strip())
-        for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines):
+        for record in tqdm(SeqIO.parse(handle, "fasta"), desc="Nextstrain fasta import", total=nlines):
             # Check if a sequence with the same name already exists in the dataset
             if record.id not in record_ids:
                 # If not add the record to the master group of records
@@ -111,23 +126,27 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
 
 def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records):
     """
-    IMPORTANT: This function absolutely sucks. I'll try to break it apart into more sub-functions with time
+    IMPORTANT: This function absolutely sucks. I'll try to
+    break it apart into more sub-functions with time
 
-    This function takes multiple metadata spreadsheets and sticks them together.
-    Then it appropriately fixes Belgian samples so they behave the way that we want them to.
+    This function takes multiple metadata spreadsheets and
+    sticks them together.
+    Then it appropriately fixes Belgian samples so they
+    behave the way that we want them to.
     It then writes to a new file.
 
     Also it prints out a bunch of stuff that needs to be fixed later on
     """
 
     # Define some things that will be used later.
-    # There is some inconsistency in how headers are labeled, `renames` maps between those
+    # There is some inconsistency in how headers are labeled,
+    # `renames` maps between those
     renames = {
-                "sequence name" : "strain",
-                "Town" : "location",
-                "Acc.Number" : "gisaid_epi_isl",
-                "Sex" : "sex",
-                "Age" : "age",
+                "sequence name": "strain",
+                "Town": "location",
+                "Acc.Number": "gisaid_epi_isl",
+                "Sex": "sex",
+                "Age": "age",
                 "sample date": "date"
                }
     # `drop_cols` is the column names that we will take out of the final merge
@@ -202,6 +221,11 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
 
     c = 0
     for (index, row) in metadata.iterrows():
+        try:
+            if len(row["date"]) <= 9:
+                drop_rows.append(index)
+        except:
+            drop_rows.append(index)
         if metadata.at[index,"country"] == "Belgium":
             if metadata.at[index,"country_exposure"] == "?":
                 metadata.at[index,"country_exposure"] = "Belgium"
@@ -343,7 +367,7 @@ def build_strain_to_zip():
     df2 = pd.read_csv(liege_file2).rename(columns={"sequence_ID": "strain"})
 
     # df = pd.concat([df,df2])
-    df = pd.concat([df,df2,df3,df4,df5,df6],ignore_index=True,verify_integrity=True)
+    df = pd.concat([df,df2],ignore_index=True,verify_integrity=True)
 
     def sf(s):
         if s.startswith("hCoV-19"):
@@ -359,8 +383,6 @@ def build_strain_to_zip():
             m[k] = str(v)
         except:
             pass
-    print(f"Sequences with zip maps: {len(m.keys())}")
-    print(m.keys())
     return m
 
 def build_isl_to_zip():
@@ -376,46 +398,79 @@ def build_isl_to_zip():
             r[s] = str(df.at[i,"Postcode"]).strip()
     return r
 
-def read_muni_map():
-    print("Making a municipality: province map.")
-    map = {}
-    muni_map_fname = "data/epi/COVID19BE_CASES_MUNI_CUM.json"
-    with open(muni_map_fname,"r") as f:
+
+def read_muni_map(case_json="data/epi/COVID19BE_CASES_MUNI_CUM.json"):
+    """Parse a set of files mapping municipality names to their province.
+
+    Keyword arguments:
+    case_json -- a string that gives the path (relative to project root)
+                     of the case json file that is being read
+
+    Output:
+    map -- a dictionary keying all named municipalities in Belgium to their
+               province. Each municipality will be the key two times:
+               once in Dutch and once in French.
+
+    {"Leuven" : "VlaamsBrabant",
+     "Louvain" : "VlaamsBrabant",
+      ...
+    }
+    """
+
+    print("Creating a map of municipalities to their province.")
+    print("This may take several minutes.")
+
+    map = {}  # Initialize the final dictionary to be returned
+
+    # Use the json module to load the full file into memory :(
+    with open(case_json, "r") as f:
         data = json.load(f)
+
+    # Add a small function that will clean up municipalities with parentheses
     fixit = lambda x: x.split("(")[0][:-1] if '(' in x else x
-    # fixit = lambda x: x
-    #set both dutch and french names
-    for item in data:
+
+    # TODO: Handle all these poorly caught exceptions properly
+    # Set both dutch and french names
+    for item in tqdm(data, desc="Reading municipalities"):
+        # Add the Dutch municipality name
         try:
             map[fixit(item["TX_DESCR_NL"])] = item["PROVINCE"]
-        except:
+        except Exception as e:
+            print(f"WARNING: {e}")
             pass
+        # Add the French municipality name
         try:
             map[fixit(item["TX_DESCR_FR"])] = item["PROVINCE"]
-        except:
+        except Exception as e:
+            print(f"WARNING: {e}")
             pass
-    with open("data/source_files/municipalities_to_provinces.csv",'r') as f:
+
+    with open("data/source_files/municipalities_to_provinces.csv", 'r') as f:
         for line in f.readlines():
             try:
                 line = line.strip('\n').split(',')
                 map[line[0]] = line[1]
-            except:
+            except Exception as e:
+                print(f"WARNING: {e}")
                 pass
     return map
+
 
 def read_manual_fix_map():
     fname = "data/source_files/municipalities_to_provinces.csv"
     m = {}
-    with open(fname,"r") as f:
+    with open(fname, "r") as f:
         for line in f.readlines():
             try:
-                l = line.strip('\n').split(',')
-                k = l[0]
-                v = l[1]
+                line = line.strip('\n').split(',')
+                k = line[0]
+                v = line[1]
                 m[k] = v
-            except:
+            except Exception as e:
+                print(f"WARNING: {e}")
                 pass
     return m
+
 
 def fix_liege(df,i):
     """
@@ -423,32 +478,36 @@ def fix_liege(df,i):
     """
     geo_fixes = ["location", "location_exposure", "division", "division_exposure"]
     for gf in geo_fixes:
-        if df.at[i,gf] == "Liege":
-            df.at[i,gf] = "Liège"
+        if df.at[i, gf] == "Liege":
+            df.at[i, gf] = "Liège"
+
 
 def get_zip_location_map():
     """make dictionaries taking zip code to province and municipality
     """
-    bmap = pd.read_csv("../Belgium-Geographic-Data/dist/metadata/be-dictionary.csv",error_bad_lines=False)
-    bmap["PostCode"] = bmap["PostCode"].astype(int,errors='ignore')
+    bmap = pd.read_csv("../Belgium-Geographic-Data/dist/metadata/be-dictionary.csv",
+                       error_bad_lines=False, encoding="ISO-8859-1")
+    bmap["PostCode"] = bmap["PostCode"].astype(int, errors='ignore')
     pro = {}
     mun = {}
 
-    fn = { "Vlaams-Brabant": "VlaamsBrabant",
-                    "Brabant Wallon": "BrabantWallon",
-                    "West-Vlaanderen": "WestVlaanderen",
-                    "Oost-Vlaanderen": "OostVlaanderen",
-                    "Liège": "Liège" }
+    fn = {"Vlaams-Brabant": "VlaamsBrabant",
+          "Brabant Wallon": "BrabantWallon",
+          "West-Vlaanderen": "WestVlaanderen",
+          "Oost-Vlaanderen": "OostVlaanderen",
+          "Liège": "Liège"}
+
     myfix = lambda n: fn[n] if n in fn.keys() else n
 
-    for index,row in bmap.iterrows():
-        zip = str(bmap.at[index,"PostCode"])
+    for index, row in bmap.iterrows():
+        zip = str(bmap.at[index, "PostCode"])
         if zip not in pro.keys():
-            pro[zip] = myfix(bmap.at[index,"Province"])
-            mun[zip] = bmap.at[index,"Municipality"]
-    return pro,mun
+            pro[zip] = myfix(bmap.at[index, "Province"])
+            mun[zip] = bmap.at[index, "Municipality"]
+    return pro, mun
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     # print(build_strain_to_zip())
     # sys.exit()
     main()
