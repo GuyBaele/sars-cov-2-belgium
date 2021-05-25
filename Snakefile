@@ -68,18 +68,15 @@ BUILD_NAMES = list(config["builds"].keys())
 wildcard_constraints:
     # Allow build names to contain alpha characters, underscores, and hyphens
     # but not special strings used for Nextstrain builds.
-    build_name = r'(?:[_a-zA-Z-](?!(tip-frequencies|gisaid|zh)))+',
+    build_name = r'(?:[_a-zA-Z0-9.-](?!(tip-frequencies|gisaid|zh)))+',
     date = r"[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]"
-
-# localrules: download
 
 # Create a standard ncov build for auspice, by default.
 rule all:
     input:
         auspice_json = expand("auspice/sars-cov-2-belgium_{build_name}.json", build_name=BUILD_NAMES),
-        tip_frequency_json = expand("auspice/sars-cov-2-belgium_{build_name}_tip-frequencies.json", build_name=BUILD_NAMES),
+        # tip_frequency_json = expand("auspice/sars-cov-2-belgium_{build_name}_tip-frequencies.json", build_name=BUILD_NAMES),
         updated_meta =config['metadata'],
-        ecdc="data/PREPROCESSING/results/ecdc.csv",
 
 rule clean:
     message: "Removing directories: {params}"
