@@ -7,6 +7,11 @@ import pandas as pd
 from Bio import SeqIO
 from tqdm import tqdm
 import random
+from argh import dispatch_command
+from redis_cache import cache_it
+
+
+CACHE_HOURS = 1
 
 
 def main():
@@ -35,11 +40,8 @@ def main():
     OUTPUT_FASTA = "data/ALL_SEQUENCES.fasta"
     OUTPUT_META_FNAME = "data/ALL_METADATA.tsv"
 
-    # We will take a set of other metadata files from other sources as well
-    # they
-    # should
-    # go
-    # here
+    sequence_names = read_all_sequence_lists()
+    exclude_names = read_excludes()
 
     ##################
     #  Main process  #
@@ -52,7 +54,9 @@ def main():
     #     TODO: Change this to be just sequence length, since that is all we need
     (record_ids, records) = concat_and_write_fasta(gisaid_fasta,
                                                    non_gisaid_dir,
-                                                   OUTPUT_FASTA)
+                                                   OUTPUT_FASTA,
+                                                   sequence_names,
+                                                   exclude_names)
 
     # Second, concatenate all the associated metadata
     # This is a bit of a mess
@@ -62,36 +66,51 @@ def main():
                               record_ids, records)
 
 
-def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
+# @cache_it(limit=100000, expire=60*60*CACHE_HOURS)
+def concat_and_write_fasta(base_fname, fasta_dir, o_fname,
+                           sequence_set, exclude_set):
     """
     Take a single fasta (containing multiple GISAID records) and add a set of other fasta records
         stored in a given directory to that fasta. Write the output to a new file.
 
     Return both a set of unique record IDs and a dictionary of the records
     """
-    # Initialize empty lists
+
+    # Initialize empty lists for outputs
     records = []
     record_ids = set()
     duplicates = []
+
     # Read the gisaid fasta
+    nlines = count_lines_in_fasta(base_fname)
+    print(f"Reading the base GISAID fasta: {base_fname}")
     with open(base_fname, "r") as handle:
-        print(f"Processing {base_fname}")
-        call = ["grep", "-c", "\">\"", base_fname]
-        lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
-        nlines = int(lines.stdout.read().strip())
-        for record in tqdm(SeqIO.parse(handle, "fasta"), desc="Nextstrain fasta import", total=nlines):
-            # Check if a sequence with the same name already exists in the dataset
+        for record in tqdm(SeqIO.parse(handle, "fasta"),
+                           desc="Nextstrain fasta import",
+                           total=nlines):
+            # Check if a sequence with the same name already exists
             if record.id not in record_ids:
-                # If not add the record to the master group of records
-                records.append(record)
-                # Also keep track of the sequence names that have been processed
-                record_ids.add(record.id)
+                # Check if the record id is in the dataset list
+                if record.id in sequence_set:
+                    # Check if the record id is in the exclude list
+                    if record.id in exclude_set:
+                        pass
+                    else:
+                        # If not add the record to the master group of records
+                        records.append(record)
+                        # Also keep track of the sequence names that have been processed
+                        record_ids.add(record.id)
             else:
                 # If it already exists, warn the user
-                duplicates.append(f"WARNING: Duplicate record ID {record.id}, skipping.")
+                duplicates.append(f"WARNING: Duplicate record ID {record.id}.")
     print(f"Added {len(record_ids)} records")
 
-    # Now, process each of the files in the directory that contains non-gisaid fasta files
+    # NOTE: The following logic is more or less deprecated, as we don't really
+    #         use additional fastas at this point and just pull things from
+    #         GISAID instead. That said, I'm keeping it in for now.
+    # TODO: Check if everything works correctly without doing this, as it will
+    #         clean up the whole process quite a bit
+    # Now, process each of the files in the directory that contains non-gisaid fastas
     for fname in os.listdir(fasta_dir):
         # Note: some of the files may be metadata files, we only care about fastas now
         if fname.endswith(".fasta"):
@@ -99,7 +118,8 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
             # Keep track of how many new sequences were added from the file for debugging
             added = 0
             with open(f"{fasta_dir}/{fname}", "r") as handle:
-                for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Importing {fname}"):
+                for record in tqdm(SeqIO.parse(handle, "fasta"),
+                                   desc=f"Importing {fname}"):
                     # Use the same logic as we did handling the gisaid fasta above
                     if record.id not in record_ids:
                         records.append(record)
@@ -109,22 +129,29 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname):
                         duplicates.append(f"Duplicate record ID: {record.id}, skipping.")
             print(f"Added {added} records")
 
+    print(f"Final dataset size (in sequences): {len(records)}")
+
     # Write the output fasta
     print(f"Writing {o_fname}")
     with open(o_fname, "w") as output_handle:
         SeqIO.write(records, output_handle, "fasta")
-    print(f"Writing duplicates to results/duplicate_sequence.txt")
+
+    # Write the list of duplicates, we care for debugging issues
+    print("Writing duplicates to results/duplicate_sequence.txt")
     with open("results/duplicate_sequences.txt", "w") as output_handle:
         for line in duplicates:
             output_handle.write(f"{line}\n")
 
-    # Transform records into a dictionary keyed on id, as that will be easier to handle later
-    transform_records = lambda records: { record.id: record for record in records }
-    records = transform_records(records) # probably an abuse of names to rename records to a new datatype, but whatever
+    # Transform records into a dictionary keyed on id,
+    # as that will be easier to handle later
+    # NOTE: This fucking sucks.
+    new_records = {record.id: record for record in records}
 
-    return record_ids, records
+    return record_ids, new_records
 
-def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records):
+
+def concat_and_write_metadata(base_fname, meta_dir, o_fname,
+                              record_ids, records):
     """
     IMPORTANT: This function absolutely sucks. I'll try to
     break it apart into more sub-functions with time
@@ -284,9 +311,61 @@ def concat_and_write_metadata(base_fname, meta_dir, o_fname, record_ids, records
     # metadata = coarse_downsample(metadata)
     # print(metadata)
 
-
     print(f"Writing {o_fname}")
     metadata.to_csv(o_fname, sep='\t', index=False)
+
+
+@cache_it(limit=1000, expire=60*60*CACHE_HOURS)
+def read_all_sequence_lists():
+    """Read all the .txt files in the sequence list directory
+
+    This creates a sort of "master" list of all sequences that we ever might use
+    """
+    # Name of the directory we care about
+    seq_list_directory = "data/sequence_lists/"
+    print(f"Creating a master sequence list from {seq_list_directory}.")
+
+    # Empty set to store our output
+    all_seqs = set([])
+
+    for fname in os.listdir(seq_list_directory):
+        if fname.endswith(".txt"):
+            with open(f"{seq_list_directory}{fname}", "r") as f:
+                for line in f.readlines():
+                    # Remove \n characters
+                    line = line.strip()
+                    all_seqs.add(line)
+
+    return all_seqs
+
+
+@cache_it(limit=1000, expire=60*60*CACHE_HOURS)
+def read_excludes():
+    """Read the exclude list to give us the set of what we should ignore."""
+    # Name of the file we are reading
+    exclude_file = "defaults/exclude.txt"
+    print(f"Creating a master exclude list from {exclude_file}")
+
+    # Empty set to store our outuput
+    exclude = set([])
+
+    with open(exclude_file, "r") as f:
+        for line in f.readlines():
+            line = line.strip()
+            exclude.add(line)
+
+    return exclude
+
+
+@cache_it(limit=1000, expire=60*60*CACHE_HOURS)
+def count_lines_in_fasta(fname):
+    print(f"Processing {fname} for total fasta entries.")
+    call = ["grep", "-c", "\">\"", fname]
+    lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
+    nlines = int(lines.stdout.read().strip())
+    print(f"Found {nlines} fasta entries.")
+    return nlines
+
 
 def coarse_downsample(df):
     p=0.0 # drop European, non-belgian sequences
@@ -510,4 +589,4 @@ def get_zip_location_map():
 if __name__ == "__main__":
     # print(build_strain_to_zip())
     # sys.exit()
-    main()
+    dispatch_command(main)
