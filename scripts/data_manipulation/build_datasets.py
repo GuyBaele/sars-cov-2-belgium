@@ -81,6 +81,20 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname,
     record_ids = set()
     duplicates = []
 
+    @cache_it(limit=1_000_000, expire=60*60*CACHE_HOURS)
+    def check_record_validity(id):
+        """A little helper to make check the following:
+
+        1. The record is in our master sequence set
+        2. The record is not flagged to be excluded
+        """
+        if id in sequence_set:
+            if id in exclude_set:
+                return False
+            else:
+                return True
+        return False
+
     # Read the gisaid fasta
     nlines = count_lines_in_fasta(base_fname)
     print(f"Reading the base GISAID fasta: {base_fname}")
@@ -90,21 +104,39 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname,
                            total=nlines):
             # Check if a sequence with the same name already exists
             if record.id not in record_ids:
-                # Check if the record id is in the dataset list
-                if record.id in sequence_set:
-                    # Check if the record id is in the exclude list
-                    if record.id in exclude_set:
-                        pass
-                    else:
-                        # If not add the record to the master group of records
-                        records.append(record)
-                        # Also keep track of the sequence names that have been processed
-                        record_ids.add(record.id)
+                if check_record_validity(record.id):
+                    records.append(record)
+                    # Keep track of the sequence names that have been processed
+                    record_ids.add(record.id)
             else:
                 # If it already exists, warn the user
                 duplicates.append(f"WARNING: Duplicate record ID {record.id}.")
     print(f"Added {len(record_ids)} records")
 
+    process_non_gisaid_fastas(fasta_dir, records, record_ids, duplicates)
+
+    print(f"Final dataset size (in sequences): {len(records)}")
+
+    # Write the output fasta
+    print(f"Writing {o_fname}")
+    with open(o_fname, "w") as output_handle:
+        SeqIO.write(records, output_handle, "fasta")
+
+    # Write the list of duplicates, we care for debugging issues
+    print("Writing duplicates to results/duplicate_sequence.txt")
+    with open("results/duplicate_sequences.txt", "w") as output_handle:
+        for line in duplicates:
+            output_handle.write(f"{line}\n")
+
+    # Transform records into a dictionary keyed on id,
+    # as that will be easier to handle later
+    # NOTE: This fucking sucks.
+    new_records = {record.id: record for record in records}
+
+    return record_ids, new_records
+
+
+def process_non_gisaid_fastas(fasta_dir, records, record_ids, duplicates):
     # NOTE: The following logic is more or less deprecated, as we don't really
     #         use additional fastas at this point and just pull things from
     #         GISAID instead. That said, I'm keeping it in for now.
@@ -128,26 +160,6 @@ def concat_and_write_fasta(base_fname, fasta_dir, o_fname,
                     else:
                         duplicates.append(f"Duplicate record ID: {record.id}, skipping.")
             print(f"Added {added} records")
-
-    print(f"Final dataset size (in sequences): {len(records)}")
-
-    # Write the output fasta
-    print(f"Writing {o_fname}")
-    with open(o_fname, "w") as output_handle:
-        SeqIO.write(records, output_handle, "fasta")
-
-    # Write the list of duplicates, we care for debugging issues
-    print("Writing duplicates to results/duplicate_sequence.txt")
-    with open("results/duplicate_sequences.txt", "w") as output_handle:
-        for line in duplicates:
-            output_handle.write(f"{line}\n")
-
-    # Transform records into a dictionary keyed on id,
-    # as that will be easier to handle later
-    # NOTE: This fucking sucks.
-    new_records = {record.id: record for record in records}
-
-    return record_ids, new_records
 
 
 def concat_and_write_metadata(base_fname, meta_dir, o_fname,
