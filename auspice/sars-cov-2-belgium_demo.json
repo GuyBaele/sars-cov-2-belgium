@@ -1,0 +1,2560 @@
+{
+  "meta": {
+    "build_url": "https://github.com/GuyBaele/sars-cov-2-belgium",
+    "colorings": [
+      {
+        "key": "clade_membership",
+        "title": "Clade",
+        "type": "categorical"
+      },
+      {
+        "key": "num_date",
+        "title": "Sampling date",
+        "type": "continuous"
+      },
+      {
+        "key": "gt",
+        "title": "Genotype",
+        "type": "categorical"
+      },
+      {
+        "key": "location",
+        "title": "Location",
+        "type": "categorical"
+      },
+      {
+        "key": "division",
+        "scale": [
+          [
+            "Antwerpen",
+            "#9E0142"
+          ],
+          [
+            "WestVlaanderen",
+            "#313695"
+          ],
+          [
+            "VlaamsBrabant",
+            "#1B7837"
+          ],
+          [
+            "Brussels",
+            "#FDAE61"
+          ],
+          [
+            "Belgium",
+            "#000000"
+          ],
+          [
+            "Li\u00e8ge",
+            "#D53E4F"
+          ],
+          [
+            "Belgium",
+            "#000000"
+          ]
+        ],
+        "title": "Admin Division",
+        "type": "categorical"
+      },
+      {
+        "key": "country",
+        "scale": [
+          [
+            "Belgium",
+            "#A1BE58"
+          ]
+        ],
+        "title": "Country",
+        "type": "categorical"
+      },
+      {
+        "key": "region",
+        "scale": [
+          [
+            "Asia",
+            "#59A3AA"
+          ],
+          [
+            "Europe",
+            "#BBBC49"
+          ]
+        ],
+        "title": "Region",
+        "type": "categorical"
+      },
+      {
+        "key": "host",
+        "title": "Host",
+        "type": "categorical"
+      },
+      {
+        "key": "age",
+        "title": "Age",
+        "type": "continuous"
+      },
+      {
+        "key": "sex",
+        "title": "Sex",
+        "type": "categorical"
+      },
+      {
+        "key": "author",
+        "title": "Authors",
+        "type": "categorical"
+      },
+      {
+        "key": "originating_lab",
+        "title": "Originating Lab",
+        "type": "categorical"
+      },
+      {
+        "key": "submitting_lab",
+        "title": "Submitting Lab",
+        "type": "categorical"
+      },
+      {
+        "key": "recency",
+        "scale": [
+          [
+            "Older",
+            "#416DCE"
+          ]
+        ],
+        "title": "Submission Date",
+        "type": "categorical"
+      },
+      {
+        "key": "country_exposure",
+        "title": "Country of exposure",
+        "type": "categorical"
+      },
+      {
+        "key": "division_exposure",
+        "title": "Division of exposure",
+        "type": "categorical"
+      },
+      {
+        "key": "region_exposure",
+        "title": "Region of exposure",
+        "type": "categorical"
+      },
+      {
+        "key": "legacy_clade_membership",
+        "title": "legacy_clade_membership",
+        "type": "categorical"
+      },
+      {
+        "key": "subclade_membership",
+        "title": "subclade_membership",
+        "type": "categorical"
+      },
+      {
+        "key": "recency",
+        "scale": [
+          [
+            "Older",
+            "#416DCE"
+          ]
+        ],
+        "title": "Submission Date",
+        "type": "categorical"
+      }
+    ],
+    "description": "This phylogeny shows evolutionary relationships of hCoV-19 (or SARS-CoV-2) viruses from the ongoing novel coronavirus COVID-19 pandemic with a particular focus on Belgium. In addition, we include virus genomes from other European countries and to lesser extent from the rest of the world to provide phylogenetic context. This context is important to understand how different outbreaks are connected and how the virus might have spread around the globe. We note, however, that direct linkage on the tree does not necessarily mean there exists a direct epidemiological link. Sampling of viral genomes is very incomplete and heterogeneous and mutations occur on average only every two weeks. Extended periods without mutations are therefore not uncommon and direct links or directionality cannot be inferred from the tree alone.\n\nSequence data and postal code (or zip code) information for the Belgian sequences have been made available in accordance with the EU General Data Protection Regulation (GDPR). This leads to three important phenomena: 1. of all the SARS-CoV-2 sequences generated within Belgium, a significant proportion have not been cleared to be made publicly available; 2. postal codes could not be released for all available genomic sequences and are hence assigned the postal code of the sequencing center (e.g. postal code 9000 for Ghent, despite the patients not residing in that postal code); 3. three N501Y,69-70 variants have been sequenced so far in Belgium but the sequences can currently not be made publicly available.\n\nAll genetic sequence data we use (European and international) are deposited in GISAID.\nWe gratefully acknowledge the authors, originating and submitting laboratories of the genetic sequence and metadata made available through GISAID on which this research is based.\nThe following Belgian sequencing centers were essential towards building this Nextstrain instance: the University of Li\u00e8ge (GIGA Medical Genomics), the KU Leuven (Rega Institute, Division of Clinical and Epidemiological Virology), the University of Ghent (Faculty of Health & Medicine and Faculty of Veterinary Medicine) and the Institute of Tropical Medicine Antwerp.\nWe gratefully acknowledge contributions of Belgian sequences by the Erasmus Medical Center (Rotterdam, The Netherlands) and support by the Research Foundation - Flanders (Fonds voor Wetenschappelijk Onderzoek - Vlaanderen) and the Fonds National de la Recherche Scientifique (FNRS, Belgium).\nA full listing of all originating and submitting laboratories is available below. An attribution table is available by clicking on \u201cDownload Data\u201d at the bottom of the page and then clicking on \u201cStrain Metadata\u201d in the resulting dialog box.\n",
+    "display_defaults": {
+      "branch_label": "clade",
+      "color_by": "clade",
+      "distance_measure": "num_date",
+      "geo_resolution": "location",
+      "map_triplicate": true
+    },
+    "filters": [
+      "recency",
+      "location",
+      "division",
+      "country",
+      "region",
+      "author"
+    ],
+    "genome_annotations": {
+      "E": {
+        "end": 26472,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 26245,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "M": {
+        "end": 27191,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 26523,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "N": {
+        "end": 29533,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 28274,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF10": {
+        "end": 29674,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 29558,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF14": {
+        "end": 28955,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 28734,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF1a": {
+        "end": 13468,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 266,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF1b": {
+        "end": 21555,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 13468,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF3a": {
+        "end": 26220,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 25393,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF6": {
+        "end": 27387,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 27202,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF7a": {
+        "end": 27759,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 27394,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF7b": {
+        "end": 27887,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 27756,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF8": {
+        "end": 28259,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 27894,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "ORF9b": {
+        "end": 28577,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 28284,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "S": {
+        "end": 25384,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 21563,
+        "strand": "+",
+        "type": "CDS"
+      },
+      "nuc": {
+        "end": 29903,
+        "seqid": "defaults/reference_seq.gb",
+        "start": 1,
+        "strand": "+",
+        "type": "source"
+      }
+    },
+    "geo_resolutions": [
+      {
+        "demes": {
+          "Antwerpen": {
+            "latitude": 51.225698,
+            "longitude": 4.420885
+          },
+          "Brussels": {
+            "latitude": 50.8503,
+            "longitude": 4.3517
+          },
+          "Geel": {
+            "latitude": 51.161137,
+            "longitude": 4.98727
+          },
+          "Landen": {
+            "latitude": 50.75267,
+            "longitude": 5.082
+          },
+          "Li\u00e8ge": {
+            "latitude": 50.6326,
+            "longitude": 5.5797
+          },
+          "Meise": {
+            "latitude": 50.960525,
+            "longitude": 4.315848
+          },
+          "Mol": {
+            "latitude": 51.217746,
+            "longitude": 5.187479
+          },
+          "Oostende": {
+            "latitude": 51.210615,
+            "longitude": 2.914232
+          },
+          "Saint-Josse-ten-Noode": {
+            "latitude": 50.854332,
+            "longitude": 4.367379
+          },
+          "Schoten": {
+            "latitude": 51.2498,
+            "longitude": 4.4977
+          },
+          "Wanze": {
+            "latitude": 50.549453,
+            "longitude": 5.196784
+          }
+        },
+        "key": "location"
+      },
+      {
+        "demes": {
+          "Antwerpen": {
+            "latitude": 51.225698,
+            "longitude": 4.420885
+          },
+          "Asia": {
+            "latitude": 30.451098,
+            "longitude": 86.654576
+          },
+          "Belgium": {
+            "latitude": 50.707735,
+            "longitude": 4.677726
+          },
+          "Brussels": {
+            "latitude": 50.8503,
+            "longitude": 4.3517
+          },
+          "Li\u00e8ge": {
+            "latitude": 50.6326,
+            "longitude": 5.5797
+          }
+        },
+        "key": "division"
+      },
+      {
+        "demes": {
+          "Asia": {
+            "latitude": 30.451098,
+            "longitude": 86.654576
+          },
+          "Belgium": {
+            "latitude": 50.707735,
+            "longitude": 4.677726
+          }
+        },
+        "key": "country"
+      },
+      {
+        "demes": {
+          "Asia": {
+            "latitude": 30.451098,
+            "longitude": 86.654576
+          },
+          "Europe": {
+            "latitude": 49.646237,
+            "longitude": 10.799454
+          }
+        },
+        "key": "region"
+      }
+    ],
+    "maintainers": [
+      {
+        "name": "Barney Isaksen Potter",
+        "url": "https://rega.kuleuven.be/cev/ecv/staff-members/00140913"
+      }
+    ],
+    "panels": [
+      "tree",
+      "map",
+      "entropy"
+    ],
+    "title": "SARS-CoV-2 Sequences in Belgium",
+    "updated": "2021-05-31"
+  },
+  "tree": {
+    "branch_attrs": {
+      "labels": {
+        "clade": "19A"
+      },
+      "mutations": {}
+    },
+    "children": [
+      {
+        "branch_attrs": {
+          "labels": {
+            "aa": "ORF1a: L2235I, N3833K"
+          },
+          "mutations": {
+            "ORF1a": [
+              "L2235I",
+              "N3833K"
+            ],
+            "nuc": [
+              "C6968A",
+              "T11764A"
+            ]
+          }
+        },
+        "name": "Wuhan/WH01/2019",
+        "node_attrs": {
+          "age": {
+            "value": "44"
+          },
+          "author": {
+            "author": "Weijun Chen et al",
+            "paper_url": "https://dx.doi.org/10.1016/S0140-6736(20)30251-8",
+            "title": "Genomic characterisation and epidemiology of 2019 novel coronavirus: implications for virus origins and receptor binding",
+            "value": "Weijun Chen et al"
+          },
+          "clade_membership": {
+            "value": "19A"
+          },
+          "country": {
+            "confidence": {
+              "Asia": 1.0
+            },
+            "entropy": -1.000088900581841e-12,
+            "value": "Asia"
+          },
+          "div": 1.999059258634359,
+          "division": {
+            "value": "Asia"
+          },
+          "division_exposure": {
+            "value": "Asia"
+          },
+          "gisaid_epi_isl": {
+            "value": "EPI_ISL_406798"
+          },
+          "host": {
+            "value": "Human"
+          },
+          "legacy_clade_membership": {
+            "value": "unassigned"
+          },
+          "num_date": {
+            "confidence": [
+              2019.9849315068493,
+              2019.9849315068493
+            ],
+            "value": 2019.9849315068493
+          },
+          "originating_lab": {
+            "value": "General Hospital of Central Theater Command of People's Liberation Army of China"
+          },
+          "recency": {
+            "value": "Older"
+          },
+          "region": {
+            "value": "Asia"
+          },
+          "region_exposure": {
+            "value": "Asia"
+          },
+          "sex": {
+            "value": "Male"
+          },
+          "subclade_membership": {
+            "value": "19A"
+          },
+          "submitting_lab": {
+            "value": "BGI & Institute of Microbiology, Chinese Academy of Sciences & Shandong First Medical University & Shandong Academy of Medical Sciences & General Hospital of Central Theater Command of People's Liberation Army of China"
+          },
+          "url": "https://www.gisaid.org"
+        }
+      },
+      {
+        "branch_attrs": {
+          "labels": {
+            "aa": "ORF8: L84S",
+            "clade": "19B"
+          },
+          "mutations": {
+            "ORF8": [
+              "L84S"
+            ],
+            "nuc": [
+              "C8782T",
+              "C18060T",
+              "T28144C"
+            ]
+          }
+        },
+        "name": "Wuhan/0126-C13/2020",
+        "node_attrs": {
+          "author": {
+            "author": "Jianjun Chen et al",
+            "value": "Jianjun Chen et al"
+          },
+          "clade_membership": {
+            "value": "19B"
+          },
+          "country": {
+            "confidence": {
+              "Asia": 1.0
+            },
+            "entropy": -1.000088900581841e-12,
+            "value": "Asia"
+          },
+          "div": 2.99812425449197,
+          "division": {
+            "value": "Asia"
+          },
+          "division_exposure": {
+            "value": "Asia"
+          },
+          "gisaid_epi_isl": {
+            "value": "EPI_ISL_493171"
+          },
+          "host": {
+            "value": "Human"
+          },
+          "legacy_clade_membership": {
+            "value": "B1"
+          },
+          "num_date": {
+            "confidence": [
+              2020.0696721311476,
+              2020.0696721311476
+            ],
+            "value": 2020.0696721311476
+          },
+          "originating_lab": {
+            "value": "National Virus Resource Center, Chinese Academy of Sciences, Wuhan 430071, China"
+          },
+          "recency": {
+            "value": "Older"
+          },
+          "region": {
+            "value": "Asia"
+          },
+          "region_exposure": {
+            "value": "Asia"
+          },
+          "subclade_membership": {
+            "value": "19B"
+          },
+          "submitting_lab": {
+            "value": "Computational Virology Group, Center for Bacteria and Viruses Resources and Bioinformation, Wuhan Institute of Virology, Chinese Academy of Sciences\uff0cWuhan 430071, China"
+          },
+          "url": "https://www.gisaid.org"
+        }
+      },
+      {
+        "branch_attrs": {
+          "mutations": {}
+        },
+        "children": [
+          {
+            "branch_attrs": {
+              "mutations": {}
+            },
+            "name": "Wuhan/Hu-1/2019",
+            "node_attrs": {
+              "author": {
+                "author": "Zhang et al",
+                "paper_url": "https://dx.doi.org/10.1038/s41586-020-2008-3",
+                "title": "A new coronavirus associated with human respiratory disease in China",
+                "value": "Zhang et al"
+              },
+              "clade_membership": {
+                "value": "19A"
+              },
+              "country": {
+                "confidence": {
+                  "Asia": 1.0
+                },
+                "entropy": -1.000088900581841e-12,
+                "value": "Asia"
+              },
+              "div": 1.1014885453068448e-17,
+              "division": {
+                "value": "Asia"
+              },
+              "division_exposure": {
+                "value": "Asia"
+              },
+              "gisaid_epi_isl": {
+                "value": "EPI_ISL_402125"
+              },
+              "host": {
+                "value": "Human"
+              },
+              "legacy_clade_membership": {
+                "value": "unassigned"
+              },
+              "num_date": {
+                "confidence": [
+                  2019.9849315068493,
+                  2019.9849315068493
+                ],
+                "value": 2019.9849315068493
+              },
+              "originating_lab": {
+                "value": "National Institute for Communicable Disease Control and Prevention (ICDC) Chinese Center for Disease Control and Prevention (China CDC)"
+              },
+              "recency": {
+                "value": "Older"
+              },
+              "region": {
+                "value": "Asia"
+              },
+              "region_exposure": {
+                "value": "Asia"
+              },
+              "subclade_membership": {
+                "value": "19A"
+              },
+              "submitting_lab": {
+                "value": "National Institute for Communicable Disease Control and Prevention (ICDC) Chinese Center for Disease Control and Prevention (China CDC)"
+              },
+              "url": "https://www.gisaid.org"
+            }
+          },
+          {
+            "branch_attrs": {
+              "labels": {
+                "aa": "ORF1b: P314L; S: D614G",
+                "clade": "20A"
+              },
+              "mutations": {
+                "ORF1b": [
+                  "P314L"
+                ],
+                "S": [
+                  "D614G"
+                ],
+                "nuc": [
+                  "C241T",
+                  "C3037T",
+                  "C14408T",
+                  "A23403G"
+                ]
+              }
+            },
+            "children": [
+              {
+                "branch_attrs": {
+                  "labels": {
+                    "aa": "E: L21F; M: I82T; N: S2X, D3X, A12G, T205I, *420X; ORF14: L52F; ORF1a: A540V, P959S, T2007I, S3675-, G3676-, F3677-; ORF1b: L314F; ORF3a: S92L; ORF6: F2-; ORF8: P30L; ORF9b: H9D; S: Q52R, A67V, I68X, H69-, V70X, V143X, Y144X, E484K, Q677H, F888L, *1274X"
+                  },
+                  "mutations": {
+                    "E": [
+                      "L21F"
+                    ],
+                    "M": [
+                      "I82T"
+                    ],
+                    "N": [
+                      "S2X",
+                      "D3X",
+                      "A12G",
+                      "T205I",
+                      "*420X"
+                    ],
+                    "ORF14": [
+                      "L52F"
+                    ],
+                    "ORF1a": [
+                      "A540V",
+                      "P959S",
+                      "T2007I",
+                      "S3675-",
+                      "G3676-",
+                      "F3677-"
+                    ],
+                    "ORF1b": [
+                      "L314F"
+                    ],
+                    "ORF3a": [
+                      "S92L"
+                    ],
+                    "ORF6": [
+                      "F2-"
+                    ],
+                    "ORF8": [
+                      "P30L"
+                    ],
+                    "ORF9b": [
+                      "H9D"
+                    ],
+                    "S": [
+                      "Q52R",
+                      "A67V",
+                      "I68X",
+                      "H69-",
+                      "V70X",
+                      "V143X",
+                      "Y144X",
+                      "E484K",
+                      "Q677H",
+                      "F888L",
+                      "*1274X"
+                    ],
+                    "nuc": [
+                      "C1498T",
+                      "C1884T",
+                      "G2659A",
+                      "C3140T",
+                      "C6285T",
+                      "T8593C",
+                      "C9565T",
+                      "T11288-",
+                      "C11289-",
+                      "T11290-",
+                      "G11291-",
+                      "G11292-",
+                      "T11293-",
+                      "T11294-",
+                      "T11295-",
+                      "T11296-",
+                      "C13536T",
+                      "C14407T",
+                      "T16138C",
+                      "C18171T",
+                      "A20724G",
+                      "A21717G",
+                      "C21762T",
+                      "T21765-",
+                      "A21766-",
+                      "C21767-",
+                      "A21768-",
+                      "T21769-",
+                      "G21770-",
+                      "T21991-",
+                      "T21992-",
+                      "A21993-",
+                      "G23012A",
+                      "G23593C",
+                      "T24224C",
+                      "C24748T",
+                      "C25667T",
+                      "C26305T",
+                      "T26767C",
+                      "T27205-",
+                      "T27206-",
+                      "T27207-",
+                      "C27982T",
+                      "C28278-",
+                      "T28279-",
+                      "G28280-",
+                      "C28308G",
+                      "A28699G",
+                      "C28887T"
+                    ]
+                  }
+                },
+                "name": "Belgium/ULG-12767/2021",
+                "node_attrs": {
+                  "age": {
+                    "value": "43"
+                  },
+                  "author": {
+                    "author": "Keith Durkin et al",
+                    "value": "Keith Durkin et al"
+                  },
+                  "clade_membership": {
+                    "value": "20A"
+                  },
+                  "country": {
+                    "confidence": {
+                      "Belgium": 1.0
+                    },
+                    "entropy": -1.000088900581841e-12,
+                    "value": "Belgium"
+                  },
+                  "div": 29.03643993066569,
+                  "division": {
+                    "value": "Brussels"
+                  },
+                  "division_exposure": {
+                    "value": "Brussels"
+                  },
+                  "gisaid_epi_isl": {
+                    "value": "EPI_ISL_1171528"
+                  },
+                  "host": {
+                    "value": "Human"
+                  },
+                  "legacy_clade_membership": {
+                    "value": "A2a"
+                  },
+                  "location": {
+                    "value": "Brussels"
+                  },
+                  "num_date": {
+                    "confidence": [
+                      2021.1493150684933,
+                      2021.1493150684933
+                    ],
+                    "value": 2021.1493150684933
+                  },
+                  "originating_lab": {
+                    "value": "SYNLAB"
+                  },
+                  "recency": {
+                    "value": "Older"
+                  },
+                  "region": {
+                    "value": "Europe"
+                  },
+                  "region_exposure": {
+                    "value": "Europe"
+                  },
+                  "sex": {
+                    "value": "Male"
+                  },
+                  "subclade_membership": {
+                    "value": "20A"
+                  },
+                  "submitting_lab": {
+                    "value": "GIGA Medical Genomics"
+                  },
+                  "url": "https://www.gisaid.org"
+                }
+              },
+              {
+                "branch_attrs": {
+                  "mutations": {
+                    "nuc": [
+                      "G21255C"
+                    ]
+                  }
+                },
+                "children": [
+                  {
+                    "branch_attrs": {
+                      "labels": {
+                        "aa": "M: V70F; N: A220V; ORF10: V30L; ORF14: L67F; ORF1b: T17I; ORF3a: S165F; S: A222V",
+                        "clade": "20E (EU1)"
+                      },
+                      "mutations": {
+                        "M": [
+                          "V70F"
+                        ],
+                        "N": [
+                          "A220V"
+                        ],
+                        "ORF10": [
+                          "V30L"
+                        ],
+                        "ORF14": [
+                          "L67F"
+                        ],
+                        "ORF1b": [
+                          "T17I"
+                        ],
+                        "ORF3a": [
+                          "S165F"
+                        ],
+                        "S": [
+                          "A222V"
+                        ],
+                        "nuc": [
+                          "G204T",
+                          "T445C",
+                          "T3592C",
+                          "C6286T",
+                          "C8266T",
+                          "C13517T",
+                          "C22227T",
+                          "C25886T",
+                          "G26730T",
+                          "C26801G",
+                          "C27944T",
+                          "C28932T",
+                          "G29645T"
+                        ]
+                      }
+                    },
+                    "name": "Belgium/rega-2113/2020",
+                    "node_attrs": {
+                      "age": {
+                        "value": "48"
+                      },
+                      "author": {
+                        "author": "Tony Wawina-Bokalanga et al",
+                        "value": "Tony Wawina-Bokalanga et al"
+                      },
+                      "clade_membership": {
+                        "value": "20E (EU1)"
+                      },
+                      "country": {
+                        "confidence": {
+                          "Belgium": 1.0
+                        },
+                        "entropy": -1.000088900581841e-12,
+                        "value": "Belgium"
+                      },
+                      "div": 17.996029698832828,
+                      "division": {
+                        "value": "WestVlaanderen"
+                      },
+                      "division_exposure": {
+                        "value": "WestVlaanderen"
+                      },
+                      "gisaid_epi_isl": {
+                        "value": "EPI_ISL_935209"
+                      },
+                      "host": {
+                        "value": "Human"
+                      },
+                      "legacy_clade_membership": {
+                        "value": "A2a"
+                      },
+                      "location": {
+                        "value": "Oostende"
+                      },
+                      "num_date": {
+                        "confidence": [
+                          2020.9877049180327,
+                          2020.9877049180327
+                        ],
+                        "value": 2020.9877049180327
+                      },
+                      "originating_lab": {
+                        "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                      },
+                      "recency": {
+                        "value": "Older"
+                      },
+                      "region": {
+                        "value": "Europe"
+                      },
+                      "region_exposure": {
+                        "value": "Europe"
+                      },
+                      "sex": {
+                        "value": "Male"
+                      },
+                      "subclade_membership": {
+                        "value": "20E (EU1)"
+                      },
+                      "submitting_lab": {
+                        "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                      },
+                      "url": "https://www.gisaid.org"
+                    }
+                  },
+                  {
+                    "branch_attrs": {
+                      "labels": {
+                        "aa": "ORF1a: I2501T, M4241I; ORF1b: M624V, V711I, H1213Y, A1521S; S: I68X, H69-, V70X, N439K, *1274X"
+                      },
+                      "mutations": {
+                        "ORF1a": [
+                          "I2501T",
+                          "M4241I"
+                        ],
+                        "ORF1b": [
+                          "M624V",
+                          "V711I",
+                          "H1213Y",
+                          "A1521S"
+                        ],
+                        "S": [
+                          "I68X",
+                          "H69-",
+                          "V70X",
+                          "N439K",
+                          "*1274X"
+                        ],
+                        "nuc": [
+                          "C920T",
+                          "T1576C",
+                          "T7767C",
+                          "C8047T",
+                          "G12988T",
+                          "A15337G",
+                          "G15598A",
+                          "C17104T",
+                          "G18028T",
+                          "A20268G",
+                          "C20451T",
+                          "T21765-",
+                          "A21766-",
+                          "C21767-",
+                          "A21768-",
+                          "T21769-",
+                          "G21770-",
+                          "C22879A",
+                          "T24910C",
+                          "T26972C",
+                          "C27800A",
+                          "G28001A",
+                          "G29734C"
+                        ]
+                      }
+                    },
+                    "name": "Belgium/rega-1818/2020",
+                    "node_attrs": {
+                      "age": {
+                        "value": "41"
+                      },
+                      "author": {
+                        "author": "Tony Wawina-Bokalanga et al",
+                        "value": "Tony Wawina-Bokalanga et al"
+                      },
+                      "clade_membership": {
+                        "value": "20A"
+                      },
+                      "country": {
+                        "confidence": {
+                          "Belgium": 1.0
+                        },
+                        "entropy": -1.000088900581841e-12,
+                        "value": "Belgium"
+                      },
+                      "div": 22.00178443411836,
+                      "division": {
+                        "value": "Antwerpen"
+                      },
+                      "division_exposure": {
+                        "value": "Antwerpen"
+                      },
+                      "gisaid_epi_isl": {
+                        "value": "EPI_ISL_912426"
+                      },
+                      "host": {
+                        "value": "Human"
+                      },
+                      "legacy_clade_membership": {
+                        "value": "A2a"
+                      },
+                      "location": {
+                        "value": "Schoten"
+                      },
+                      "num_date": {
+                        "confidence": [
+                          2020.99043715847,
+                          2020.99043715847
+                        ],
+                        "value": 2020.99043715847
+                      },
+                      "originating_lab": {
+                        "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                      },
+                      "recency": {
+                        "value": "Older"
+                      },
+                      "region": {
+                        "value": "Europe"
+                      },
+                      "region_exposure": {
+                        "value": "Europe"
+                      },
+                      "sex": {
+                        "value": "Male"
+                      },
+                      "subclade_membership": {
+                        "value": "20A"
+                      },
+                      "submitting_lab": {
+                        "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                      },
+                      "url": "https://www.gisaid.org"
+                    }
+                  }
+                ],
+                "name": "NODE_0000008",
+                "node_attrs": {
+                  "clade_membership": {
+                    "value": "20A"
+                  },
+                  "div": 4.997055491665253,
+                  "legacy_clade_membership": {
+                    "value": "A2a"
+                  },
+                  "num_date": {
+                    "confidence": [
+                      2019.6879101877337,
+                      2020.5085668466427
+                    ],
+                    "value": 2020.4166152837513
+                  },
+                  "subclade_membership": {
+                    "value": "20A"
+                  },
+                  "country": {
+                    "confidence": {
+                      "Asia": 0.0030310133822496936,
+                      "Belgium": 0.9969689866177502
+                    },
+                    "entropy": 0.020602832216510474,
+                    "value": "Belgium"
+                  }
+                }
+              },
+              {
+                "branch_attrs": {
+                  "labels": {
+                    "aa": "S: S477N"
+                  },
+                  "mutations": {
+                    "S": [
+                      "S477N"
+                    ],
+                    "nuc": [
+                      "G22992A"
+                    ]
+                  }
+                },
+                "children": [
+                  {
+                    "branch_attrs": {
+                      "labels": {
+                        "aa": "N: M234I, A376T; ORF1a: M3087I; ORF1b: A176S, V767L, K1141R, E1184D; ORF3a: Q57H, G224C"
+                      },
+                      "mutations": {
+                        "N": [
+                          "M234I",
+                          "A376T"
+                        ],
+                        "ORF1a": [
+                          "M3087I"
+                        ],
+                        "ORF1b": [
+                          "A176S",
+                          "V767L",
+                          "K1141R",
+                          "E1184D"
+                        ],
+                        "ORF3a": [
+                          "Q57H",
+                          "G224C"
+                        ],
+                        "nuc": [
+                          "C4543T",
+                          "G5629T",
+                          "G9526T",
+                          "C11497T",
+                          "G13993T",
+                          "G15766T",
+                          "A16889G",
+                          "G17019T",
+                          "C18877T",
+                          "G25563T",
+                          "C25710T",
+                          "G26062T",
+                          "C26735T",
+                          "T26876C",
+                          "G28975C",
+                          "G29399A"
+                        ]
+                      }
+                    },
+                    "children": [
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "ORF1b: V2237F"
+                          },
+                          "mutations": {
+                            "ORF1b": [
+                              "V2237F"
+                            ],
+                            "nuc": [
+                              "T6769C",
+                              "G20176T"
+                            ]
+                          }
+                        },
+                        "name": "Belgium/rega-1533/2020",
+                        "node_attrs": {
+                          "age": {
+                            "value": "27"
+                          },
+                          "author": {
+                            "author": "Tony Wawina-Bokalanga et al",
+                            "value": "Tony Wawina-Bokalanga et al"
+                          },
+                          "clade_membership": {
+                            "value": "20A"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Belgium": 1.0
+                            },
+                            "entropy": -1.000088900581841e-12,
+                            "value": "Belgium"
+                          },
+                          "div": 22.998393713668776,
+                          "division": {
+                            "value": "Li\u00e8ge"
+                          },
+                          "division_exposure": {
+                            "value": "Li\u00e8ge"
+                          },
+                          "gisaid_epi_isl": {
+                            "value": "EPI_ISL_888776"
+                          },
+                          "host": {
+                            "value": "Human"
+                          },
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "location": {
+                            "value": "Wanze"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2020.957650273224,
+                              2020.957650273224
+                            ],
+                            "value": 2020.957650273224
+                          },
+                          "originating_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "recency": {
+                            "value": "Older"
+                          },
+                          "region": {
+                            "value": "Europe"
+                          },
+                          "region_exposure": {
+                            "value": "Europe"
+                          },
+                          "sex": {
+                            "value": "Male"
+                          },
+                          "subclade_membership": {
+                            "value": "20A.EU2"
+                          },
+                          "submitting_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "url": "https://www.gisaid.org"
+                        }
+                      },
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "M: H148Y; ORF1a: A2097V, P2739S, I4308V; ORF1b: A1033S"
+                          },
+                          "mutations": {
+                            "M": [
+                              "H148Y"
+                            ],
+                            "ORF1a": [
+                              "A2097V",
+                              "P2739S",
+                              "I4308V"
+                            ],
+                            "ORF1b": [
+                              "A1033S"
+                            ],
+                            "nuc": [
+                              "C6555T",
+                              "C7528T",
+                              "C8480T",
+                              "A13187G",
+                              "G16564T",
+                              "C20628T",
+                              "C25276T",
+                              "C26964T",
+                              "C29200T",
+                              "G29543T"
+                            ]
+                          }
+                        },
+                        "name": "Belgium/ULG-11598/2021",
+                        "node_attrs": {
+                          "age": {
+                            "value": "31"
+                          },
+                          "author": {
+                            "author": "Keith Durkin et al",
+                            "value": "Keith Durkin et al"
+                          },
+                          "clade_membership": {
+                            "value": "20A"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Belgium": 1.0
+                            },
+                            "entropy": -1.000088900581841e-12,
+                            "value": "Belgium"
+                          },
+                          "div": 30.999374094734137,
+                          "division": {
+                            "value": "Antwerpen"
+                          },
+                          "division_exposure": {
+                            "value": "Antwerpen"
+                          },
+                          "gisaid_epi_isl": {
+                            "value": "EPI_ISL_959587"
+                          },
+                          "host": {
+                            "value": "Human"
+                          },
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "location": {
+                            "value": "Antwerpen"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2021.0534246575342,
+                              2021.0534246575342
+                            ],
+                            "value": 2021.0534246575342
+                          },
+                          "originating_lab": {
+                            "value": "Labo Luc Olivier"
+                          },
+                          "recency": {
+                            "value": "Older"
+                          },
+                          "region": {
+                            "value": "Europe"
+                          },
+                          "region_exposure": {
+                            "value": "Europe"
+                          },
+                          "sex": {
+                            "value": "Female"
+                          },
+                          "subclade_membership": {
+                            "value": "20A.EU2"
+                          },
+                          "submitting_lab": {
+                            "value": "GIGA Medical Genomics"
+                          },
+                          "url": "https://www.gisaid.org"
+                        }
+                      }
+                    ],
+                    "name": "NODE_0000011",
+                    "node_attrs": {
+                      "clade_membership": {
+                        "value": "20A"
+                      },
+                      "div": 20.999224758959876,
+                      "legacy_clade_membership": {
+                        "value": "A2a"
+                      },
+                      "num_date": {
+                        "confidence": [
+                          2020.570832794363,
+                          2020.926040494299
+                        ],
+                        "value": 2020.8373873073153
+                      },
+                      "subclade_membership": {
+                        "value": "20A.EU2"
+                      },
+                      "country": {
+                        "confidence": {
+                          "Asia": 0.002865538331348477,
+                          "Belgium": 0.9971344616686515
+                        },
+                        "entropy": 0.019639152946928463,
+                        "value": "Belgium"
+                      }
+                    }
+                  },
+                  {
+                    "branch_attrs": {
+                      "labels": {
+                        "aa": "N: A220V; ORF14: L67F; ORF1a: T403I, V1991I, S3675-, G3676-, F3677-; ORF1b: A1215S; ORF7b: L14-; ORF9b: I5T; S: P26S, I68X, H69-, V70X, V126A, V143X, Y144X, T240X, L241-, L242-, A243X, H245Y, E484K, P681H, T1027I, D1118H, *1274X"
+                      },
+                      "mutations": {
+                        "N": [
+                          "A220V"
+                        ],
+                        "ORF14": [
+                          "L67F"
+                        ],
+                        "ORF1a": [
+                          "T403I",
+                          "V1991I",
+                          "S3675-",
+                          "G3676-",
+                          "F3677-"
+                        ],
+                        "ORF1b": [
+                          "A1215S"
+                        ],
+                        "ORF7b": [
+                          "L14-"
+                        ],
+                        "ORF9b": [
+                          "I5T"
+                        ],
+                        "S": [
+                          "P26S",
+                          "I68X",
+                          "H69-",
+                          "V70X",
+                          "V126A",
+                          "V143X",
+                          "Y144X",
+                          "T240X",
+                          "L241-",
+                          "L242-",
+                          "A243X",
+                          "H245Y",
+                          "E484K",
+                          "P681H",
+                          "T1027I",
+                          "D1118H",
+                          "*1274X"
+                        ],
+                        "nuc": [
+                          "C1473T",
+                          "G6236A",
+                          "T11288-",
+                          "C11289-",
+                          "T11290-",
+                          "G11291-",
+                          "G11292-",
+                          "T11293-",
+                          "T11294-",
+                          "T11295-",
+                          "T11296-",
+                          "C15324T",
+                          "G17110T",
+                          "T20049C",
+                          "C21638T",
+                          "T21765-",
+                          "A21766-",
+                          "C21767-",
+                          "A21768-",
+                          "T21769-",
+                          "G21770-",
+                          "T21939C",
+                          "T21991-",
+                          "T21992-",
+                          "A21993-",
+                          "C22281-",
+                          "T22282-",
+                          "T22283-",
+                          "T22284-",
+                          "A22285-",
+                          "C22286-",
+                          "T22287-",
+                          "T22288-",
+                          "G22289-",
+                          "C22295T",
+                          "C22498T",
+                          "G23012A",
+                          "A23416T",
+                          "C23604A",
+                          "C24642T",
+                          "G24914C",
+                          "T27795-",
+                          "T27796-",
+                          "A27797-",
+                          "A28271T",
+                          "T28297C",
+                          "C28932T"
+                        ]
+                      }
+                    },
+                    "children": [
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "N: L230F; ORF1b: P909L"
+                          },
+                          "mutations": {
+                            "N": [
+                              "L230F"
+                            ],
+                            "ORF1b": [
+                              "P909L"
+                            ],
+                            "nuc": [
+                              "C16193T",
+                              "C28961T"
+                            ]
+                          }
+                        },
+                        "name": "Belgium/ULG-12917/2021",
+                        "node_attrs": {
+                          "author": {
+                            "author": "Keith Durkin et al",
+                            "value": "Keith Durkin et al"
+                          },
+                          "clade_membership": {
+                            "value": "20A"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Belgium": 1.0
+                            },
+                            "entropy": -1.000088900581841e-12,
+                            "value": "Belgium"
+                          },
+                          "div": 24.024689501425698,
+                          "division": {
+                            "value": "Li\u00e8ge"
+                          },
+                          "division_exposure": {
+                            "value": "Li\u00e8ge"
+                          },
+                          "gisaid_epi_isl": {
+                            "value": "EPI_ISL_1241728"
+                          },
+                          "host": {
+                            "value": "Human"
+                          },
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "location": {
+                            "value": "Li\u00e8ge"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2021.16301369863,
+                              2021.16301369863
+                            ],
+                            "value": 2021.16301369863
+                          },
+                          "originating_lab": {
+                            "value": "SYNLAB"
+                          },
+                          "recency": {
+                            "value": "Older"
+                          },
+                          "region": {
+                            "value": "Europe"
+                          },
+                          "region_exposure": {
+                            "value": "Europe"
+                          },
+                          "sex": {
+                            "value": "Male"
+                          },
+                          "subclade_membership": {
+                            "value": "20A"
+                          },
+                          "submitting_lab": {
+                            "value": "GIGA Medical Genomics"
+                          },
+                          "url": "https://www.gisaid.org"
+                        }
+                      },
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "ORF1a: R1170C, V2061I"
+                          },
+                          "mutations": {
+                            "ORF1a": [
+                              "R1170C",
+                              "V2061I"
+                            ],
+                            "nuc": [
+                              "C3773T",
+                              "G6446A"
+                            ]
+                          }
+                        },
+                        "name": "Belgium/rega-5050/2021",
+                        "node_attrs": {
+                          "age": {
+                            "value": "59"
+                          },
+                          "author": {
+                            "author": "Tony Wawina-Bokalanga et al",
+                            "value": "Tony Wawina-Bokalanga et al"
+                          },
+                          "clade_membership": {
+                            "value": "20A"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Belgium": 1.0
+                            },
+                            "entropy": -1.000088900581841e-12,
+                            "value": "Belgium"
+                          },
+                          "div": 24.02325349348707,
+                          "division": {
+                            "value": "Brussels"
+                          },
+                          "division_exposure": {
+                            "value": "Brussels"
+                          },
+                          "gisaid_epi_isl": {
+                            "value": "EPI_ISL_1382294"
+                          },
+                          "host": {
+                            "value": "Human"
+                          },
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "location": {
+                            "value": "Saint-Josse-ten-Noode"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2021.1986301369864,
+                              2021.1986301369864
+                            ],
+                            "value": 2021.1986301369864
+                          },
+                          "originating_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "recency": {
+                            "value": "Older"
+                          },
+                          "region": {
+                            "value": "Europe"
+                          },
+                          "region_exposure": {
+                            "value": "Europe"
+                          },
+                          "sex": {
+                            "value": "Male"
+                          },
+                          "subclade_membership": {
+                            "value": "20A"
+                          },
+                          "submitting_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "url": "https://www.gisaid.org"
+                        }
+                      }
+                    ],
+                    "name": "NODE_0000012",
+                    "node_attrs": {
+                      "clade_membership": {
+                        "value": "20A"
+                      },
+                      "div": 22.02209193374894,
+                      "legacy_clade_membership": {
+                        "value": "A2a"
+                      },
+                      "num_date": {
+                        "confidence": [
+                          2020.8372887595847,
+                          2021.1543964544617
+                        ],
+                        "value": 2021.1015045003076
+                      },
+                      "subclade_membership": {
+                        "value": "20A"
+                      },
+                      "country": {
+                        "confidence": {
+                          "Asia": 0.002865538331348477,
+                          "Belgium": 0.9971344616686515
+                        },
+                        "entropy": 0.019639152946928463,
+                        "value": "Belgium"
+                      }
+                    }
+                  }
+                ],
+                "name": "NODE_0000010",
+                "node_attrs": {
+                  "clade_membership": {
+                    "value": "20A"
+                  },
+                  "div": 4.997046499374416,
+                  "legacy_clade_membership": {
+                    "value": "A2a"
+                  },
+                  "num_date": {
+                    "confidence": [
+                      2019.7170048682165,
+                      2020.4938149440247
+                    ],
+                    "value": 2020.4225589951473
+                  },
+                  "subclade_membership": {
+                    "value": "20A"
+                  },
+                  "country": {
+                    "confidence": {
+                      "Asia": 0.003935743687050516,
+                      "Belgium": 0.9960642563129494
+                    },
+                    "entropy": 0.025722780833476108,
+                    "value": "Belgium"
+                  }
+                }
+              },
+              {
+                "branch_attrs": {
+                  "labels": {
+                    "aa": "N: R203K, G204R; ORF14: G50N",
+                    "clade": "20B"
+                  },
+                  "mutations": {
+                    "N": [
+                      "R203K",
+                      "G204R"
+                    ],
+                    "ORF14": [
+                      "G50N"
+                    ],
+                    "nuc": [
+                      "G28881A",
+                      "G28882A",
+                      "G28883C"
+                    ]
+                  }
+                },
+                "children": [
+                  {
+                    "branch_attrs": {
+                      "mutations": {}
+                    },
+                    "children": [
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "ORF1a: D930Y, T2106I; ORF1b: Q2425H; ORF8: I10T"
+                          },
+                          "mutations": {
+                            "ORF1a": [
+                              "D930Y",
+                              "T2106I"
+                            ],
+                            "ORF1b": [
+                              "Q2425H"
+                            ],
+                            "ORF8": [
+                              "I10T"
+                            ],
+                            "nuc": [
+                              "G3053T",
+                              "C4918T",
+                              "C6582T",
+                              "C18796T",
+                              "A20742C",
+                              "T27222C",
+                              "T27922C"
+                            ]
+                          }
+                        },
+                        "name": "Belgium/rega-1494/2020",
+                        "node_attrs": {
+                          "age": {
+                            "value": "69"
+                          },
+                          "author": {
+                            "author": "Tony Wawina-Bokalanga et al",
+                            "value": "Tony Wawina-Bokalanga et al"
+                          },
+                          "clade_membership": {
+                            "value": "20B"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Belgium": 1.0
+                            },
+                            "entropy": -1.000088900581841e-12,
+                            "value": "Belgium"
+                          },
+                          "div": 13.993160268267971,
+                          "division": {
+                            "value": "Antwerpen"
+                          },
+                          "division_exposure": {
+                            "value": "Antwerpen"
+                          },
+                          "gisaid_epi_isl": {
+                            "value": "EPI_ISL_888744"
+                          },
+                          "host": {
+                            "value": "Human"
+                          },
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "location": {
+                            "value": "Geel"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2020.9631147540983,
+                              2020.9631147540983
+                            ],
+                            "value": 2020.9631147540983
+                          },
+                          "originating_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "recency": {
+                            "value": "Older"
+                          },
+                          "region": {
+                            "value": "Europe"
+                          },
+                          "region_exposure": {
+                            "value": "Europe"
+                          },
+                          "sex": {
+                            "value": "Male"
+                          },
+                          "subclade_membership": {
+                            "value": "20B"
+                          },
+                          "submitting_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "url": "https://www.gisaid.org"
+                        }
+                      },
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "N: P365S; ORF1a: A872T, S944P, D1036E, P1207L; ORF1b: E269D, M2269T, V2371L, A2431V, G2610S"
+                          },
+                          "mutations": {
+                            "N": [
+                              "P365S"
+                            ],
+                            "ORF1a": [
+                              "A872T",
+                              "S944P",
+                              "D1036E",
+                              "P1207L"
+                            ],
+                            "ORF1b": [
+                              "E269D",
+                              "M2269T",
+                              "V2371L",
+                              "A2431V",
+                              "G2610S"
+                            ],
+                            "nuc": [
+                              "G2879A",
+                              "T3095C",
+                              "C3373A",
+                              "C3885T",
+                              "T8134C",
+                              "C9733T",
+                              "G14274T",
+                              "C16092T",
+                              "T20273C",
+                              "G20578T",
+                              "C20759T",
+                              "G21295A",
+                              "C21910T",
+                              "C29366T"
+                            ]
+                          }
+                        },
+                        "name": "Belgium/rega-12111386/2020",
+                        "node_attrs": {
+                          "age": {
+                            "value": "90"
+                          },
+                          "author": {
+                            "author": "Tony Wawina-Bokalanga et al",
+                            "value": "Tony Wawina-Bokalanga et al"
+                          },
+                          "clade_membership": {
+                            "value": "20B"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Belgium": 1.0
+                            },
+                            "entropy": -1.000088900581841e-12,
+                            "value": "Belgium"
+                          },
+                          "div": 20.995540332759425,
+                          "division": {
+                            "value": "Antwerpen"
+                          },
+                          "division_exposure": {
+                            "value": "Antwerpen"
+                          },
+                          "gisaid_epi_isl": {
+                            "value": "EPI_ISL_738438"
+                          },
+                          "host": {
+                            "value": "Human"
+                          },
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "location": {
+                            "value": "Mol"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2020.9439890710382,
+                              2020.9439890710382
+                            ],
+                            "value": 2020.9439890710382
+                          },
+                          "originating_lab": {
+                            "value": "UZ Leuven, National Reference Laboratory for Coronaviruses, Laboratory Medicine, Leuven, Belgium"
+                          },
+                          "recency": {
+                            "value": "Older"
+                          },
+                          "region": {
+                            "value": "Europe"
+                          },
+                          "region_exposure": {
+                            "value": "Europe"
+                          },
+                          "sex": {
+                            "value": "Female"
+                          },
+                          "subclade_membership": {
+                            "value": "20B"
+                          },
+                          "submitting_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "url": "https://www.gisaid.org"
+                        }
+                      }
+                    ],
+                    "name": "NODE_0000009",
+                    "node_attrs": {
+                      "clade_membership": {
+                        "value": "20B"
+                      },
+                      "div": 6.996038058941997,
+                      "legacy_clade_membership": {
+                        "value": "A2a"
+                      },
+                      "num_date": {
+                        "confidence": [
+                          2019.692247070519,
+                          2020.6059446261293
+                        ],
+                        "value": 2020.4439859091756
+                      },
+                      "subclade_membership": {
+                        "value": "20B"
+                      },
+                      "country": {
+                        "confidence": {
+                          "Asia": 0.0028742547000356828,
+                          "Belgium": 0.9971257452999643
+                        },
+                        "entropy": 0.019690148982981947,
+                        "value": "Belgium"
+                      }
+                    }
+                  },
+                  {
+                    "branch_attrs": {
+                      "labels": {
+                        "aa": "ORF1a: S3675-, G3676-, F3677-; S: N501Y"
+                      },
+                      "mutations": {
+                        "ORF1a": [
+                          "S3675-",
+                          "G3676-",
+                          "F3677-"
+                        ],
+                        "S": [
+                          "N501Y"
+                        ],
+                        "nuc": [
+                          "T11288-",
+                          "C11289-",
+                          "T11290-",
+                          "G11291-",
+                          "G11292-",
+                          "T11293-",
+                          "T11294-",
+                          "T11295-",
+                          "T11296-",
+                          "A23063T"
+                        ]
+                      }
+                    },
+                    "children": [
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "N: D3L, S235F; ORF1a: T1001I, G1125C, A1708D, A1997V, I2230T; ORF8: Q27*, R52I, Y73C; S: I68X, H69-, V70X, V143X, Y144X, A570D, P681H, T716I, S982A, D1118H, *1274X",
+                            "clade": "20I/501Y.V1"
+                          },
+                          "mutations": {
+                            "N": [
+                              "D3L",
+                              "S235F"
+                            ],
+                            "ORF1a": [
+                              "T1001I",
+                              "G1125C",
+                              "A1708D",
+                              "A1997V",
+                              "I2230T"
+                            ],
+                            "ORF8": [
+                              "Q27*",
+                              "R52I",
+                              "Y73C"
+                            ],
+                            "S": [
+                              "I68X",
+                              "H69-",
+                              "V70X",
+                              "V143X",
+                              "Y144X",
+                              "A570D",
+                              "P681H",
+                              "T716I",
+                              "S982A",
+                              "D1118H",
+                              "*1274X"
+                            ],
+                            "nuc": [
+                              "C913T",
+                              "C3267T",
+                              "G3638T",
+                              "C5388A",
+                              "C5986T",
+                              "C6255T",
+                              "T6954C",
+                              "C8713T",
+                              "C9532T",
+                              "C14676T",
+                              "C15279T",
+                              "T16176C",
+                              "T21765-",
+                              "A21766-",
+                              "C21767-",
+                              "A21768-",
+                              "T21769-",
+                              "G21770-",
+                              "T21991-",
+                              "T21992-",
+                              "A21993-",
+                              "C23271A",
+                              "C23604A",
+                              "C23709T",
+                              "T24506G",
+                              "G24914C",
+                              "A27579G",
+                              "C27972T",
+                              "G28048T",
+                              "A28111G",
+                              "A28271-",
+                              "G28280C",
+                              "A28281T",
+                              "T28282A",
+                              "C28977T"
+                            ]
+                          }
+                        },
+                        "name": "Belgium/rega-3271/2021",
+                        "node_attrs": {
+                          "age": {
+                            "value": "9"
+                          },
+                          "author": {
+                            "author": "Tony Wawina-Bokalanga et al",
+                            "value": "Tony Wawina-Bokalanga et al"
+                          },
+                          "clade_membership": {
+                            "value": "20I/501Y.V1"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Belgium": 1.0
+                            },
+                            "entropy": -1.000088900581841e-12,
+                            "value": "Belgium"
+                          },
+                          "div": 33.033443873430336,
+                          "division": {
+                            "value": "VlaamsBrabant"
+                          },
+                          "division_exposure": {
+                            "value": "VlaamsBrabant"
+                          },
+                          "gisaid_epi_isl": {
+                            "value": "EPI_ISL_1091330"
+                          },
+                          "host": {
+                            "value": "Human"
+                          },
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "location": {
+                            "value": "Landen"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2021.0424657534247,
+                              2021.0424657534247
+                            ],
+                            "value": 2021.0424657534247
+                          },
+                          "originating_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "recency": {
+                            "value": "Older"
+                          },
+                          "region": {
+                            "value": "Europe"
+                          },
+                          "region_exposure": {
+                            "value": "Europe"
+                          },
+                          "sex": {
+                            "value": "Male"
+                          },
+                          "subclade_membership": {
+                            "value": "20I/501Y.V1"
+                          },
+                          "submitting_lab": {
+                            "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                          },
+                          "url": "https://www.gisaid.org"
+                        }
+                      },
+                      {
+                        "branch_attrs": {
+                          "labels": {
+                            "aa": "N: P80R; ORF14: V49L; ORF1a: S1188L, K1795Q; ORF1b: E1264D; ORF3a: I118M, S253P; ORF8: E92K; ORF9b: Q77E; S: L18F, T20N, P26S, D138Y, R190S, K417T, E484K, H655Y, T1027I, V1176F",
+                            "clade": "20J/501Y.V3"
+                          },
+                          "mutations": {
+                            "N": [
+                              "P80R"
+                            ],
+                            "ORF14": [
+                              "V49L"
+                            ],
+                            "ORF1a": [
+                              "S1188L",
+                              "K1795Q"
+                            ],
+                            "ORF1b": [
+                              "E1264D"
+                            ],
+                            "ORF3a": [
+                              "I118M",
+                              "S253P"
+                            ],
+                            "ORF8": [
+                              "E92K"
+                            ],
+                            "ORF9b": [
+                              "Q77E"
+                            ],
+                            "S": [
+                              "L18F",
+                              "T20N",
+                              "P26S",
+                              "D138Y",
+                              "R190S",
+                              "K417T",
+                              "E484K",
+                              "H655Y",
+                              "T1027I",
+                              "V1176F"
+                            ],
+                            "nuc": [
+                              "T733C",
+                              "C2749T",
+                              "C3828T",
+                              "A5648C",
+                              "A6319G",
+                              "A6613G",
+                              "C12778T",
+                              "C13860T",
+                              "G17259T",
+                              "C21614T",
+                              "C21621A",
+                              "C21638T",
+                              "G21974T",
+                              "G22132T",
+                              "A22812C",
+                              "G23012A",
+                              "C23525T",
+                              "C24642T",
+                              "G25088T",
+                              "A25746G",
+                              "T26149C",
+                              "G28167A",
+                              "C28512G",
+                              "A28877T",
+                              "G28878C"
+                            ]
+                          }
+                        },
+                        "children": [
+                          {
+                            "branch_attrs": {
+                              "mutations": {}
+                            },
+                            "name": "Belgium/CHUNamur1320834901/2021",
+                            "node_attrs": {
+                              "age": {
+                                "value": "50"
+                              },
+                              "author": {
+                                "author": "et al",
+                                "value": "et al"
+                              },
+                              "clade_membership": {
+                                "value": "20J/501Y.V3"
+                              },
+                              "country": {
+                                "confidence": {
+                                  "Belgium": 0.9999999999999999
+                                },
+                                "entropy": -9.99866855976916e-13,
+                                "value": "Belgium"
+                              },
+                              "div": 33.02043211150305,
+                              "division": {
+                                "value": "Belgium"
+                              },
+                              "division_exposure": {
+                                "value": "Belgium"
+                              },
+                              "gisaid_epi_isl": {
+                                "value": "EPI_ISL_1220092"
+                              },
+                              "host": {
+                                "value": "Human"
+                              },
+                              "legacy_clade_membership": {
+                                "value": "A2a"
+                              },
+                              "num_date": {
+                                "confidence": [
+                                  2021.1739726027397,
+                                  2021.1739726027397
+                                ],
+                                "value": 2021.1739726027397
+                              },
+                              "originating_lab": {
+                                "value": "Plateforme de testing Namuroise"
+                              },
+                              "recency": {
+                                "value": "Older"
+                              },
+                              "region": {
+                                "value": "Europe"
+                              },
+                              "region_exposure": {
+                                "value": "Europe"
+                              },
+                              "sex": {
+                                "value": "Male"
+                              },
+                              "subclade_membership": {
+                                "value": "20J/501Y.V3"
+                              },
+                              "submitting_lab": {
+                                "value": "Plateforme de testing Namuroise"
+                              },
+                              "url": "https://www.gisaid.org"
+                            }
+                          },
+                          {
+                            "branch_attrs": {
+                              "labels": {
+                                "aa": "ORF14: A25V"
+                              },
+                              "mutations": {
+                                "ORF14": [
+                                  "A25V"
+                                ],
+                                "nuc": [
+                                  "C853T",
+                                  "C28807T"
+                                ]
+                              }
+                            },
+                            "name": "Belgium/rega-5012/2021",
+                            "node_attrs": {
+                              "age": {
+                                "value": "20"
+                              },
+                              "author": {
+                                "author": "Tony Wawina-Bokalanga et al",
+                                "value": "Tony Wawina-Bokalanga et al"
+                              },
+                              "clade_membership": {
+                                "value": "20J/501Y.V3"
+                              },
+                              "country": {
+                                "confidence": {
+                                  "Belgium": 0.9999999999999999
+                                },
+                                "entropy": -9.99866855976916e-13,
+                                "value": "Belgium"
+                              },
+                              "div": 35.020055283307535,
+                              "division": {
+                                "value": "VlaamsBrabant"
+                              },
+                              "division_exposure": {
+                                "value": "VlaamsBrabant"
+                              },
+                              "gisaid_epi_isl": {
+                                "value": "EPI_ISL_1382212"
+                              },
+                              "host": {
+                                "value": "Human"
+                              },
+                              "legacy_clade_membership": {
+                                "value": "A2a"
+                              },
+                              "location": {
+                                "value": "Meise"
+                              },
+                              "num_date": {
+                                "confidence": [
+                                  2021.204109589041,
+                                  2021.204109589041
+                                ],
+                                "value": 2021.204109589041
+                              },
+                              "originating_lab": {
+                                "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                              },
+                              "recency": {
+                                "value": "Older"
+                              },
+                              "region": {
+                                "value": "Europe"
+                              },
+                              "region_exposure": {
+                                "value": "Europe"
+                              },
+                              "sex": {
+                                "value": "Male"
+                              },
+                              "subclade_membership": {
+                                "value": "20J/501Y.V3"
+                              },
+                              "submitting_lab": {
+                                "value": "KU Leuven, Rega Institute, Clinical and Epidemiological Virology"
+                              },
+                              "url": "https://www.gisaid.org"
+                            }
+                          }
+                        ],
+                        "name": "NODE_0000006",
+                        "node_attrs": {
+                          "clade_membership": {
+                            "value": "20J/501Y.V3"
+                          },
+                          "div": 33.02043211150305,
+                          "legacy_clade_membership": {
+                            "value": "A2a"
+                          },
+                          "num_date": {
+                            "confidence": [
+                              2021.115066888306,
+                              2021.1739726027397
+                            ],
+                            "value": 2021.149163349202
+                          },
+                          "subclade_membership": {
+                            "value": "20J/501Y.V3"
+                          },
+                          "country": {
+                            "confidence": {
+                              "Asia": 0.0027826456261340437,
+                              "Belgium": 0.997217354373866
+                            },
+                            "entropy": 0.019152839996677922,
+                            "value": "Belgium"
+                          }
+                        }
+                      }
+                    ],
+                    "name": "NODE_0000005",
+                    "node_attrs": {
+                      "clade_membership": {
+                        "value": "20B"
+                      },
+                      "div": 7.995852438291358,
+                      "legacy_clade_membership": {
+                        "value": "A2a"
+                      },
+                      "num_date": {
+                        "confidence": [
+                          2019.7194973437915,
+                          2020.6086141298601
+                        ],
+                        "value": 2020.4531277382896
+                      },
+                      "subclade_membership": {
+                        "value": "20B"
+                      },
+                      "country": {
+                        "confidence": {
+                          "Asia": 0.003278583533948689,
+                          "Belgium": 0.9967214164660512
+                        },
+                        "entropy": 0.022027828082462488,
+                        "value": "Belgium"
+                      }
+                    }
+                  }
+                ],
+                "name": "NODE_0000003",
+                "node_attrs": {
+                  "clade_membership": {
+                    "value": "20B"
+                  },
+                  "div": 6.996038058941976,
+                  "legacy_clade_membership": {
+                    "value": "A2a"
+                  },
+                  "num_date": {
+                    "confidence": [
+                      2019.6961495950115,
+                      2020.5861819553702
+                    ],
+                    "value": 2020.418146347235
+                  },
+                  "subclade_membership": {
+                    "value": "20B"
+                  },
+                  "country": {
+                    "confidence": {
+                      "Asia": 0.004004845668535605,
+                      "Belgium": 0.9959951543314643
+                    },
+                    "entropy": 0.026104565783628915,
+                    "value": "Belgium"
+                  }
+                }
+              }
+            ],
+            "name": "NODE_0000002",
+            "node_attrs": {
+              "clade_membership": {
+                "value": "20A"
+              },
+              "div": 3.997711549225975,
+              "legacy_clade_membership": {
+                "value": "A2a"
+              },
+              "num_date": {
+                "confidence": [
+                  2019.7010806630544,
+                  2020.4726384028077
+                ],
+                "value": 2020.3394108849884
+              },
+              "subclade_membership": {
+                "value": "20A"
+              },
+              "country": {
+                "confidence": {
+                  "Asia": 0.005247603512393068,
+                  "Belgium": 0.9947523964876068
+                },
+                "entropy": 0.03278364401767549,
+                "value": "Belgium"
+              }
+            }
+          }
+        ],
+        "name": "NODE_0000001",
+        "node_attrs": {
+          "clade_membership": {
+            "value": "19A"
+          },
+          "div": 5.507442726534224e-18,
+          "legacy_clade_membership": {
+            "value": "unassigned"
+          },
+          "num_date": {
+            "confidence": [
+              2019.6778847876149,
+              2019.9849315068493
+            ],
+            "value": 2019.9779911779099
+          },
+          "subclade_membership": {
+            "value": "19A"
+          },
+          "country": {
+            "confidence": {
+              "Asia": 0.8926708552250198,
+              "Belgium": 0.10732914477498022
+            },
+            "entropy": 0.3408945760539185,
+            "value": "Asia"
+          }
+        }
+      }
+    ],
+    "name": "NODE_0000000",
+    "node_attrs": {
+      "clade_membership": {
+        "value": "19A"
+      },
+      "div": 0,
+      "legacy_clade_membership": {
+        "value": "unassigned"
+      },
+      "num_date": {
+        "confidence": [
+          2019.6961399956401,
+          2019.9807337799375
+        ],
+        "value": 2019.9497316666357
+      },
+      "subclade_membership": {
+        "value": "19A"
+      },
+      "country": {
+        "confidence": {
+          "Asia": 0.9878647450456612,
+          "Belgium": 0.01213525495433876
+        },
+        "entropy": 0.06559770446412735,
+        "value": "Asia"
+      }
+    }
+  },
+  "version": "v2"
+}
