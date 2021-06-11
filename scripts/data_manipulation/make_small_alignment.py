@@ -3,11 +3,13 @@ TODO: Give this a better CLI
 
 TODO: Write a better set of documentation for this
 """
-import argh
-from Bio import SeqIO
-import random
 import subprocess
-from tqdm import tqdm
+import sys
+
+import argh  # type: ignore
+from Bio import SeqIO  # type: ignore
+from tqdm import tqdm  # type: ignore
+
 
 def create_unaligned_fasta(build, excludes=None):
     master_fasta = "data/ALL_SEQUENCES.fasta"
@@ -20,12 +22,18 @@ def create_unaligned_fasta(build, excludes=None):
     e = len(excludes)
     meta_sequences = set([])
     with open(metadata_file, "r") as f:
+        print(f.readline())
         for line in f.readlines():
             line = line.split("\t")
             meta_sequences.add(line[1])
-            # if len(line[5]) < 10: # Exclude sequences with bad dates
-            #     excludes.add(line[1])
-    print(f"Ignored {len(excludes)-e} sequences (out of the full metadata tsv) with poorly formatte dates.")
+            if (len(line[4]) < 10) or (
+                "XX" in line[4]
+            ):  # Exclude sequences with bad dates
+                excludes.add(line[1])
+
+    print(
+        f"Ignored {len(excludes)-e} sequences (out of the full metadata tsv) with poorly formatte dates."
+    )
 
     with open(seq_list_file, "r") as f:
         seq_list = set([])
@@ -39,42 +47,54 @@ def create_unaligned_fasta(build, excludes=None):
     print(f"Read {len(seq_list)} sequences to be added to fasta")
 
     print(f"Processing {master_fasta}")
-    call = ["grep", "-c", "\">\"", master_fasta]
+    call = ["grep", "-c", '">"', master_fasta]
     lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
     nlines = int(lines.stdout.read().strip())
+    records = []
     with open(master_fasta, "r") as handle:
-        records = []
-        for record in tqdm(SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines):
-            if record.id in seq_list and record.id not in excludes and record.id in meta_sequences:
+        for record in tqdm(
+            SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines
+        ):
+            if record.id in seq_list:
+                if record.id in excludes:
+                    # print(f"bad 1: {record.id}")
+                    continue
+                if record.id in meta_sequences:
+                    # print("bad 2")
+                    continue
+                # print("good")
                 records.append(record)
 
+    print(len(records))
     print(f"Writing {aln_out_file}")
     with open(aln_out_file, "w") as output_handle:
         SeqIO.write(records, output_handle, "fasta")
 
-
-    call = ["grep", "-c", "\">\"", aln_out_file]
+    call = ["grep", "-c", '">"', aln_out_file]
     lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
     nlines = int(lines.stdout.read().strip())
     print(f"Final fasta size: {nlines} sequences")
 
     return aln_out_file
 
-def create_aligned_fasta(build, unaligned):
-    '''Use nextalign to create an alignment
-    '''
 
-    call = [ "nextalign",
-             "--verbose",
-             f"--sequences={unaligned}",
-             "--reference=data/source_files/reference.fasta",
-             "--output-dir=results/fastas",
-             f"--output-basename={build}"
-           ]
+def create_aligned_fasta(build, unaligned):
+    """Use nextalign to create an alignment
+    """
+
+    call = [
+        "nextalign",
+        "--verbose",
+        f"--sequences={unaligned}",
+        "--reference=data/source_files/reference.fasta",
+        "--output-dir=results/fastas",
+        f"--output-basename={build}",
+    ]
 
     print("Buildng alignment with:")
     print(" ".join(call))
     subprocess.call(call)
+
 
 def concat_two_fastas(base, additional, excludes=None, meta_sequences=None):
     """
@@ -85,7 +105,7 @@ def concat_two_fastas(base, additional, excludes=None, meta_sequences=None):
     if not meta_sequences:
         meta_sequences = set([])
     with open(base, "r") as b:
-        records = [ record for record in SeqIO.parse(b, "fasta") ]
+        records = [record for record in SeqIO.parse(b, "fasta")]
     with open(additional, "r") as a:
         for record in SeqIO.parse(a, "fasta"):
             if record.id not in excludes and record.id in meta_sequences:
@@ -111,6 +131,6 @@ def create_alignment(build, extra_sequences=None):
     aligned = create_aligned_fasta(build, unaligned)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     argh.dispatch_command(create_alignment)
     # creaste_alignment(build, extra_sequences)
