@@ -7,11 +7,17 @@ builds:
   #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
   #   title: "SARS-CoV-2 Sequences in Belgium"
 
-  # B.1.525:
-  #   region: Europe
-  #   country: Belgium
-  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
-  #   title: "SARS-CoV-2 B.1.525 Sequences in Belgium"
+  B.1.525:
+    region: Europe
+    country: Belgium
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    title: "SARS-CoV-2 B.1.525 Sequences in Belgium"
+
+  B.1.1.7:
+    region: Europe
+    country: Belgium
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    title: "SARS-CoV-2 B.1.1.7 Sequences in Belgium"
 
   # B.1.214:
   #   region: Europe
@@ -25,11 +31,11 @@ builds:
     colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
     title: "SARS-CoV-2 B.1.617 Sequences in Belgium"
 
-  # B.1.619-B.1.620:
-  #   region: Europe
-  #   country: Belgium
-  #   colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
-  #   title: "SARS-CoV-2 B.1.619 and B.1.620 Sequences Globally"
+  B.1.619-B.1.620:
+    region: Europe
+    country: Belgium
+    colors: "my_profiles/sars-cov-2-belgium/colors.tsv"
+    title: "SARS-CoV-2 B.1.619 and B.1.620 Sequences Globally"
 
   # B.1.620:
   #   region: Europe
