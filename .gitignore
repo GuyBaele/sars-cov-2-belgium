@@ -72,4 +72,5 @@ scripts/data_manipulation/gisaid_meta_to_nextstrain/*.fasta
 *B.1.525*
 data/sequence_lists/B.1.617_base.txt
 data/sequence_lists/B.1.617_belgian.txt
-data/sequence_lists/B.1.617_nonbelgian.txt
+data/sequence_lists/B.1.617_nonbelgian.txttmp.*
+*tmp.*
