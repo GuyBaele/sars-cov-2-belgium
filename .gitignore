@@ -74,3 +74,7 @@ data/sequence_lists/B.1.617_base.txt
 data/sequence_lists/B.1.617_belgian.txt
 data/sequence_lists/B.1.617_nonbelgian.txttmp.*
 *tmp.*
+auspice/sars-cov-2-belgium_B.1.617.1*
+auspice/sars-cov-2-belgium_B.1.617.2*
+auspice/sars-cov-2-belgium_delta*
+scripts/data_manipulation/gisaid_meta_to_nextstrain/*.xlsx
