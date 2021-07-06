@@ -70,9 +70,9 @@ def format_columns(df,seq_lens):
     df['purpose_of_sequencing'] = '?'
     return df[nextstrain_cols].copy()
 
-def read_gisaid_meta(seq_meta,patient_meta):
-    df1 = pd.read_csv(seq_meta,sep='\t')
-    df2 = pd.read_csv(patient_meta,sep='\t')
+def read_gisaid_meta(seqMeta,patientMeta):
+    df1 = pd.read_csv(seqMeta,sep='\t')
+    df2 = pd.read_csv(patientMeta,sep='\t')
     shared_cols = list(set(df1.columns.to_list()).intersection( set(df2.columns.to_list())))
     return pd.merge(left=df1,right=df2,on=shared_cols)
 
@@ -80,17 +80,17 @@ def read_gisaid_meta(seq_meta,patient_meta):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--fasta", required=True, help="FASTA file of sequences")
-    parser.add_argument("--seq_meta", required=True, type=str, help="GISAID sequence metadata")
-    parser.add_argument("--patient_meta", required=True, help="GISAID patient metadata")
-    parser.add_argument("--nextmeta", required=True, help="Nextmeta tsv")
-    parser.add_argument("--outfile",required=True,help='output file')
+    parser.add_argument("--seqMeta", required=True, type=str, help="GISAID sequence metadata")
+    parser.add_argument("--patientMeta", required=True, help="GISAID patient metadata")
+    parser.add_argument("--nextMeta", required=True, help="Nextmeta tsv")
+    parser.add_argument("--outFile",required=True,help='output file')
 
     args = parser.parse_args()
 
-    gisaid_df = read_gisaid_meta(args.seq_meta,args.patient_meta)
+    gisaid_df = read_gisaid_meta(args.seqMeta,args.patientMeta)
     seq_lens = get_seq_len(args.fasta)
-    nextmeta = pd.read_csv(args.nextmeta,sep='\t')
+    nextMeta = pd.read_csv(args.nextMeta,sep='\t')
     new_nextmeta = format_columns(gisaid_df,seq_lens)
-    updated_meta = pd.concat([nextmeta,new_nextmeta],verify_integrity=True,ignore_index=True)
-    updated_meta.to_csv(args.outfile,sep='\t',index=False)
+    updated_meta = pd.concat([nextMeta,new_nextmeta],verify_integrity=True,ignore_index=True)
+    updated_meta.to_csv(args.outFile,sep='\t',index=False)
     fix_seq_names(args.fasta)
