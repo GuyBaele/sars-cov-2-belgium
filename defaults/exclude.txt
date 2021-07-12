@@ -1333,3 +1333,23 @@ England/PHEC-31F399/2021
 England/PHEC-32660F/2021
 England/PHEC-21AEE8/2021
 England/PHEC-31AEE8/2021
+
+# Duplicate sequences
+Belgium/rega-7217/2021
+Belgium/rega-7885/2021
+Belgium/Aalst-OLVZ-8073317/2021
+Belgium/rega-7218/2021
+Belgium/Aalst-OLVZ-8078890/2021
+Belgium/Aalst-OLVZ-8073364/2021
+Belgium/rega-7865/2021
+Belgium/rega-7874/2021
+Belgium/rega-7876/2021
+Belgium/Aalst-OLVZ-8078881/2021
+Belgium/Aalst-OLVZ-8078883/2021
+Belgium/Aalst-OLVZ-8078885/2021
+Belgium/Aalst-OLVZ-8078882/2021
+Belgium/Aalst-OLVZ-8073332/2021
+Belgium/rega-7875/2021
+Belgium/rega-7864/2021
+Belgium/rega-7869/2021
+Belgium/rega-7889/2021
