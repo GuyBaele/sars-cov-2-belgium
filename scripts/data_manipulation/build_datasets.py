@@ -113,6 +113,7 @@ def concat_and_write_fasta(baseFname, fastaDir, oFname, sequence_set, exclude_se
         """
         if id in sequence_set:
             if id in exclude_set:
+                print(f"Excluding {id}")
                 return False
             else:
                 return True
