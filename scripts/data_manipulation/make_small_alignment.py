@@ -26,8 +26,8 @@ def create_unaligned_fasta(build, excludes=None):
         for line in f.readlines():
             line = line.split("\t")
             meta_sequences.add(line[1])
-            if (len(line[4]) < 10) or (
-                "XX" in line[4]
+            if (len(line[5]) < 10) or (
+                "XX" in line[5]
             ):  # Exclude sequences with bad dates
                 excludes.add(line[1])
 
