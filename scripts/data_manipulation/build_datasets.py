@@ -64,6 +64,9 @@ def main():
         gisaid_fasta, non_gisaid_dir, OUTPUT_FASTA, sequence_names, exclude_names
     )
 
+    print(f"recordIDs: {len(recordIDs)}")
+    print(f"records: {len(records)}")
+
     # (recordIDs, records) = bypass_fasta_prep(OUTPUT_FASTA)
 
     # Second, concatenate all the associated metadata
@@ -113,7 +116,7 @@ def concat_and_write_fasta(baseFname, fastaDir, oFname, sequence_set, exclude_se
         """
         if id in sequence_set:
             if id in exclude_set:
-                print(f"Excluding {id}")
+                eprint(f"Excluding {id}")
                 return False
             else:
                 return True
@@ -347,9 +350,9 @@ def concat_and_write_metadata(baseFname, metaDir, oFname, recordIDs, records):
     metadata = metadata.drop(index=dropRows)
     metadata = metadata.drop(columns=drop_cols)
     # Drop duplicates
-    # metadata = metadata.drop_duplicates(
-    #     subset="strain", ignore_index=True
-    # ).reset_index()
+    metadata = metadata.drop_duplicates(
+        subset="strain", ignore_index=True
+    ).reset_index()
 
     # metadata = coarse_downsample(metadata)
     # print(metadata)
