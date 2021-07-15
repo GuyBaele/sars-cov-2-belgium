@@ -57,10 +57,10 @@ def create_unaligned_fasta(build, excludes=None):
         ):
             if record.id in seq_list:
                 if record.id in excludes:
-                    # print(f"bad 1: {record.id}")
+                    print(f"bad 1: {record.id}")
                     continue
-                if record.id in meta_sequences:
-                    # print("bad 2")
+                if record.id not in meta_sequences:
+                    print("bad 2")
                     continue
                 # print("good")
                 records.append(record)
