@@ -459,7 +459,7 @@ def read_all_sequence_lists():
                     # Remove \n characters
                     line = line.strip()
                     allSeqs.add(line)
-
+    print(f"Sequence list initialized with {len(allSeqs)} sequences.")
     return allSeqs
 
 
@@ -477,7 +477,7 @@ def read_excludes():
         for line in f.readlines():
             line = line.strip()
             exclude.add(line)
-
+    print(f"Initialized exclude list with {len(exclude)} sequences.")
     return exclude
 
 

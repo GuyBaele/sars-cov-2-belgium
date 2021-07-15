@@ -32,7 +32,7 @@ def create_unaligned_fasta(build, excludes=None):
                 excludes.add(line[1])
 
     print(
-        f"Ignored {len(excludes)-e} sequences (out of the full metadata tsv) with poorly formatte dates."
+        f"Ignored {len(excludes)-e} sequences (out of the full metadata tsv) with poorly formatted dates."
     )
 
     with open(seq_list_file, "r") as f:
@@ -51,21 +51,33 @@ def create_unaligned_fasta(build, excludes=None):
     lines = subprocess.Popen(" ".join(call), shell=True, stdout=subprocess.PIPE)
     nlines = int(lines.stdout.read().strip())
     records = []
+    excludedSeqs = []
+    excludedSeqsFname = "logs/alignment.excluded.txt"
+    nonMetaSeqs = []
+    nonMetaSeqsFname = "logs/alignment.nonmeta.txt"
     with open(master_fasta, "r") as handle:
         for record in tqdm(
             SeqIO.parse(handle, "fasta"), desc=f"Nextstrain fasta import", total=nlines
         ):
             if record.id in seq_list:
                 if record.id in excludes:
-                    print(f"bad 1: {record.id}")
+                    excludedSeqs.append(record.id)
                     continue
                 if record.id not in meta_sequences:
-                    print("bad 2")
+                    nonMetaSeqs.append(record.id)
                     continue
                 # print("good")
                 records.append(record)
 
-    print(len(records))
+    print(f"Excluded {len(excludedSeqs)} sequences (bad date or on exclude list; see {excludedSeqsFname}).")
+    with open(excludedSeqsFname, "w") as o:
+        for item in excludedSeqs:
+            o.write(f"{item}\n")
+    print(f"Couldn't find metadata for {len(nonMetaSeqs)} (see {nonMetaSeqsFname}).")
+    with open(nonMetaSeqsFname, "w") as o:
+       for item in nonMetaSeqs:
+           o.write(f"{item}\n")
+    print(f"Final dataset size: {len(records)} sequences.")
     print(f"Writing {aln_out_file}")
     with open(aln_out_file, "w") as output_handle:
         SeqIO.write(records, output_handle, "fasta")
