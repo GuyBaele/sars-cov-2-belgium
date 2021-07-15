@@ -1,12 +1,15 @@
 """build_datasets.py
 
 """
+from __future__ import print_function
+
 import datetime as dt
 import json
 # import multiprocessing as mp
 import os
 import random
 import subprocess
+import sys
 
 import numpy as np
 import pandas as pd
@@ -222,6 +225,7 @@ def concat_and_write_metadata(baseFname, metaDir, oFname, recordIDs, records):
         """Reduce a potentially massive metadata file to only include listed entries."""
         print(f"Length of metada before redution: {len(df)}.")
         newMeta = df[df["strain"].isin(list(ids))]
+        newMeta = df[df["date"].apply(lambda x: len(str(x)) == 10)]
         print(f"Length of metadata after reduction: {len(newMeta)}.")
 
         return newMeta
@@ -723,6 +727,10 @@ def get_zip_location_map():
             pro[zip] = myfix(bmap.at[index, "Province"])
             mun[zip] = bmap.at[index, "Municipality"]
     return pro, mun
+
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 
 if __name__ == "__main__":
